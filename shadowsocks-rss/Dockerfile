@@ -1,6 +1,6 @@
 FROM python:3.4.8-alpine3.7
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh ca-certificates && \
+    apk add --no-cache bash git ca-certificates && \
     update-ca-certificates
 
 ADD https://s3.laisky.com/public/ssr.tar.gz /

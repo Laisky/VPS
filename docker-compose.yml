@@ -148,6 +148,30 @@ services:
     ports:
       - 27301:3001
 
+  gargantua:
+    build:
+      context: ./gargantua
+    restart: on-failure
+    depends_on:
+      - mongodb
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    environment:
+      DBHOST: mongodb
+      DBPORT: 27017
+    volumes:
+      - /opt/configs/laisky-blog:/laisky-blog/settings:ro
+    ports:
+      - 127.0.0.1:27850:27850
+    command: run_gargantua
+
 networks:
   VPC:
     driver: bridge
