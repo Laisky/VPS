@@ -1,0 +1,154 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:3.2
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 127.0.0.1:27016:27017
+    volumes:
+      - /var/lib/mongodb:/data/db
+
+  fluentd:
+    image: ppcelery/fluentd-docker-image
+    restart: always
+    depends_on:
+      - mongodb
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /var/log/nginx:/var/log/nginx
+      - /var/lib/fluentd:/fluentd/log
+      - /etc/fluentd:/fluentd/etc
+    links:
+      - mongodb:mongodb
+    ports:
+      - 127.0.0.1:24224:24224
+
+  shadowsocks:
+    build:
+      context: ./shadowsocks
+    restart: on-failure
+    depends_on:
+      - fluentd
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs:/opt/configs:ro
+    ports:
+        - 1022:1022
+        - 17000:17000
+        - 17001:17001
+        - 20706:20706
+        - 17234:17234
+        - 17419:17419
+        - 10310:10310
+        - 18887:18887
+        - 14910:14910
+        - 10019:10019
+        - 16666:16666
+
+  shadowsocks-rss:
+    build:
+      context: ./shadowsocks-rss
+    restart: on-failure
+    depends_on:
+      - fluentd
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs:/opt/configs:ro
+    ports:
+        - 1023:1023
+        - 16667:16667
+        - 18888:18888
+        - 14911:14911
+        - 10020:10020
+        - 17002:17002
+
+  rocketchat:
+    image: rocketchat/rocket.chat
+    restart: on-failure
+    depends_on:
+      - mongodb
+      - fluentd
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /var/lib/rocketchat/data/uploads:/app/uploads
+    environment:
+      - PORT=3000
+      - ROOT_URL=https://chat.laisky.com
+      - MONGO_URL=mongodb://mongodb:27017/rocketchat
+    ports:
+      - 27300:3000
+
+  hubot:
+    image: rocketchat/hubot-rocketchat
+    restart: on-failure
+    depends_on:
+      - rocketchat
+      - fluentd
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    environment:
+      - ROCKETCHAT_ROOM=''
+      - LISTEN_ON_ALL_PUBLIC=true
+      - ROCKETCHAT_USER=bot
+      - ROCKETCHAT_PASSWORD=bot
+      - ROCKETCHAT_AUTH=password
+      - ROCKETCHAT_URL=http://rocketchat:3000
+      - BOT_NAME=bot
+      - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
+    links:
+      - rocketchat:rocketchat
+    ports:
+      - 27301:3001
+
+networks:
+  VPC:
+    driver: bridge
+
