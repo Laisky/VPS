@@ -25,3 +25,4 @@ docker-compose up -d --remove-orphans --force-recreate
 - [ ] v2ray
 - [ ] ramjet
 - [ ] nginx
+- [x] rocket.chat
