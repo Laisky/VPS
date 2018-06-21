@@ -1,11 +1,10 @@
 FROM python:3.6.5-alpine3.7
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git ca-certificates python-dev \
-    gcc g++ make libxml2-dev libffi-dev libxslt-dev && \
+    apk add --no-cache bash git ca-certificates \
+    gcc g++ make libxml2-dev libffi-dev libxslt-dev \
+    python-dev openssl-dev && \
     update-ca-certificates
 
-RUN git clone https://github.com/Laisky/laisky-blog.git && \
-    cd laisky-blog && \
-    git checkout develop && \
-    pip install pip==9.0.3 && \
-    pip install -r requirements.txt
+RUN pip install "pip<10" jinja2 Pygments cssmin jsmin html2text \
+    lxml markdown2 dicttoxml bcrypt
+
