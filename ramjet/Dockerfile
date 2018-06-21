@@ -7,6 +7,7 @@ RUN apk update && apk upgrade && \
 RUN git clone https://github.com/Laisky/ramjet.git /app && \
     cd app && \
     git checkout master && \
+    pip install pip==9.0.3 && \
     pip install -r requirements.txt
 
 WORKDIR /app
