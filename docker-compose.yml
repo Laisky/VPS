@@ -13,7 +13,7 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     ports:
-      - 127.0.0.1:27016:27017
+      - 127.0.0.1:27017:27017
     volumes:
       - /var/lib/mongodb:/data/db
 
@@ -32,9 +32,9 @@ services:
       options:
         max-size: "30m"
     volumes:
-      - /var/log/nginx:/var/log/nginx
+      - /var/log:/var/log
       - /var/lib/fluentd:/fluentd/log
-      - /etc/fluentd:/fluentd/etc
+      - /opt/configs/fluent/fluentd.conf:/fluentd/etc/fluent.conf
     links:
       - mongodb:mongodb
     ports:
@@ -43,8 +43,7 @@ services:
   nginx:
     image: nginx:1.15.0-alpine
     restart: on-failure
-    networks:
-      - VPC
+    network_mode: host
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -56,8 +55,9 @@ services:
       - /opt/configs/nginx/conf.d:/etc/nginx/conf.d
       - /var/www:/var/www
       - /var/log:/var/log
-    ports:
-      - 80:80
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/ssl:/etc/ssl
+      - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
 
   shadowsocks:
     build:
@@ -183,9 +183,9 @@ services:
       options:
         max-size: "30m"
     volumes:
-      - /opt/configs/ramjet/prd.py:/app/settings/prd.py:RO
+      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py
     ports:
-      - 127.0.0.1:27301:3001
+      - 127.0.0.1:37851:37851
 
   # gargantua:
   #   build:
