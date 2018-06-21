@@ -42,7 +42,7 @@ services:
 
   nginx:
     image: nginx:1.15.0-alpine
-    restart: on-failure
+    restart: always
     network_mode: host
     dns:
       - 8.8.8.8
@@ -62,7 +62,7 @@ services:
   shadowsocks:
     build:
       context: ./shadowsocks
-    restart: on-failure
+    restart: always
     depends_on:
       - fluentd
     networks:
@@ -92,7 +92,7 @@ services:
   shadowsocks-rss:
     build:
       context: ./shadowsocks-rss
-    restart: on-failure
+    restart: always
     depends_on:
       - fluentd
     networks:
@@ -116,7 +116,7 @@ services:
 
   rocketchat:
     image: rocketchat/rocket.chat
-    restart: on-failure
+    restart: always
     depends_on:
       - mongodb
       - fluentd
@@ -140,7 +140,7 @@ services:
 
   hubot:
     image: rocketchat/hubot-rocketchat
-    restart: on-failure
+    restart: always
     depends_on:
       - rocketchat
       - fluentd
@@ -170,7 +170,7 @@ services:
   ramjet:
     build:
       context: ./ramjet
-    restart: on-failure
+    restart: always
     depends_on:
       - mongodb
     networks:
@@ -190,7 +190,7 @@ services:
   # gargantua:
   #   build:
   #     context: ./gargantua
-  #   restart: on-failure
+  #   restart: always
   #   depends_on:
   #     - mongodb
   #   networks:
