@@ -56,7 +56,7 @@ services:
     volumes:
       - /opt/configs/nginx/conf.d:/etc/nginx/conf.d
       - /var/www:/var/www
-      - /var/log:/var/log
+      - /var/log/nginx:/var/log/nginx
       - /etc/letsencrypt:/etc/letsencrypt
       - /etc/ssl:/etc/ssl
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
@@ -76,7 +76,7 @@ services:
     volumes:
       - /opt/configs/nginx/conf.d:/etc/nginx/conf.d
       - /var/www:/var/www
-      - /var/log:/var/log
+      - /var/log/tengine:/var/log/tengine
       - /etc/letsencrypt:/etc/letsencrypt
       - /etc/ssl:/etc/ssl
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
