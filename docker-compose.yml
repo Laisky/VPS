@@ -43,6 +43,28 @@ services:
   nginx:
     image: nginx:1.15.0-alpine
     restart: always
+    # network_mode: host
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs/nginx/conf.d:/etc/nginx/conf.d
+      - /var/www:/var/www
+      - /var/log:/var/log
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/ssl:/etc/ssl
+      - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
+
+  tengine:
+    build:
+      context: ./tengine
+    restart: always
     network_mode: host
     dns:
       - 8.8.8.8
@@ -76,7 +98,7 @@ services:
   #       max-size: "30m"
   #   volumes:
   #     - /opt/configs/v2ray/config.json:/etc/v2ray/config.json
-  #   command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
+  #   entrypoint: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   shadowsocks:
     build:
@@ -228,7 +250,7 @@ services:
   #     - /opt/configs/laisky-blog:/laisky-blog/settings:ro
   #   ports:
   #     - 127.0.0.1:27850:27850
-  #   command: run_gargantua
+  #   entrypoint: run_gargantua
 
 networks:
   VPC:
