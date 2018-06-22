@@ -6,4 +6,4 @@ RUN apk update && apk upgrade && \
 ADD https://s3.laisky.com/public/ssr.tar.gz /
 RUN tar -xzf /ssr.tar.gz
 
-CMD /usr/local/bin/python /shadowsocks/shadowsocks/server.py -c /opt/configs/shadowsocks-rss/config.json
+ENTRYPOINT /usr/local/bin/python /shadowsocks/shadowsocks/server.py -c /opt/configs/shadowsocks-rss/config.json

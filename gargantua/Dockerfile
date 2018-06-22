@@ -11,4 +11,4 @@ RUN git clone https://github.com/Laisky/laisky-blog.git && \
 RUN cd laisky-blog && git pull && git checkout origin/dist && \
     python setup.py develop
 
-CMD run_gargantua
+ENTRYPOINT run_gargantua
