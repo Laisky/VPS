@@ -59,6 +59,20 @@ services:
       - /etc/ssl:/etc/ssl
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
 
+  v2ray:
+    image: v2ray/official
+    restart: always
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs/v2ray/config.json:/etc/v2ray/config.json
+
   shadowsocks:
     build:
       context: ./shadowsocks
