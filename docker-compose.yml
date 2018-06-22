@@ -43,9 +43,9 @@ services:
   nginx:
     image: nginx:1.15.0-alpine
     restart: always
-    # network_mode: host
-    networks:
-      - VPC
+    network_mode: host
+    # networks:
+      # - VPC
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -65,7 +65,9 @@ services:
     build:
       context: ./tengine
     restart: always
-    network_mode: host
+    # network_mode: host
+    # networks:
+      # - VPC
     dns:
       - 8.8.8.8
       - 1.1.1.1
