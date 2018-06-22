@@ -68,7 +68,7 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     ports:
-      - 1021/udp:1021/udp
+      - 1021:1021/udp
       - 9953:9953
     logging:
       driver: "json-file"
