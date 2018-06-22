@@ -66,8 +66,8 @@ services:
       context: ./tengine
     restart: always
     # network_mode: host
-    # networks:
-      # - VPC
+    networks:
+      - VPC
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -75,6 +75,8 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
+    ports:
+      - 10080:80
     volumes:
       - /opt/configs/nginx/conf.d:/etc/nginx/conf.d
       - /var/www:/var/www
