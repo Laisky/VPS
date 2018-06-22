@@ -62,16 +62,21 @@ services:
   v2ray:
     image: v2ray/official
     restart: always
-    network_mode: host
+    networks:
+      - VPC
     dns:
       - 8.8.8.8
       - 1.1.1.1
+    ports:
+      - 1021/udp:1021/udp
+      - 9953:9953
     logging:
       driver: "json-file"
       options:
         max-size: "30m"
     volumes:
       - /opt/configs/v2ray/config.json:/etc/v2ray/config.json
+    command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   shadowsocks:
     build:
