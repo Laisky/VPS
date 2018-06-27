@@ -134,7 +134,7 @@ services:
         - 17002:17002
 
   rocketchat:
-    image: rocketchat/rocket.chat
+    image: rocketchat/rocket.chat:0.66.0-rc.0
     restart: always
     depends_on:
       - mongodb
