@@ -205,6 +205,7 @@ services:
       - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py
     ports:
       - 127.0.0.1:37851:37851
+    entrypoint: python -m ramjet -e keyword
 
   # gargantua:
   #   build:
