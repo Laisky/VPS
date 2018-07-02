@@ -157,34 +157,34 @@ services:
     ports:
       - 127.0.0.1:27300:3000
 
-  hubot:
-    image: rocketchat/hubot-rocketchat
-    restart: always
-    depends_on:
-      - rocketchat
-      - fluentd
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    environment:
-      - ROCKETCHAT_ROOM=''
-      - LISTEN_ON_ALL_PUBLIC=true
-      - ROCKETCHAT_USER=bot
-      - ROCKETCHAT_PASSWORD=bot
-      - ROCKETCHAT_AUTH=password
-      - ROCKETCHAT_URL=http://rocketchat:3000
-      - BOT_NAME=bot
-      - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
-    links:
-      - rocketchat:rocketchat
-    ports:
-      - 127.0.0.1:27301:3001
+  # hubot:
+  #   image: rocketchat/hubot-rocketchat
+  #   restart: always
+  #   depends_on:
+  #     - rocketchat
+  #     - fluentd
+  #   networks:
+  #     - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   environment:
+  #     - ROCKETCHAT_ROOM=''
+  #     - LISTEN_ON_ALL_PUBLIC=true
+  #     - ROCKETCHAT_USER=bot
+  #     - ROCKETCHAT_PASSWORD=bot
+  #     - ROCKETCHAT_AUTH=password
+  #     - ROCKETCHAT_URL=http://rocketchat:3000
+  #     - BOT_NAME=bot
+  #     - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
+  #   links:
+  #     - rocketchat:rocketchat
+  #   ports:
+  #     - 127.0.0.1:27301:3001
 
   ramjet:
     build:
