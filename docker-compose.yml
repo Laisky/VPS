@@ -231,6 +231,27 @@ services:
   #     - 127.0.0.1:27850:27850
   #   command: run_gargantua
 
+  go-ramjet:
+    image: ppcelery/go-ramjet:latest
+    restart: "always"
+    depends_on:
+      - mongodb
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    environment:
+      - TASKS=heartbeat,keyword,ssl-monitor
+    volumes:
+      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml
+    ports:
+      - 127.0.0.1:24456:24456
+
 networks:
   VPC:
     driver: bridge
