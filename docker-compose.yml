@@ -133,29 +133,29 @@ services:
         # - 10020:10020
         # - 17002:17002
 
-  rocketchat:
-    image: rocketchat/rocket.chat:0.66.0-rc.0
-    restart: always
-    depends_on:
-      - mongodb
-      - fluentd
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    volumes:
-      - /var/lib/rocketchat/data/uploads:/app/uploads
-    environment:
-      - PORT=3000
-      - ROOT_URL=https://chat.laisky.com
-      - MONGO_URL=mongodb://mongodb:27017/rocketchat
-    ports:
-      - 127.0.0.1:27300:3000
+  # rocketchat:
+  #   image: rocketchat/rocket.chat:0.66.0-rc.0
+  #   restart: always
+  #   depends_on:
+  #     - mongodb
+  #     - fluentd
+  #   networks:
+  #     - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /var/lib/rocketchat/data/uploads:/app/uploads
+  #   environment:
+  #     - PORT=3000
+  #     - ROOT_URL=https://chat.laisky.com
+  #     - MONGO_URL=mongodb://mongodb:27017/rocketchat
+  #   ports:
+  #     - 127.0.0.1:27300:3000
 
   # hubot:
   #   image: rocketchat/hubot-rocketchat
