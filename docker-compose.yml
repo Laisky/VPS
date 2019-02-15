@@ -84,8 +84,7 @@ services:
     restart: always
     depends_on:
       - fluentd
-    networks:
-      - VPC
+    network_mode: host
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -95,8 +94,8 @@ services:
         max-size: "30m"
     volumes:
       - /opt/configs:/opt/configs:ro
-    ports:
-        - 1022:1022
+    # ports:
+    #     - 1022:1022
         # - 17000:17000
         # - 17001:17001
         # - 20706:20706
@@ -114,8 +113,7 @@ services:
     restart: always
     depends_on:
       - fluentd
-    networks:
-      - VPC
+    network_mode: host
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -125,8 +123,8 @@ services:
         max-size: "30m"
     volumes:
       - /opt/configs:/opt/configs:ro
-    ports:
-        - 1023:1023
+    # ports:
+    #     - 1023:1023
         # - 16667:16667
         # - 18888:18888
         # - 14911:14911
@@ -251,6 +249,18 @@ services:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml
     ports:
       - 127.0.0.1:24456:24456
+
+  # dns over https
+  cloudflared:
+    image: ppcelery/cloudflared
+    # build:
+    #   context: ./cloudflared
+    restart: always
+    network_mode: host  # port 5054
+    environment:
+      - DNS1=1.1.1.1
+      - DNS2=1.0.0.1
+
 
 networks:
   VPC:
