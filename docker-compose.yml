@@ -184,26 +184,26 @@ services:
   #   ports:
   #     - 127.0.0.1:27301:3001
 
-  ramjet:
-    build:
-      context: ./ramjet
-    restart: always
-    depends_on:
-      - mongodb
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    volumes:
-      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py
-    ports:
-      - 127.0.0.1:37851:37851
-    entrypoint: python -m ramjet -e keyword
+  # ramjet:
+  #   build:
+  #     context: ./ramjet
+  #   restart: always
+  #   depends_on:
+  #     - mongodb
+  #   networks:
+  #     - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py
+  #   ports:
+  #     - 127.0.0.1:37851:37851
+  #   entrypoint: python -m ramjet -e keyword
 
   # gargantua:
   #   build:
@@ -251,15 +251,15 @@ services:
       - 127.0.0.1:24456:24456
 
   # dns over https
-  cloudflared:
-    image: ppcelery/cloudflared
-    # build:
-    #   context: ./cloudflared
-    restart: always
-    network_mode: host  # port 5054
-    environment:
-      - DNS1=1.1.1.1
-      - DNS2=1.0.0.1
+  # cloudflared:
+  #   image: ppcelery/cloudflared
+  #   # build:
+  #   #   context: ./cloudflared
+  #   restart: always
+  #   network_mode: host  # port 5054
+  #   environment:
+  #     - DNS1=1.1.1.1
+  #     - DNS2=1.0.0.1
 
 
 networks:
