@@ -30,7 +30,7 @@ ENV DNS2 1.0.0.1
 
 COPY --from=gobuild /etc/ssl/certs /etc/ssl/certs
 COPY --from=gobuild /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared/cloudflared /usr/local/bin/cloudflared
-HEALTHCHECK --interval=5s --timeout=3s --start-period=5s CMD nslookup -po=53 cloudflare.com 127.0.0.1 || exit 1
+# HEALTHCHECK --interval=5s --timeout=3s --start-period=5s CMD nslookup -po=53 cloudflare.com 127.0.0.1 || exit 1
 
 # USER cloudflared
 

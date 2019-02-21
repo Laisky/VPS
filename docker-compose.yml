@@ -82,8 +82,8 @@ services:
     build:
       context: ./shadowsocks
     restart: always
-    depends_on:
-      - fluentd
+    # depends_on:
+    #   - fluentd
     network_mode: host
     dns:
       - 8.8.8.8
@@ -111,8 +111,8 @@ services:
     build:
       context: ./shadowsocks-rss
     restart: always
-    depends_on:
-      - fluentd
+    # depends_on:
+    #   - fluentd
     network_mode: host
     dns:
       - 8.8.8.8
@@ -253,14 +253,14 @@ services:
   # dns over https
   cloudflared:
     image: ppcelery/cloudflared
+    restart: "always"
     # build:
     #   context: ./cloudflared
-    restart: always
-    # network_mode: host  # port 53
-    networks:
-      - VPC
-    ports:
-      - 127.0.0.1:53:53
+    network_mode: host  # port 53, only host mode support udp
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
     environment:
       - DNS1=1.1.1.1
       - DNS2=1.0.0.1
