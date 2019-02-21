@@ -260,7 +260,7 @@ services:
     networks:
       - VPC
     ports:
-      127.0.0.1:53:53
+      - 127.0.0.1:53:53
     environment:
       - DNS1=1.1.1.1
       - DNS2=1.0.0.1
