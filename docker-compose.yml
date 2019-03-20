@@ -62,14 +62,13 @@ services:
   # v2ray:
   #   image: v2ray/official
   #   restart: always
-  #   networks:
-  #     - VPC
+  #   network_mode: host
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1
-  #   ports:
-  #     - 1021:1021/udp
-  #     - 9953:9953
+  #   # ports:
+  #   #   - 1021:1021/udp
+  #   #   - localhost:9953:9953
   #   logging:
   #     driver: "json-file"
   #     options:
@@ -184,26 +183,26 @@ services:
   #   ports:
   #     - 127.0.0.1:27301:3001
 
-  # ramjet:
-  #   build:
-  #     context: ./ramjet
-  #   restart: always
-  #   depends_on:
-  #     - mongodb
-  #   networks:
-  #     - VPC
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   volumes:
-  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py
-  #   ports:
-  #     - 127.0.0.1:37851:37851
-  #   entrypoint: python -m ramjet -e keyword
+  ramjet:
+    build:
+      context: ./ramjet
+    restart: always
+    depends_on:
+      - mongodb
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py
+    ports:
+      - 127.0.0.1:37851:37851
+    entrypoint: python -m ramjet -e keyword
 
   # gargantua:
   #   build:
