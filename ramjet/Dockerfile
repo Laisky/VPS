@@ -1,3 +1,4 @@
+# docker build . -f ramjet/Dockerfile -t ppcelery/ramjet
 FROM ppcelery/gargantua-base
 
 RUN git clone https://github.com/Laisky/ramjet.git /app && \
