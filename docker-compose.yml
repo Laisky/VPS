@@ -71,11 +71,13 @@ services:
       - 127.0.0.1:17800:8080
     links:
       - mongodb:mongodb
+    volumes:
+      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql
     logging:
       driver: "json-file"
       options:
         max-size: "30m"
-    command: ./go-graphql-srv --debug --addr=0.0.0.0:8080 --dbaddr=mongodb:27017
+    command: ./go-graphql-srv --debug --addr=0.0.0.0:8080 --dbaddr=mongodb:27017 --config=/etc/laisky-blog-graphql
 
   # v2ray:
   #   image: v2ray/official
