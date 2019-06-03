@@ -79,23 +79,23 @@ services:
         max-size: "30m"
     command: ./go-graphql-srv --debug --addr=0.0.0.0:8080 --dbaddr=mongodb:27017 --config=/etc/laisky-blog-graphql
 
-  v2ray:
-    image: v2ray/official
-    restart: always
-    network_mode: host
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    # ports:
-    #   - 1021:1021/udp
-    #   - localhost:9953:9953
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    volumes:
-      - /opt/configs/v2ray/config.json:/etc/v2ray/config.json
-    command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
+  # v2ray:
+  #   image: v2ray/official
+  #   restart: always
+  #   network_mode: host
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   # ports:
+  #   #   - 1021:1021/udp
+  #   #   - localhost:9953:9953
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /opt/configs/v2ray/config.json:/etc/v2ray/config.json
+  #   command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   shadowsocks:
     build:
