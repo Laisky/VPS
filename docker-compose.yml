@@ -79,76 +79,76 @@ services:
         max-size: "30m"
     command: ./go-graphql-srv --debug --addr=0.0.0.0:8080 --dbaddr=mongodb:27017 --config=/etc/laisky-blog-graphql
 
-  # v2ray:
-  #   image: v2ray/official
-  #   restart: always
-  #   network_mode: host
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   # ports:
-  #   #   - 1021:1021/udp
-  #   #   - localhost:9953:9953
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   volumes:
-  #     - /opt/configs/v2ray/config.json:/etc/v2ray/config.json
-  #   command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
+  v2ray:
+    image: v2ray/official
+    restart: always
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 1021:1021/udp
+    #   - localhost:9953:9953
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs/v2ray/config.json:/etc/v2ray/config.json
+    command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
-  # shadowsocks:
-  #   build:
-  #     context: ./shadowsocks
-  #   restart: always
-  #   # depends_on:
-  #   #   - fluentd
-  #   network_mode: host
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   volumes:
-  #     - /opt/configs:/opt/configs:ro
-  #   # ports:
-  #   #     - 1022:1022
-  #       # - 17000:17000
-  #       # - 17001:17001
-  #       # - 20706:20706
-  #       # - 17234:17234
-  #       # - 17419:17419
-  #       # - 10310:10310
-  #       # - 18887:18887
-  #       # - 14910:14910
-  #       # - 10019:10019
-  #       # - 16666:16666
+  shadowsocks:
+    build:
+      context: ./shadowsocks
+    restart: always
+    # depends_on:
+    #   - fluentd
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs:/opt/configs:ro
+    # ports:
+    #     - 1022:1022
+        # - 17000:17000
+        # - 17001:17001
+        # - 20706:20706
+        # - 17234:17234
+        # - 17419:17419
+        # - 10310:10310
+        # - 18887:18887
+        # - 14910:14910
+        # - 10019:10019
+        # - 16666:16666
 
-  # shadowsocks-rss:
-  #   build:
-  #     context: ./shadowsocks-rss
-  #   restart: always
-  #   # depends_on:
-  #   #   - fluentd
-  #   network_mode: host
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   volumes:
-  #     - /opt/configs:/opt/configs:ro
-  #   # ports:
-  #   #     - 1023:1023
-  #       # - 16667:16667
-  #       # - 18888:18888
-  #       # - 14911:14911
-  #       # - 10020:10020
-  #       # - 17002:17002
+  shadowsocks-rss:
+    build:
+      context: ./shadowsocks-rss
+    restart: always
+    # depends_on:
+    #   - fluentd
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs:/opt/configs:ro
+    # ports:
+    #     - 1023:1023
+        # - 16667:16667
+        # - 18888:18888
+        # - 14911:14911
+        # - 10020:10020
+        # - 17002:17002
 
   # rocketchat:
   #   image: rocketchat/rocket.chat:0.66.0-rc.0
