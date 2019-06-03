@@ -80,7 +80,7 @@ services:
     command: ./go-graphql-srv --debug --addr=0.0.0.0:8080 --dbaddr=mongodb:27017 --config=/etc/laisky-blog-graphql
 
   v2ray:
-    image: v2ray/official
+    image: v2ray/official:latest
     restart: always
     network_mode: host
     dns:
