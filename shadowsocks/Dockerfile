@@ -1,4 +1,4 @@
-FROM golang:1.10.1-alpine3.7 AS gobin
+FROM golang:1.12.5-alpine3.9 AS gobin
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git ca-certificates && \
     update-ca-certificates
@@ -7,7 +7,7 @@ RUN go get github.com/shadowsocks/shadowsocks-go/cmd/shadowsocks-server
 
 # ---------------------------------
 
-FROM alpine:3.7
+FROM alpine:3.9
 COPY --from=gobin /go/bin/shadowsocks-server  shadowsocks-server
 COPY --from=gobin /etc/ssl/certs /etc/ssl/certs
 
