@@ -204,8 +204,9 @@ services:
   #     - 127.0.0.1:27301:3001
 
   ramjet:
-    build:
-      context: ./ramjet
+    image: ppcelery/ramjet:20190606
+    # build:
+    #   context: ./ramjet
     restart: always
     depends_on:
       - mongodb
