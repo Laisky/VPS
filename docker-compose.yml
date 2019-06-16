@@ -94,7 +94,7 @@ services:
       options:
         max-size: "30m"
     volumes:
-      - /opt/configs/v2ray/config.json:/etc/v2ray/config.json
+      - /opt/configs/v2ray:/etc/v2ray
     command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   shadowsocks:
