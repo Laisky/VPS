@@ -1,10 +1,10 @@
-FROM python:3.6.5-alpine3.7
+FROM python:3.7.3-alpine3.9
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git ca-certificates \
     gcc g++ make libxml2-dev libffi-dev libxslt-dev \
     python-dev openssl-dev && \
     update-ca-certificates
 
-RUN pip install "pip<10" jinja2 Pygments cssmin jsmin html2text \
+RUN pip install pip jinja2 Pygments cssmin jsmin html2text \
     lxml markdown2 dicttoxml bcrypt
 

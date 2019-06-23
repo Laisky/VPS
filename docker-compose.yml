@@ -204,7 +204,7 @@ services:
   #     - 127.0.0.1:27301:3001
 
   ramjet:
-    image: ppcelery/ramjet:0a8d37e
+    image: ppcelery/ramjet:f529d78
     # build:
     #   context: ./ramjet
     restart: always
