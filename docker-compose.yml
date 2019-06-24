@@ -60,7 +60,7 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:0.4.2
+    image: ppcelery/laisky-blog-graphql:0.4.4
     restart: always
     networks:
       - VPC
@@ -204,7 +204,7 @@ services:
   #     - 127.0.0.1:27301:3001
 
   ramjet:
-    image: ppcelery/ramjet:f529d78
+    image: ppcelery/ramjet:10a2d56
     # build:
     #   context: ./ramjet
     restart: always
