@@ -141,7 +141,7 @@ services:
       options:
         max-size: 10m
     environment:
-      - TASKS=heartbeat,keyword,ssl-monitor
+      - TASKS=heartbeat,ssl-monitor
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml
     ports:
