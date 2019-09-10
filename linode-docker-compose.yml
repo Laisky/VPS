@@ -13,9 +13,10 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     ports:
-      - 127.0.0.1:27017:27017
+      - 27017:27017
     volumes:
       - /var/lib/mongodb:/data/db
+    command: mongod --auth
 
   fluentd:
     image: ppcelery/fluentd-docker-image
@@ -60,7 +61,7 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:0.4.15
+    image: ppcelery/laisky-blog-graphql:0.5.0
     restart: always
     networks:
       - VPC
