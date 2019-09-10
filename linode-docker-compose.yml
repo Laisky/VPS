@@ -127,7 +127,7 @@ services:
   #   command: run_gargantua
 
   go-ramjet:
-    image: ppcelery/go-ramjet:0d91163
+    image: ppcelery/go-ramjet:f090a42
     restart: "always"
     depends_on:
       - mongodb

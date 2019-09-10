@@ -86,3 +86,22 @@ services:
     volumes:
       - /var/lib/mongodb:/data/db
     command: mongod --auth
+
+  go-ramjet:
+    image: ppcelery/go-ramjet:f090a42
+    restart: "always"
+    depends_on:
+      - mongodb
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    environment:
+      - TASKS=heartbeat
+    volumes:
+      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml
+    ports:
+      - 127.0.0.1:24456:24456
