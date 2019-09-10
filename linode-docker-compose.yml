@@ -17,23 +17,23 @@ services:
     volumes:
       - /var/lib/mongodb:/data/db
 
-  mongodb-auth:
-    image: mongo:3.6
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 27016:27017
-    volumes:
-      - /var/lib/mongodb:/data/db
-    command: mongod --auth
+  # mongodb-auth:
+  #   image: mongo:3.6
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   networks:
+  #     - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 27016:27017
+  #   volumes:
+  #     - /var/lib/mongodb:/data/db
+  #   command: mongod --auth
 
   fluentd:
     image: ppcelery/fluentd-docker-image
