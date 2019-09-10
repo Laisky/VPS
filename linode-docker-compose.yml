@@ -98,7 +98,7 @@ services:
     command: ./go-graphql-srv --addr=0.0.0.0:8080 --dbaddr=mongodb:27017 --config=/etc/laisky-blog-graphql
 
   ramjet:
-    image: ppcelery/ramjet:0d91163
+    image: ppcelery/ramjet:b9930ea
     # build:
     #   context: ./ramjet
     restart: always
@@ -144,7 +144,7 @@ services:
   #   command: run_gargantua
 
   go-ramjet:
-    image: ppcelery/go-ramjet:latest
+    image: ppcelery/go-ramjet:0d91163
     restart: "always"
     depends_on:
       - mongodb
