@@ -71,3 +71,18 @@ services:
         # - 10020:10020
         # - 17002:17002
 
+
+  mongodb-auth:
+    image: mongo:3.6
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/mongodb:/data/db
+    command: mongod --auth

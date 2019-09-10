@@ -17,24 +17,6 @@ services:
     volumes:
       - /var/lib/mongodb:/data/db
 
-  # mongodb-auth:
-  #   image: mongo:3.6
-  #   restart: always
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   networks:
-  #     - VPC
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   ports:
-  #     - 27016:27017
-  #   volumes:
-  #     - /var/lib/mongodb:/data/db
-  #   command: mongod --auth
-
   fluentd:
     image: ppcelery/fluentd-docker-image
     restart: always
@@ -164,20 +146,20 @@ services:
     ports:
       - 127.0.0.1:24456:24456
 
-  # dns over https
-  cloudflared:
-    image: ppcelery/cloudflared
-    restart: "always"
-    # build:
-    #   context: ./cloudflared
-    network_mode: host  # port 53, only host mode support udp
-    logging:
-      driver: "json-file"
-      options:
-        max-size: 10m
-    environment:
-      - DNS1=1.1.1.1
-      - DNS2=1.0.0.1
+  # # dns over https
+  # cloudflared:
+  #   image: ppcelery/cloudflared
+  #   restart: "always"
+  #   # build:
+  #   #   context: ./cloudflared
+  #   network_mode: host  # port 53, only host mode support udp
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: 10m
+  #   environment:
+  #     - DNS1=1.1.1.1
+  #     - DNS2=1.0.0.1
 
 
 networks:
