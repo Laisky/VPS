@@ -90,8 +90,6 @@ services:
   go-ramjet:
     image: ppcelery/go-ramjet:f090a42
     restart: "always"
-    depends_on:
-      - mongodb
     dns:
       - 8.8.8.8
       - 1.1.1.1
