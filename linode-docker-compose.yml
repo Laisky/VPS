@@ -85,8 +85,8 @@ services:
     # build:
     #   context: ./ramjet
     restart: always
-    depends_on:
-      - mongodb
+    # depends_on:
+    #   - mongodb
     networks:
       - VPC
     dns:
@@ -129,8 +129,8 @@ services:
   go-ramjet:
     image: ppcelery/go-ramjet:f090a42
     restart: "always"
-    depends_on:
-      - mongodb
+    # depends_on:
+    #   - mongodb
     networks:
       - VPC
     dns:
