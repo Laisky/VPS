@@ -1,45 +1,45 @@
 version: '3'
 services:
-  mongodb:
-    image: mongo:3.6
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 27017:27017
-    volumes:
-      - /var/lib/mongodb:/data/db
-    command: mongod --auth
+  # mongodb:
+  #   image: mongo:3.6
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   networks:
+  #     - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - /var/lib/mongodb:/data/db
+  #   command: mongod --auth
 
-  fluentd:
-    image: ppcelery/fluentd-docker-image
-    restart: always
-    depends_on:
-      - mongodb
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    volumes:
-      - /var/log:/var/log
-      - /var/lib/fluentd:/fluentd/log
-      - /opt/configs/fluent/fluentd.conf:/fluentd/etc/fluent.conf
-    links:
-      - mongodb:mongodb
-    ports:
-      - 127.0.0.1:24224:24224
+  # fluentd:
+  #   image: ppcelery/fluentd-docker-image
+  #   restart: always
+  #   depends_on:
+  #     - mongodb
+  #   networks:
+  #     - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /var/log:/var/log
+  #     - /var/lib/fluentd:/fluentd/log
+  #     - /opt/configs/fluent/fluentd.conf:/fluentd/etc/fluent.conf
+  #   links:
+  #     - mongodb:mongodb
+  #   ports:
+  #     - 127.0.0.1:24224:24224
 
   nginx:
     image: nginx:1.15.6-alpine
@@ -78,7 +78,7 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    command: ./go-graphql-srv --addr=0.0.0.0:8080 --dbaddr=mongodb:27017 --config=/etc/laisky-blog-graphql
+    command: ./go-graphql-srv --addr=0.0.0.0:8080 --config=/etc/laisky-blog-graphql
 
   ramjet:
     image: ppcelery/ramjet:b9930ea
