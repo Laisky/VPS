@@ -7,4 +7,4 @@ RUN git clone https://github.com/Laisky/ramjet.git --depth=1 -b develop /app && 
 
 WORKDIR /app
 
-ENTRYPOINT python -m ramjet
+ENTRYPOINT ["python", "-m", "ramjet"]
