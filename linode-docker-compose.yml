@@ -61,7 +61,7 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:0.5.1
+    image: ppcelery/laisky-blog-graphql:3d97531
     restart: always
     networks:
       - VPC
@@ -76,7 +76,7 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    command: ./go-graphql-srv --addr=0.0.0.0:8080 --config=/etc/laisky-blog-graphql
+    command: ./go-graphql-srv --addr=0.0.0.0:8080 --config=/etc/laisky-blog-graphql -t telegram
 
   ramjet:
     image: ppcelery/ramjet:c028d0f
