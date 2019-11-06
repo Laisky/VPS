@@ -61,7 +61,7 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:7cef66a
+    image: ppcelery/laisky-blog-graphql:cbcb4c2
     restart: always
     networks:
       - VPC
