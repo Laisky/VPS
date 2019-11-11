@@ -88,7 +88,7 @@ services:
     command: mongod --auth
 
   go-ramjet:
-    image: ppcelery/go-ramjet:e8cd49b
+    image: ppcelery/go-ramjet:15d61be
     restart: "always"
     dns:
       - 8.8.8.8
