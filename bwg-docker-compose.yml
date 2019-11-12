@@ -15,7 +15,7 @@ services:
       options:
         max-size: "30m"
     volumes:
-      - /opt/configs/v2ray:/etc/v2ray
+      - /opt/configs/v2ray:/etc/v2ray:ro
     command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   shadowsocks:
@@ -100,6 +100,6 @@ services:
     environment:
       - TASKS=heartbeat,ssl-monitor,keyword
     volumes:
-      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml
+      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml:ro
     ports:
       - 127.0.0.1:24456:24456

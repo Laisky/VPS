@@ -53,12 +53,12 @@ services:
       options:
         max-size: "30m"
     volumes:
-      - /opt/configs/nginx/conf.d:/etc/nginx/conf.d
       - /var/www:/var/www
       - /var/log:/var/log
-      - /etc/letsencrypt:/etc/letsencrypt
-      - /etc/ssl:/etc/ssl
-      - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua
+      - /opt/configs/nginx/conf.d:/etc/nginx/conf.d:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /etc/ssl:/etc/ssl:ro
+      - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   graphql:
     image: ppcelery/laisky-blog-graphql:13d51ae
@@ -71,7 +71,7 @@ services:
     ports:
       - 127.0.0.1:17800:8080
     volumes:
-      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql
+      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
     logging:
       driver: "json-file"
       options:
@@ -95,7 +95,7 @@ services:
       options:
         max-size: "30m"
     volumes:
-      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py
+      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
     ports:
       - 127.0.0.1:37851:37851
     entrypoint: python -m ramjet -e keyword
@@ -141,7 +141,7 @@ services:
     environment:
       - TASKS=heartbeat,ssl-monitor
     volumes:
-      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml
+      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml:ro
     ports:
       - 127.0.0.1:24456:24456
 
