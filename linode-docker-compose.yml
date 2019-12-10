@@ -125,7 +125,7 @@ services:
   #   command: run_gargantua
 
   go-ramjet:
-    image: ppcelery/go-ramjet:f090a42
+    image: ppcelery/go-ramjet:78caf6f
     restart: "always"
     # depends_on:
     #   - mongodb
@@ -139,9 +139,10 @@ services:
       options:
         max-size: 10m
     environment:
-      - TASKS=heartbeat,ssl-monitor
+      - TASKS=heartbeat,ssl-monitor,rss
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml:ro
+      - /var/www/public:/Users/laisky/Downloads/
     ports:
       - 127.0.0.1:24456:24456
 
