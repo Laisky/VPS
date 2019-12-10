@@ -72,6 +72,8 @@ services:
       - 127.0.0.1:17800:8080
     volumes:
       - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
     logging:
       driver: "json-file"
       options:
