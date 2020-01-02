@@ -13,7 +13,7 @@ services:
       - 1.1.1.1
     volumes:
       - /var/lib/mongodb:/data/db
-    command: mongod --auth
+    command: mongod --auth --bind_ip 0.0.0.0
 
   # fluentd:
   #   image: ppcelery/fluentd-docker-image
