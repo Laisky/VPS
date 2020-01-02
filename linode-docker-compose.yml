@@ -1,6 +1,6 @@
 version: '3'
 services:
-  mongodb-auth:
+  mongodb:
     image: mongo:3.6
     restart: always
     logging:
@@ -78,6 +78,8 @@ services:
   graphql:
     image: ppcelery/laisky-blog-graphql:75987e7
     restart: always
+    depends_on:
+      - mongodb
     networks:
       - VPC
     dns:
@@ -100,8 +102,8 @@ services:
     # build:
     #   context: ./ramjet
     restart: always
-    # depends_on:
-    #   - mongodb
+    depends_on:
+      - mongodb
     networks:
       - VPC
     dns:
@@ -144,8 +146,8 @@ services:
   go-ramjet:
     image: ppcelery/go-ramjet:78caf6f
     restart: "always"
-    # depends_on:
-    #   - mongodb
+    depends_on:
+      - mongodb
     networks:
       - VPC
     dns:
