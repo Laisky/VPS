@@ -98,7 +98,7 @@ services:
     command: ./go-graphql-srv --addr=0.0.0.0:8080 --config=/etc/laisky-blog-graphql -t telegram
 
   ramjet:
-    image: ppcelery/ramjet:c028d0f
+    image: ppcelery/ramjet:20200102
     # build:
     #   context: ./ramjet
     restart: always
