@@ -1,4 +1,4 @@
-FROM ppcelery/gargantua-base
+FROM ppcelery/gargantua-base:20200102
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git ca-certificates && \
     update-ca-certificates

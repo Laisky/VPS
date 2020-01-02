@@ -1,4 +1,5 @@
-FROM python:3.7.3-alpine3.9
+# db . -f Dockerfile-base -t ppcelery/gargantua-bas:20200102
+FROM python:3.8.1-alpine3.11
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git ca-certificates \
     gcc g++ make libxml2-dev libffi-dev libxslt-dev \
