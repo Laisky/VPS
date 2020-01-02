@@ -1,22 +1,19 @@
 version: '3'
 services:
-  # mongodb:
-  #   image: mongo:3.6
-  #   restart: always
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   networks:
-  #     - VPC
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   ports:
-  #     - 27017:27017
-  #   volumes:
-  #     - /var/lib/mongodb:/data/db
-  #   command: mongod --auth
+  mongodb-auth:
+    image: mongo:3.6
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/mongodb:/data/db
+    command: mongod --auth
 
   # fluentd:
   #   image: ppcelery/fluentd-docker-image
@@ -40,6 +37,24 @@ services:
   #     - mongodb:mongodb
   #   ports:
   #     - 127.0.0.1:24224:24224
+
+  v2ray:
+    image: v2ray/official:latest
+    restart: always
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 1021:1021/udp
+    #   - localhost:9953:9953
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs/v2ray:/etc/v2ray:ro
+    command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   nginx:
     image: nginx:1.15.6-alpine
@@ -141,7 +156,7 @@ services:
       options:
         max-size: 10m
     environment:
-      - TASKS=heartbeat,ssl-monitor,rss
+      - TASKS=heartbeat,ssl-monitor,rss,keyword
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml:ro
       - /var/www/public:/Users/laisky/Downloads/
