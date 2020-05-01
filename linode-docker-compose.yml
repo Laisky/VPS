@@ -76,7 +76,7 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:75987e7
+    image: ppcelery/laisky-blog-graphql:cc956ba
     restart: always
     depends_on:
       - mongodb
@@ -184,4 +184,3 @@ services:
 networks:
   VPC:
     driver: bridge
-
