@@ -1,0 +1,37 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:3.6
+    restart: always
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "30m"
+    # network_mode: host
+    ports:
+        - 127.0.0.1:27017:27017
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/mongodb:/data/db
+    # command: mongod --bind_ip 127.0.0.1 --storageEngine wiredTiger
+
+#   nginx:
+#     image: nginx:1.15.6-alpine
+#     restart: always
+#     network_mode: host
+#     dns:
+#       - 8.8.8.8
+#       - 1.1.1.1
+#     logging:
+#       driver: "json-file"
+#       options:
+#         max-size: "30m"
+#     volumes:
+#       - /var/www:/var/www
+#       - /var/log:/var/log
+#       - /opt/configs/nginx/conf.d:/etc/nginx/conf.d:ro
+#       - /etc/letsencrypt:/etc/letsencrypt:ro
+#       - /etc/ssl:/etc/ssl:ro
+#       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
