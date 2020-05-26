@@ -22,8 +22,7 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    networks:
-      - VPC
+    network_mode: host
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -83,8 +82,6 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    links:
-      - codeserver:codeserver
     volumes:
       - /var/www:/var/www
       - /var/log:/var/log
