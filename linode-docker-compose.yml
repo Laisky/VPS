@@ -15,6 +15,22 @@ services:
       - /var/lib/mongodb:/data/db
     command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
 
+  codeserver:
+    image: codercom/code-server:latest
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /home/laisky/repo/code-server:/home/coder/project
+      - /opt/configs/codeserver:/home/coder/.config/code-server
+
   # fluentd:
   #   image: ppcelery/fluentd-docker-image
   #   restart: always
@@ -67,6 +83,8 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
+    links:
+      - codeserver:codeserver
     volumes:
       - /var/www:/var/www
       - /var/log:/var/log
@@ -180,8 +198,36 @@ services:
   #     - DNS1=1.1.1.1
   #     - DNS2=1.0.0.1
 
+# go-fluentd:
+#     image: ppcelery/go-fluentd:1.12.7
+#     restart: "on-failure"
+#     networks:
+#       - VPC
+#     dns:
+
+#       - 8.8.8.8
+#       - 1.1.1.1
+#     ports:
+#       - 127.0.0.1:22280:22280
+#       - 127.0.0.1:24225:24225
+#     mem_limit: 1g
+#     logging:
+#       driver: "json-file"
+#       options:
+#         max-size: 100m
+#     volumes:
+#       - /opt/configs/go-fluentd:/etc/go-fluentd
+#       - /var/log/go-concator:/data/log/fluentd/go-concator
+#     command:
+#       ./go-fluentd
+#         --config=/etc/go-fluentd/settings-prd.yml
+#         --env=prod
+#         --addr=0.0.0.0:22800
+#         --log-level=error
+#         --log-alert
+#         --host=linode
+#         --enable-auto-gc
 
 networks:
   VPC:
     driver: bridge
-
