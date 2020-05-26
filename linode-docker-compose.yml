@@ -22,7 +22,8 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    network_mode: host
+    ports:
+      - 38080:8080
     dns:
       - 8.8.8.8
       - 1.1.1.1
