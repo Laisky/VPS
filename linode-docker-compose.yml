@@ -92,7 +92,8 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:cc956ba
+    # image: ppcelery/laisky-blog-graphql:cc956ba
+    image: ppcelery/laisky-blog-graphql:d9be59f
     restart: always
     depends_on:
       - mongodb
@@ -111,7 +112,9 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    command: ./go-graphql-srv --addr=0.0.0.0:8080 --config=/etc/laisky-blog-graphql -t telegram
+    command: ./go-graphql-srv --addr=0.0.0.0:8080
+      --config=/etc/laisky-blog-graphql/settings.yml
+      -t telegram
 
   ramjet:
     image: ppcelery/ramjet:db0af49
