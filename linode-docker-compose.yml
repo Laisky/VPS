@@ -72,6 +72,24 @@ services:
       - /opt/configs/v2ray:/etc/v2ray:ro
     command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
+  xray:
+    image: teddysun/xray:latest
+    restart: always
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 1021:1021/udp
+    #   - localhost:9953:9953
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs/xray:/etc/xray:ro
+    # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
+
   nginx:
     image: nginx:1.15.6-alpine
     restart: always
@@ -92,8 +110,8 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   graphql:
-    # image: ppcelery/laisky-blog-graphql:cc956ba
-    image: ppcelery/laisky-blog-graphql:d9be59f
+    # image: ppcelery/laisky-blog-graphql:9c4dec4
+    image: ppcelery/laisky-blog-graphql:test
     restart: always
     depends_on:
       - mongodb
@@ -114,6 +132,7 @@ services:
         max-size: "30m"
     command: ./go-graphql-srv --addr=0.0.0.0:8080
       --config=/etc/laisky-blog-graphql/settings.yml
+      --log-level=debug
       -t telegram
 
   ramjet:
