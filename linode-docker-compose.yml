@@ -15,21 +15,21 @@ services:
       - /var/lib/mongodb:/data/db
     command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
 
-  codeserver:
-    image: codercom/code-server:latest
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    ports:
-      - 38080:8080
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    volumes:
-      - /home/laisky/repo/code-server:/home/coder/project
-      - /opt/configs/codeserver:/home/coder/.config/code-server
+  # codeserver:
+  #   image: codercom/code-server:latest
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   ports:
+  #     - 38080:8080
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   volumes:
+  #     - /home/laisky/repo/code-server:/home/coder/project
+  #     - /opt/configs/codeserver:/home/coder/.config/code-server
 
   # fluentd:
   #   image: ppcelery/fluentd-docker-image
@@ -247,6 +247,19 @@ services:
 #         --log-alert
 #         --host=linode
 #         --enable-auto-gc
+
+  wireguard:
+    image: linuxserver/wireguard
+    network_mode: host
+    # ports:
+    #   - 51820:51820/udp
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    volumes:
+      - /lib/modules:/lib/modules
+      - /opt/configs/wireguard/linode/wg0.conf:/config/wg0.conf:ro
+      - /opt/configs/wireguard/peers.conf:/config/peers.conf:ro
 
 networks:
   VPC:
