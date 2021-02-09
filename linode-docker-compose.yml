@@ -110,8 +110,7 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   graphql:
-    # image: ppcelery/laisky-blog-graphql:9c4dec4
-    image: ppcelery/laisky-blog-graphql:test
+    image: ppcelery/laisky-blog-graphql:c68e9eb
     restart: always
     depends_on:
       - mongodb
@@ -136,7 +135,7 @@ services:
       -t telegram
 
   ramjet:
-    image: ppcelery/ramjet:db0af49
+    image: ppcelery/ramjet:812dfaa
     # build:
     #   context: ./ramjet
     restart: always
