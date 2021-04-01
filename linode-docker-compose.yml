@@ -136,8 +136,8 @@ services:
       -t telegram
 
   ramjet:
-    # image: ppcelery/ramjet:b764c67
-    image: ppcelery/ramjet:test
+    image: ppcelery/ramjet:9510394
+    # image: ppcelery/ramjet:test
     # build:
     #   context: ./ramjet
     restart: always
