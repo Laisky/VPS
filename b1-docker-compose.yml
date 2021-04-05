@@ -1,19 +1,19 @@
 version: '3'
 services:
-  mongodb:
-    image: mongo:3.6
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    network_mode: host
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    volumes:
-      - /var/lib/mongodb:/data/db
-    command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
+  # mongodb:
+  #   image: mongo:3.6
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   network_mode: host
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   volumes:
+  #     - /var/lib/mongodb:/data/db
+  #   command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
 
   # codeserver:
   #   image: codercom/code-server:latest
@@ -54,23 +54,23 @@ services:
   #   ports:
   #     - 127.0.0.1:24224:24224
 
-  v2ray:
-    image: v2ray/official:latest
-    restart: always
-    network_mode: host
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    # ports:
-    #   - 1021:1021/udp
-    #   - localhost:9953:9953
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    volumes:
-      - /opt/configs/v2ray:/etc/v2ray:ro
-    command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
+  # v2ray:
+  #   image: v2ray/official:latest
+  #   restart: always
+  #   network_mode: host
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   # ports:
+  #   #   - 1021:1021/udp
+  #   #   - localhost:9953:9953
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /opt/configs/v2ray:/etc/v2ray:ro
+  #   command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   xray:
     image: teddysun/xray:latest
@@ -104,8 +104,8 @@ services:
     volumes:
       - /var/www:/var/www
       - /var/log:/var/log
-      - /opt/configs/nginx/conf.d/linode:/etc/nginx/conf.d:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx/ssl/b1:/etc/nginx/ssl:ro
       - /etc/ssl:/etc/ssl:ro
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
