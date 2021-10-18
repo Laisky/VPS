@@ -1,0 +1,35 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:3.6
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - "27017:27017"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/mongodb:/data/db
+    command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
+
+  clickhouse:
+    image: "yandex/clickhouse-server:21.10.2.15"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - "8123:8123"
+      - "9004:9004"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/clickhouse:/var/lib/clickhouse
+      - /var/log/clickhouse-server:/var/log/clickhouse-server
+      - /opt/configs/clickhouse-server:/etc/clickhouse-server
