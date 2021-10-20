@@ -12,7 +12,7 @@ services:
       options:
         max-size: "30m"
     ports:
-      - 443:443
+      - 12987:12987
       - 3478:3478/udp
     dns:
       - 8.8.8.8
