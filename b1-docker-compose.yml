@@ -1,5 +1,19 @@
 version: '3'
 services:
+  derper:
+    image: ppcelery/derper:20211020
+    restart: always
+    environment:
+      ADDR: b1.laisky.com
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
   # mongodb:
   #   image: mongo:3.6
   #   restart: always

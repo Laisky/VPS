@@ -1,5 +1,19 @@
 version: '3'
 services:
+  derper:
+    image: ppcelery/derper:20211020
+    restart: always
+    environment:
+      ADDR: zz.laisky.com
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
   mongodb:
     image: mongo:3.6
     restart: always
@@ -110,8 +124,8 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:658ce94
-    # image: ppcelery/laisky-blog-graphql:test
+    # image: ppcelery/laisky-blog-graphql:aad77e8
+    image: ppcelery/laisky-blog-graphql:test
     restart: always
     depends_on:
       - mongodb
@@ -130,14 +144,14 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    command: ./go-graphql-srv --addr=0.0.0.0:8080
+    command: --addr=0.0.0.0:8080
       --config=/etc/laisky-blog-graphql/settings.yml
       --log-level=debug
       -t telegram
 
   ramjet:
-    image: ppcelery/ramjet:9510394
-    # image: ppcelery/ramjet:test
+    # image: ppcelery/ramjet:0abbd5c
+    image: ppcelery/ramjet:test
     # build:
     #   context: ./ramjet
     restart: always
