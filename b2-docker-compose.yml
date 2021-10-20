@@ -1,5 +1,7 @@
 version: '3'
 services:
+  # docker run -itd -e ADDR=b2.laisky.com -p 443:443 -p 3478:3478 --name derper ppcelery/derper:20211020
+  # docker run -itd -e ADDR=b2.laisky.com --net host --name derper ppcelery/derper:20211020
   derper:
     image: ppcelery/derper:20211020
     restart: always
