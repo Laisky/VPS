@@ -3,20 +3,20 @@ services:
   # docker run -itd -e DERP_HOSTNAME=b2.laisky.com -p 443:443 -p 3478:3478 --name derper ppcelery/derper:20211020-v2
   # docker run -itd -e DERP_HOSTNAME=b2.laisky.com --net host --name derper ppcelery/derper:20211020-v2
   derper:
-    image: ppcelery/derper:20211020-v2
-    restart: always
-    environment:
-      DERP_HOSTNAME: b1.laisky.com
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    ports:
-      - 12987:12987
-      - 3478:3478/udp
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
+    # image: ppcelery/derper:20211020-v5
+    # restart: always
+    # environment:
+    #   ADDR: b1.laisky.com
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "30m"
+    # ports:
+    #   - 443:443
+    #   - 3478:3478/udp
+    # dns:
+    #   - 8.8.8.8
+    #   - 1.1.1.1
 
   # mongodb:
   #   image: mongo:3.6
