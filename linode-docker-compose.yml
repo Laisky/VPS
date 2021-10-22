@@ -1,20 +1,20 @@
 version: '3'
 services:
-  derper:
-    image: ppcelery/derper:20211022
-    restart: always
-    environment:
-      ADDR: sg.ts.laisky.com
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    ports:
-      - 10444:443
-      - 3478:3478/udp
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
+  # derper:
+  #   image: ppcelery/derper:20211022
+  #   restart: always
+  #   environment:
+  #     ADDR: sg.ts.laisky.com
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   ports:
+  #     - 10444:443
+  #     - 3478:3478/udp
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
 
   mongodb:
     image: mongo:3.6

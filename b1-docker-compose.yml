@@ -1,18 +1,22 @@
 version: '3'
 services:
-  derper:
-    image: ppcelery/derper:20211020
-    restart: always
-    environment:
-      ADDR: b1.laisky.com
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    network_mode: host
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
+  # docker run -itd -e DERP_HOSTNAME=b2.laisky.com -p 443:443 -p 3478:3478 --name derper ppcelery/derper:20211020-v2
+  # docker run -itd -e DERP_HOSTNAME=b2.laisky.com --net host --name derper ppcelery/derper:20211020-v2
+  # derper:
+  #   image: ppcelery/derper:20211020-v5
+  #   restart: always
+  #   environment:
+  #     ADDR: b1.laisky.com
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   ports:
+  #     - 443:443
+  #     - 3478:3478/udp
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
 
   # mongodb:
   #   image: mongo:3.6
@@ -104,24 +108,24 @@ services:
       - /opt/configs/xray:/etc/xray:ro
     # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
-  nginx:
-    image: nginx:1.15.6-alpine
-    restart: always
-    network_mode: host
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    volumes:
-      - /var/www:/var/www
-      - /var/log:/var/log
-      - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
-      - /opt/configs/nginx/ssl/b1:/etc/nginx/ssl:ro
-      - /etc/ssl:/etc/ssl:ro
-      - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
+  # nginx:
+  #   image: nginx:1.15.6-alpine
+  #   restart: always
+  #   network_mode: host
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /var/www:/var/www
+  #     - /var/log:/var/log
+  #     - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
+  #     - /opt/configs/nginx/ssl/b1:/etc/nginx/ssl:ro
+  #     - /etc/ssl:/etc/ssl:ro
+  #     - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   # graphql:
   #   image: ppcelery/laisky-blog-graphql:658ce94
