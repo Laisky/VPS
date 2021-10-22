@@ -6,4 +6,4 @@ ENV ADDR=b1.laisky.com
 
 RUN echo $ADDR
 
-CMD derper --hostname=$ADDR --a :443 --stun true
+CMD derper -hostname=$ADDR -a :443 -stun
