@@ -1,15 +1,17 @@
 version: '3'
 services:
   # derper:
-  #   image: ppcelery/derper:20211020
+  #   image: ppcelery/derper:20211022
   #   restart: always
   #   environment:
-  #     ADDR: zz.laisky.com
+  #     ADDR: sg.ts.laisky.com
   #   logging:
   #     driver: "json-file"
   #     options:
   #       max-size: "30m"
-  #   network_mode: host
+  #   ports:
+  #     - 10444:443
+  #     - 3478:3478/udp
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1
@@ -105,9 +107,12 @@ services:
     # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   nginx:
-    image: nginx:1.15.6-alpine
+    image: nginx:1.21.3-alpine
     restart: always
     network_mode: host
+    # ports:
+    #   - 443:443
+    #   - 80:80
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -119,6 +124,8 @@ services:
       - /var/www:/var/www
       - /var/log:/var/log
       - /opt/configs/nginx/conf.d/linode:/etc/nginx/conf.d:ro
+      # - /opt/configs/nginx/conf.d/linode/http:/etc/nginx/conf.d:ro
+      # - /opt/configs/nginx/conf.d/linode/nginx.conf:/etc/nginx/nginx.conf:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /etc/ssl:/etc/ssl:ro
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
@@ -264,18 +271,18 @@ services:
 #         --host=linode
 #         --enable-auto-gc
 
-  wireguard:
-    image: linuxserver/wireguard
-    network_mode: host
-    # ports:
-    #   - 51820:51820/udp
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    volumes:
-      - /lib/modules:/lib/modules
-      - /opt/configs/wireguard/linode/wg0.conf:/config/wg0.conf:ro
-      - /opt/configs/wireguard/peers.conf:/config/peers.conf:ro
+  # wireguard:
+  #   image: linuxserver/wireguard
+  #   network_mode: host
+  #   # ports:
+  #   #   - 51820:51820/udp
+  #   cap_add:
+  #     - NET_ADMIN
+  #     - SYS_MODULE
+  #   volumes:
+  #     - /lib/modules:/lib/modules
+  #     - /opt/configs/wireguard/linode/wg0.conf:/config/wg0.conf:ro
+  #     - /opt/configs/wireguard/peers.conf:/config/peers.conf:ro
 
 networks:
   VPC:
