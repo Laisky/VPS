@@ -131,7 +131,7 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   graphql:
-    # image: ppcelery/laisky-blog-graphql:aad77e8
+    # image: ppcelery/laisky-blog-graphql:8abda99
     image: ppcelery/laisky-blog-graphql:test
     restart: always
     depends_on:
