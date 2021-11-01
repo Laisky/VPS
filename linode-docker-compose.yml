@@ -151,7 +151,7 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    command: --addr=0.0.0.0:8080
+    command: --listen=0.0.0.0:8080
       --config=/etc/laisky-blog-graphql/settings.yml
       --log-level=debug
       -t telegram
