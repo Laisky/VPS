@@ -152,6 +152,7 @@ services:
       options:
         max-size: "30m"
     command: --listen=0.0.0.0:8080
+      --config=/etc/laisky-blog-graphql/settings.yml
       --log-level=debug
       -t telegram
 

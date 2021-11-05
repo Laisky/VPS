@@ -25,6 +25,7 @@ services:
         max-size: "30m"
     ports:
       - "8123:8123"
+      - "9000:9000"
       - "9004:9004"
     dns:
       - 8.8.8.8
@@ -33,3 +34,18 @@ services:
       - /var/lib/clickhouse:/var/lib/clickhouse
       - /var/log/clickhouse-server:/var/log/clickhouse-server
       - /opt/configs/clickhouse-server:/etc/clickhouse-server
+
+  go-ramjet:
+    image: ppcelery/go-ramjet:d0a0fcd
+    restart: "always"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    environment:
+      - TASKS=heartbeat,twitter-sync-search
+    volumes:
+      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
