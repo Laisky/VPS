@@ -131,7 +131,7 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   graphql:
-    # image: ppcelery/laisky-blog-graphql:8abda99
+    # image: ppcelery/laisky-blog-graphql:8932768
     image: ppcelery/laisky-blog-graphql:test
     restart: always
     depends_on:
@@ -204,7 +204,7 @@ services:
   #   command: run_gargantua
 
   go-ramjet:
-    image: ppcelery/go-ramjet:78caf6f
+    image: ppcelery/go-ramjet:a81f544
     restart: "always"
     depends_on:
       - mongodb
@@ -218,9 +218,9 @@ services:
       options:
         max-size: 10m
     environment:
-      - TASKS=heartbeat,ssl-monitor,rss,keyword
+      - TASKS=heartbeat,ssl-monitor,rss,keyword,twitter-sync-search
     volumes:
-      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings/settings.yml:ro
+      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
       - /var/www/public:/Users/laisky/Downloads/
     ports:
       - 127.0.0.1:24456:24456
