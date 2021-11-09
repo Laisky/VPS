@@ -15,6 +15,7 @@ services:
     volumes:
       - /var/lib/mongodb:/data/db
     command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
+    # command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger
 
   clickhouse:
     image: "yandex/clickhouse-server:21.10.2.15"
@@ -36,7 +37,7 @@ services:
       - /opt/configs/clickhouse-server:/etc/clickhouse-server
 
   go-ramjet:
-    image: ppcelery/go-ramjet:d0a0fcd
+    image: ppcelery/go-ramjet:ffe43af
     restart: "always"
     dns:
       - 8.8.8.8
