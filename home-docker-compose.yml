@@ -8,14 +8,14 @@ services:
       options:
         max-size: "30m"
     ports:
-      - "27017:27017"
+      - "100.97.108.34:27017:27017"
     dns:
       - 8.8.8.8
       - 1.1.1.1
     volumes:
       - /var/lib/mongodb:/data/db
-    command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
-    # command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger
+    # command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
+    command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger
 
   clickhouse:
     image: "yandex/clickhouse-server:21.10.2.15"
@@ -25,9 +25,9 @@ services:
       options:
         max-size: "30m"
     ports:
-      - "8123:8123"
-      - "9000:9000"
-      - "9004:9004"
+      - "100.97.108.34:8123:8123"
+      - "100.97.108.34:9000:9000"
+      - "100.97.108.34:9004:9004"
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -37,7 +37,8 @@ services:
       - /opt/configs/clickhouse-server:/etc/clickhouse-server
 
   go-ramjet:
-    image: ppcelery/go-ramjet:ffe43af
+    # image: ppcelery/go-ramjet:ffe43af
+    image: ppcelery/go-ramjet:0e1c8d9
     restart: "always"
     dns:
       - 8.8.8.8
