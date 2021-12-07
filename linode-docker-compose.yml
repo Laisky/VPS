@@ -18,7 +18,7 @@ services:
 
   mongodb:
     image: mongo:3.6
-    restart: always
+    restart: on-failure
     logging:
       driver: "json-file"
       options:
@@ -131,8 +131,8 @@ services:
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   graphql:
-    # image: ppcelery/laisky-blog-graphql:ec42fc5
-    image: ppcelery/laisky-blog-graphql:ec42fc5
+    # image: ppcelery/laisky-blog-graphql:a689e1f
+    image: ppcelery/laisky-blog-graphql:8b51d66
     restart: always
     depends_on:
       - mongodb
@@ -151,14 +151,14 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    command: --listen=0.0.0.0:8080
+    command: api --listen=0.0.0.0:8080
       --config=/etc/laisky-blog-graphql/settings.yml
       --log-level=debug
       -t telegram
 
   ramjet:
     # image: ppcelery/ramjet:dbbdeb8
-    image: ppcelery/ramjet:dbbdeb8
+    image: ppcelery/ramjet:35e2280
     # build:
     #   context: ./ramjet
     restart: always
