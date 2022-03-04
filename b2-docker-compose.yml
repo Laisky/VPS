@@ -105,28 +105,30 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
+    environment:
+      - xray.vmess.aead.forced=false
     volumes:
       - /opt/configs/xray:/etc/xray:ro
     # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
-  nginx:
-    image: nginx:1.15.6-alpine
-    restart: always
-    network_mode: host
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    volumes:
-      - /var/www:/var/www
-      - /var/log:/var/log
-      - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
-      - /opt/configs/nginx/ssl/b1:/etc/nginx/ssl:ro
-      - /etc/ssl:/etc/ssl:ro
-      - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
+  # nginx:
+  #   image: nginx:1.15.6-alpine
+  #   restart: always
+  #   network_mode: host
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /var/www:/var/www
+  #     - /var/log:/var/log
+  #     - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
+  #     - /opt/configs/nginx/ssl/b1:/etc/nginx/ssl:ro
+  #     - /etc/ssl:/etc/ssl:ro
+  #     - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
 
   # graphql:
   #   image: ppcelery/laisky-blog-graphql:658ce94

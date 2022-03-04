@@ -14,8 +14,8 @@ services:
       - 1.1.1.1
     volumes:
       - /var/lib/mongodb:/data/db
-    # command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
-    command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger
+    command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
+    # command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger
 
   clickhouse:
     image: "yandex/clickhouse-server:21.10.2.15"
@@ -51,3 +51,42 @@ services:
       - TASKS=heartbeat,twitter-sync-search
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
+
+  # nginx:
+  #   image: nginx:1.21.3-alpine
+  #   restart: always
+  #   network_mode: host
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /var/www:/var/www
+  #     - /var/log/nginx:/var/log/nginx
+  #     - /opt/configs/nginx/conf.d/home/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     # - /opt/configs/nginx/conf.d/home:/etc/nginx/conf.d:ro
+  #     - /etc/ssl:/etc/ssl:ro
+
+
+  registry:
+    image: registry:2
+    restart: "always"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 100.97.108.34:443:443
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+    environment:
+      - REGISTRY_HTTP_ADDR=0.0.0.0:443
+      - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/ca.crt
+      - REGISTRY_HTTP_TLS_KEY=/certs/ca.key
+    volumes:
+      - /etc/kubernetes/pki/registry:/certs:ro
+      - /var/lib/registry
