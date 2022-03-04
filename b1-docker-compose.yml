@@ -104,6 +104,8 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
+    environment:
+      - xray.vmess.aead.forced=false
     volumes:
       - /opt/configs/xray:/etc/xray:ro
     # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
