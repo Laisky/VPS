@@ -36,6 +36,38 @@ services:
       - /var/log/clickhouse-server:/var/log/clickhouse-server
       - /opt/configs/clickhouse-server:/etc/clickhouse-server
 
+  redis:
+    image: "redis:6.2.6"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - "6379:6379"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/redis:/data
+
+  # https://github.com/chrislusf/seaweedfs#quick-start
+  seaweedfs:
+    image: "chrislusf/seaweedfs:3.01"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - "8333:8333"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/seaweedfs:/data
+    command: server -s3 -dir=/data
+
   go-ramjet:
     # image: ppcelery/go-ramjet:ffe43af
     image: ppcelery/go-ramjet:0e1c8d9
@@ -71,22 +103,22 @@ services:
   #     - /etc/ssl:/etc/ssl:ro
 
 
-  registry:
-    image: registry:2
-    restart: "always"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 100.97.108.34:443:443
-    logging:
-      driver: "json-file"
-      options:
-        max-size: 10m
-    environment:
-      - REGISTRY_HTTP_ADDR=0.0.0.0:443
-      - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/ca.crt
-      - REGISTRY_HTTP_TLS_KEY=/certs/ca.key
-    volumes:
-      - /etc/kubernetes/pki/registry:/certs:ro
-      - /var/lib/registry
+  # registry:
+  #   image: registry:2
+  #   restart: "always"
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 100.97.108.34:443:443
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: 10m
+  #   environment:
+  #     - REGISTRY_HTTP_ADDR=0.0.0.0:443
+  #     - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/ca.crt
+  #     - REGISTRY_HTTP_TLS_KEY=/certs/ca.key
+  #   volumes:
+  #     - /etc/kubernetes/pki/registry:/certs:ro
+  #     - /var/lib/registry
