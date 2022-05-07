@@ -18,7 +18,7 @@ services:
 
   mongodb:
     image: mongo:3.6
-    restart: on-failure
+    restart: always
     logging:
       driver: "json-file"
       options:
@@ -129,6 +129,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /etc/ssl:/etc/ssl:ro
       - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
+      - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3  # cache
 
   graphql:
     # image: ppcelery/laisky-blog-graphql:a689e1f
