@@ -124,6 +124,7 @@ services:
       - /var/www:/var/www
       - /var/log:/var/log
       - /opt/configs/nginx/conf.d/linode:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx/passwd:/etc/nginx/passwd:ro
       # - /opt/configs/nginx/conf.d/linode/http:/etc/nginx/conf.d:ro
       # - /opt/configs/nginx/conf.d/linode/nginx.conf:/etc/nginx/nginx.conf:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
@@ -158,8 +159,8 @@ services:
       -t telegram
 
   ramjet:
-    # image: ppcelery/ramjet:4a9bdc6
-    image: ppcelery/ramjet:64c03e1
+    # image: ppcelery/ramjet:64c03e1
+    image: ppcelery/ramjet:8e66ed6
     # build:
     #   context: ./ramjet
     restart: always
