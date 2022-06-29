@@ -136,8 +136,8 @@ services:
     # image: ppcelery/laisky-blog-graphql:a689e1f
     image: ppcelery/laisky-blog-graphql:8b51d66
     restart: always
-    depends_on:
-      - mongodb
+    # depends_on:
+    #   - mongodb
     networks:
       - VPC
     dns:
@@ -159,13 +159,13 @@ services:
       -t telegram
 
   ramjet:
-    # image: ppcelery/ramjet:64c03e1
-    image: ppcelery/ramjet:8e66ed6
+    # image: ppcelery/ramjet:8e66ed6
+    image: ppcelery/ramjet:8530e10
     # build:
     #   context: ./ramjet
     restart: always
-    depends_on:
-      - mongodb
+    # depends_on:
+    #   - mongodb
     networks:
       - VPC
     dns:
@@ -209,8 +209,8 @@ services:
   go-ramjet:
     image: ppcelery/go-ramjet:a81f544
     restart: "always"
-    depends_on:
-      - mongodb
+    # depends_on:
+    #   - mongodb
     networks:
       - VPC
     dns:
