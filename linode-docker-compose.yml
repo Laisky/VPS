@@ -33,7 +33,9 @@ services:
 
   # curl -kv https://pccs.laisky.com/sgx/certification/v3/rootcacrl
   pccs:
-    image: intel/pccs:v2.2
+    image: ppcelery/pccs:v2.2
+    # build:
+    #   context: ./pccs
     restart: always
     logging:
       driver: "json-file"
