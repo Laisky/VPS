@@ -31,6 +31,23 @@ services:
       - /var/lib/mongodb:/data/db
     command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
 
+  # curl -kv https://pccs.laisky.com/sgx/certification/v3/rootcacrl
+  pccs:
+    image: intel/pccs:v2.2
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    ports:
+      - 127.0.0.1:8081:8081
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /opt/configs/intel/pccs/default.json:/opt/intel/pccs/config/default.json:ro
+      - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
+
   # codeserver:
   #   image: codercom/code-server:latest
   #   restart: always
@@ -134,7 +151,7 @@ services:
 
   graphql:
     # image: ppcelery/laisky-blog-graphql:a689e1f
-    image: ppcelery/laisky-blog-graphql:8b51d66
+    image: ppcelery/laisky-blog-graphql:00e8247
     restart: always
     # depends_on:
     #   - mongodb
@@ -159,8 +176,8 @@ services:
       -t telegram
 
   ramjet:
-    # image: ppcelery/ramjet:8e66ed6
-    image: ppcelery/ramjet:8530e10
+    # image: ppcelery/ramjet:08003be
+    image: ppcelery/ramjet:a526c16
     # build:
     #   context: ./ramjet
     restart: always
@@ -207,7 +224,7 @@ services:
   #   command: run_gargantua
 
   go-ramjet:
-    image: ppcelery/go-ramjet:a81f544
+    image: ppcelery/go-ramjet:0a86f8d
     restart: "always"
     # depends_on:
     #   - mongodb
