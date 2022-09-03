@@ -14,7 +14,7 @@ services:
       - 1.1.1.1
     volumes:
       - /var/lib/mongodb:/data/db
-    command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
+    command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger --wiredTigerCacheSizeGB 3
     # command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger
 
   clickhouse:
@@ -70,7 +70,7 @@ services:
 
   go-ramjet:
     # image: ppcelery/go-ramjet:ffe43af
-    image: ppcelery/go-ramjet:0e1c8d9
+    image: ppcelery/go-ramjet:8a6d6a5
     restart: "always"
     dns:
       - 8.8.8.8
@@ -122,3 +122,20 @@ services:
   #   volumes:
   #     - /etc/kubernetes/pki/registry:/certs:ro
   #     - /var/lib/registry
+
+  minio:
+    image: minio/minio:latest
+    restart: always
+    ports:
+      - 100.97.108.34:19000:9000
+      - 100.97.108.34:19001:9001
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/minio:/data
+    command: server /data --address :9000 --console-address ":9001"

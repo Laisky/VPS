@@ -1,4 +1,4 @@
-FROM golang:1.17.2-buster
+FROM golang:1.19.0-bullseye
 
 RUN go install tailscale.com/cmd/derper@main
 
