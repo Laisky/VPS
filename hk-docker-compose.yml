@@ -177,7 +177,7 @@ services:
     command: api --listen=0.0.0.0:8080
       --config=/etc/laisky-blog-graphql/settings.yml
       --log-level=debug
-      -t telegram
+      # -t telegram
 
   ramjet:
     # image: ppcelery/ramjet:4a9bdc6
