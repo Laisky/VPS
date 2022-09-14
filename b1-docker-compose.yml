@@ -110,50 +110,58 @@ services:
       - /opt/configs/xray:/etc/xray:ro
     # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
-  # nginx:
-  #   image: nginx:1.15.6-alpine
-  #   restart: always
-  #   network_mode: host
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   volumes:
-  #     - /var/www:/var/www
-  #     - /var/log:/var/log
-  #     - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
-  #     - /opt/configs/nginx/ssl/b1:/etc/nginx/ssl:ro
-  #     - /etc/ssl:/etc/ssl:ro
-  #     - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
+  nginx:
+    image: nginx:1.21.3-alpine
+    restart: always
+    network_mode: host
+    # ports:
+    #   - 443:443
+    #   - 80:80
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /var/www:/var/www
+      - /var/log:/var/log
+      - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx/ssl:/opt/configs/nginx/ssl:ro
+      # - /opt/configs/nginx/passwd:/etc/nginx/passwd:ro
+      # - /opt/configs/nginx/conf.d/b1/http:/etc/nginx/conf.d:ro
+      # - /opt/configs/nginx/conf.d/b1/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+      # - /etc/ssl:/etc/ssl:ro
+      # - /home/laisky/repo/laisky/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
+      # - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3  # cache
 
-  # graphql:
-  #   image: ppcelery/laisky-blog-graphql:658ce94
-  #   # image: ppcelery/laisky-blog-graphql:test
-  #   restart: always
-  #   depends_on:
-  #     - mongodb
-  #   networks:
-  #     - VPC
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   ports:
-  #     - 127.0.0.1:17800:8080
-  #   volumes:
-  #     - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
-  #   environment:
-  #     GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   command: ./go-graphql-srv --addr=0.0.0.0:8080
-  #     --config=/etc/laisky-blog-graphql/settings.yml
-  #     --log-level=debug
-  #     -t telegram
+  graphql:
+    # image: ppcelery/laisky-blog-graphql:a689e1f
+    image: ppcelery/laisky-blog-graphql:7f188a1
+    restart: always
+    # depends_on:
+    #   - mongodb
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 127.0.0.1:17800:8080
+    volumes:
+      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    command: api --listen=0.0.0.0:8080
+      --config=/etc/laisky-blog-graphql/settings.yml
+      --log-level=debug
+      -t telegram
 
   # ramjet:
   #   image: ppcelery/ramjet:9510394
