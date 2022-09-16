@@ -153,55 +153,55 @@ services:
       - /home/laisky/repo/laisky/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
       # - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3  # cache
 
-  graphql:
-    # image: ppcelery/laisky-blog-graphql:a689e1f
-    image: ppcelery/laisky-blog-graphql:7f188a1
-    restart: always
-    # depends_on:
-    #   - mongodb
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 127.0.0.1:17800:8080
-    volumes:
-      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
-    environment:
-      GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    command: api --listen=0.0.0.0:8080
-      --config=/etc/laisky-blog-graphql/settings.yml
-      --log-level=debug
-      # -t telegram
+  # graphql:
+  #   # image: ppcelery/laisky-blog-graphql:a689e1f
+  #   image: ppcelery/laisky-blog-graphql:c140d70
+  #   restart: always
+  #   # depends_on:
+  #   #   - mongodb
+  #   networks:
+  #     - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 127.0.0.1:17800:8080
+  #   volumes:
+  #     - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
+  #   environment:
+  #     GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   command: api --listen=0.0.0.0:8080
+  #     --config=/etc/laisky-blog-graphql/settings.yml
+  #     --log-level=debug
+  #     # -t telegram
 
-  ramjet:
-    # image: ppcelery/ramjet:4a9bdc6
-    image: ppcelery/ramjet:08003be
-    # build:
-    #   context: ./ramjet
-    restart: always
-    # depends_on:
-    #   - mongodb
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    volumes:
-      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
-      - /var/www/uploads/twitter:/var/www/uploads/twitter
-    ports:
-      - 127.0.0.1:37851:37851
-    entrypoint: python -m ramjet -e keyword
+  # ramjet:
+  #   # image: ppcelery/ramjet:4a9bdc6
+  #   image: ppcelery/ramjet:48735a7
+  #   # build:
+  #   #   context: ./ramjet
+  #   restart: always
+  #   # depends_on:
+  #   #   - mongodb
+  #   networks:
+  #     - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+  #     - /var/www/uploads/twitter:/var/www/uploads/twitter
+  #   ports:
+  #     - 127.0.0.1:37851:37851
+  #   entrypoint: python -m ramjet -e keyword
 
   # gargantua:
   #   build:

@@ -163,29 +163,29 @@ services:
       --log-level=debug
       -t telegram
 
-  # ramjet:
-  #   image: ppcelery/ramjet:9510394
-  #   # image: ppcelery/ramjet:test
-  #   # build:
-  #   #   context: ./ramjet
-  #   restart: always
-  #   depends_on:
-  #     - mongodb
-  #   networks:
-  #     - VPC
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   volumes:
-  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
-  #     - /var/www/uploads/twitter:/var/www/uploads/twitter
-  #   ports:
-  #     - 127.0.0.1:37851:37851
-  #   entrypoint: python -m ramjet -e keyword
+  ramjet:
+    # image: ppcelery/ramjet:4a9bdc6
+    image: ppcelery/ramjet:48735a7
+    # build:
+    #   context: ./ramjet
+    restart: always
+    # depends_on:
+    #   - mongodb
+    networks:
+      - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+      # - /var/www/uploads/twitter:/var/www/uploads/twitter
+    ports:
+      - 127.0.0.1:37851:37851
+    entrypoint: python -m ramjet -e keyword
 
   # gargantua:
   #   build:
