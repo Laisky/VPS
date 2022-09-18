@@ -31,24 +31,24 @@ services:
       - /var/lib/mongodb:/data/db
     command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger --auth
 
-  # curl -kv https://pccs.laisky.com/sgx/certification/v3/rootcacrl
-  pccs:
-    image: ppcelery/pccs:v2.2
-    # build:
-    #   context: ./pccs
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    ports:
-      - 127.0.0.1:8081:8081
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    volumes:
-      - /opt/configs/intel/pccs/default.json:/opt/intel/pccs/config/default.json:ro
-      - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
+  # # curl -kv https://pccs.laisky.com/sgx/certification/v3/rootcacrl
+  # pccs:
+  #   image: ppcelery/pccs:v2.2
+  #   # build:
+  #   #   context: ./pccs
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   ports:
+  #     - 127.0.0.1:8081:8081
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   volumes:
+  #     - /opt/configs/intel/pccs/default.json:/opt/intel/pccs/config/default.json:ro
+  #     - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
 
   # codeserver:
   #   image: codercom/code-server:latest
@@ -227,27 +227,27 @@ services:
   #     - 127.0.0.1:27850:27850
   #   command: run_gargantua
 
-  go-ramjet:
-    image: ppcelery/go-ramjet:0a86f8d
-    restart: "always"
-    # depends_on:
-    #   - mongodb
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: 10m
-    environment:
-      - TASKS=heartbeat,ssl-monitor,rss,keyword,twitter-sync-search
-    volumes:
-      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
-      - /var/www/public:/Users/laisky/Downloads/
-    ports:
-      - 127.0.0.1:24456:24456
+  # go-ramjet:
+  #   image: ppcelery/go-ramjet:0a86f8d
+  #   restart: "always"
+  #   # depends_on:
+  #   #   - mongodb
+  #   networks:
+  #     - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: 10m
+  #   environment:
+  #     - TASKS=heartbeat,ssl-monitor,rss,keyword,twitter-sync-search
+  #   volumes:
+  #     - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
+  #     - /var/www/public:/Users/laisky/Downloads/
+  #   ports:
+  #     - 127.0.0.1:24456:24456
 
   # # dns over https
   # cloudflared:
