@@ -52,21 +52,21 @@ services:
       - /var/lib/redis:/data
 
   # https://github.com/chrislusf/seaweedfs#quick-start
-  seaweedfs:
-    image: "chrislusf/seaweedfs:3.01"
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    ports:
-      - "8333:8333"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    volumes:
-      - /var/lib/seaweedfs:/data
-    command: server -s3 -dir=/data
+  # seaweedfs:
+  #   image: "chrislusf/seaweedfs:3.01"
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   ports:
+  #     - "8333:8333"
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   volumes:
+  #     - /var/lib/seaweedfs:/data
+  #   command: server -s3 -dir=/data
 
   go-ramjet:
     # image: ppcelery/go-ramjet:ffe43af
