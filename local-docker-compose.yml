@@ -6,7 +6,7 @@ services:
     # logging:
     #   driver: "json-file"
     #   options:
-    #     max-size: "30m"
+    #     max-size: "10m"
     # network_mode: host
     ports:
         - 127.0.0.1:27017:27017
@@ -27,7 +27,7 @@ services:
 #     logging:
 #       driver: "json-file"
 #       options:
-#         max-size: "30m"
+#         max-size: "10m"
 #     volumes:
 #       - /var/www:/var/www
 #       - /var/log:/var/log

@@ -10,7 +10,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "30m"
+  #       max-size: "10m"
   #   # network_mode: host
   #   ports:
   #     - 443:443
@@ -25,7 +25,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "30m"
+  #       max-size: "10m"
   #   network_mode: host
   #   dns:
   #     - 8.8.8.8
@@ -40,7 +40,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "30m"
+  #       max-size: "10m"
   #   ports:
   #     - 38080:8080
   #   dns:
@@ -63,7 +63,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "30m"
+  #       max-size: "10m"
   #   volumes:
   #     - /var/log:/var/log
   #     - /var/lib/fluentd:/fluentd/log
@@ -86,7 +86,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "30m"
+        max-size: "10m"
     volumes:
       - /opt/configs/v2ray:/etc/v2ray:ro
     command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
@@ -104,7 +104,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "30m"
+        max-size: "10m"
     environment:
       - xray.vmess.aead.forced=false
     volumes:
@@ -121,7 +121,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "30m"
+  #       max-size: "10m"
   #   volumes:
   #     - /var/www:/var/www
   #     - /var/log:/var/log
@@ -150,7 +150,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "30m"
+  #       max-size: "10m"
   #   command: ./go-graphql-srv --addr=0.0.0.0:8080
   #     --config=/etc/laisky-blog-graphql/settings.yml
   #     --log-level=debug
@@ -172,7 +172,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "30m"
+  #       max-size: "10m"
   #   volumes:
   #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
   #     - /var/www/uploads/twitter:/var/www/uploads/twitter
@@ -194,7 +194,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "30m"
+  #       max-size: "10m"
   #   environment:
   #     DBHOST: mongodb
   #     DBPORT: 27017
@@ -217,7 +217,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: 10m
+  #       max-size: "10m"
   #   environment:
   #     - TASKS=heartbeat,ssl-monitor,rss,keyword
   #   volumes:
@@ -236,7 +236,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: 10m
+  #       max-size: "10m"
   #   environment:
   #     - DNS1=1.1.1.1
   #     - DNS2=1.0.0.1
@@ -257,7 +257,7 @@ services:
 #     logging:
 #       driver: "json-file"
 #       options:
-#         max-size: 100m
+#         max-size: "10m"
 #     volumes:
 #       - /opt/configs/go-fluentd:/etc/go-fluentd
 #       - /var/log/go-concator:/data/log/fluentd/go-concator

@@ -6,7 +6,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "30m"
+        max-size: "10m"
     ports:
       - "100.97.108.34:27017:27017"
     dns:
@@ -23,7 +23,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "30m"
+        max-size: "10m"
     ports:
       - "100.97.108.34:8123:8123"
       - "100.97.108.34:9000:9000"
@@ -42,7 +42,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "30m"
+        max-size: "10m"
     ports:
       - "6379:6379"
     dns:
@@ -78,7 +78,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: 10m
+        max-size: "10m"
     environment:
       - TASKS=heartbeat,twitter-sync-search
     volumes:
@@ -94,7 +94,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "30m"
+  #       max-size: "10m"
   #   volumes:
   #     - /var/www:/var/www
   #     - /var/log/nginx:/var/log/nginx
@@ -114,7 +114,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: 10m
+  #       max-size: "10m"
   #   environment:
   #     - REGISTRY_HTTP_ADDR=0.0.0.0:443
   #     - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/ca.crt
@@ -132,7 +132,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "30m"
+        max-size: "10m"
     dns:
       - 8.8.8.8
       - 1.1.1.1
