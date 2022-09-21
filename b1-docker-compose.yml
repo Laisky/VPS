@@ -18,20 +18,20 @@ services:
   #     - 8.8.8.8
   #     - 1.1.1.1
 
-  mongodb:
-    image: mongo:3.6
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    network_mode: host
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    volumes:
-      - /var/lib/mongodb:/data/db
-    command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger --auth
+  # mongodb:
+  #   image: mongo:3.6
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   network_mode: host
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   volumes:
+  #     - /var/lib/mongodb:/data/db
+  #   command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger --auth
 
   # curl -kv https://pccs.laisky.com/sgx/certification/v3/rootcacrl
   pccs:
