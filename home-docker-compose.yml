@@ -14,27 +14,31 @@ services:
       - 1.1.1.1
     volumes:
       - /var/lib/mongodb:/data/db
-    command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger --wiredTigerCacheSizeGB 3
+    command: mongod
+      --bind_ip 0.0.0.0
+      --storageEngine wiredTiger
+      --wiredTigerCacheSizeGB 3
+      --auth
     # command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger
 
-  clickhouse:
-    image: "yandex/clickhouse-server:21.10.2.15"
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - "100.97.108.34:8123:8123"
-      - "100.97.108.34:9000:9000"
-      - "100.97.108.34:9004:9004"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    volumes:
-      - /var/lib/clickhouse:/var/lib/clickhouse
-      - /var/log/clickhouse-server:/var/log/clickhouse-server
-      - /opt/configs/clickhouse-server:/etc/clickhouse-server
+  # clickhouse:
+  #   image: "yandex/clickhouse-server:21.10.2.15"
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   ports:
+  #     - "100.97.108.34:8123:8123"
+  #     - "100.97.108.34:9000:9000"
+  #     - "100.97.108.34:9004:9004"
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   volumes:
+  #     - /var/lib/clickhouse:/var/lib/clickhouse
+  #     - /var/log/clickhouse-server:/var/log/clickhouse-server
+  #     - /opt/configs/clickhouse-server:/etc/clickhouse-server
 
   redis:
     image: "redis:6.2.6"
@@ -68,9 +72,35 @@ services:
   #     - /var/lib/seaweedfs:/data
   #   command: server -s3 -dir=/data
 
+  graphql:
+    # image: ppcelery/laisky-blog-graphql:a689e1f
+    image: ppcelery/laisky-blog-graphql:7986be7
+    restart: always
+    # depends_on:
+    #   - mongodb
+    # networks:
+    #   - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 127.0.0.1:17800:8080
+    volumes:
+      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    command: api --listen=0.0.0.0:8080
+      --config=/etc/laisky-blog-graphql/settings.yml
+      --log-level=debug
+      # -t telegram
+
   go-ramjet:
     # image: ppcelery/go-ramjet:ffe43af
-    image: ppcelery/go-ramjet:8a6d6a5
+    image: ppcelery/go-ramjet:0e6f760
     restart: "always"
     dns:
       - 8.8.8.8
