@@ -1,35 +1,37 @@
 version: '3'
 services:
+  # docker run -itd -e DERP_HOSTNAME=b2.laisky.com -p 443:443 -p 3478:3478 --name derper ppcelery/derper:20211020-v2
+  # docker run -itd -e DERP_HOSTNAME=b2.laisky.com --net host --name derper ppcelery/derper:20211020-v2
   # derper:
-  #   image: ppcelery/derper:20211022
+  #   image: ppcelery/derper:20211020-v5
   #   restart: always
   #   environment:
-  #     ADDR: sg.ts.laisky.com
+  #     ADDR: b1.laisky.com
   #   logging:
   #     driver: "json-file"
   #     options:
   #       max-size: "10m"
   #   ports:
-  #     - 10444:443
+  #     - 443:443
   #     - 3478:3478/udp
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1
 
-  mongodb:
-    image: mongo:3.6
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    network_mode: host
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    volumes:
-      - /var/lib/mongodb:/data/db
-    command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
+  # mongodb:
+  #   image: mongo:3.6
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   network_mode: host
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   volumes:
+  #     - /var/lib/mongodb:/data/db
+  #   command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger --auth
 
   # curl -kv https://pccs.laisky.com/sgx/certification/v3/rootcacrl
   pccs:
@@ -65,6 +67,20 @@ services:
   #   volumes:
   #     - /home/laisky/repo/code-server:/home/coder/project
   #     - /opt/configs/codeserver:/home/coder/.config/code-server
+
+  dns:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 53:53/udp
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    command: proxy-dns --address 0.0.0.0 --port 53
 
   # fluentd:
   #   image: ppcelery/fluentd-docker-image
@@ -121,6 +137,8 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
+    environment:
+      - xray.vmess.aead.forced=false
     volumes:
       - /opt/configs/xray:/etc/xray:ro
     # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
@@ -161,23 +179,24 @@ services:
     volumes:
       - /var/www:/var/www
       - /var/log:/var/log
-      - /opt/configs/nginx/conf.d/linode:/etc/nginx/conf.d:ro
-      - /opt/configs/nginx/passwd:/etc/nginx/passwd:ro
-      # - /opt/configs/nginx/conf.d/linode/http:/etc/nginx/conf.d:ro
-      # - /opt/configs/nginx/conf.d/linode/nginx.conf:/etc/nginx/nginx.conf:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      - /etc/ssl:/etc/ssl:ro
-      - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
-      - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3  # cache
+      - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx/ssl:/opt/configs/nginx/ssl:ro
+      # - /opt/configs/nginx/passwd:/etc/nginx/passwd:ro
+      # - /opt/configs/nginx/conf.d/b1/http:/etc/nginx/conf.d:ro
+      # - /opt/configs/nginx/conf.d/b1/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+      # - /etc/ssl:/etc/ssl:ro
+      # - /home/laisky/repo/laisky/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
+      # - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3  # cache
 
   graphql:
     # image: ppcelery/laisky-blog-graphql:a689e1f
-    image: ppcelery/laisky-blog-graphql:00e8247
+    image: ppcelery/laisky-blog-graphql:7986be7
     restart: always
     # depends_on:
     #   - mongodb
-    networks:
-      - VPC
+    # networks:
+    #   - VPC
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -198,14 +217,14 @@ services:
 
   ramjet:
     # image: ppcelery/ramjet:4a9bdc6
-    image: ppcelery/ramjet:08003be
+    image: ppcelery/ramjet:48735a7
     # build:
     #   context: ./ramjet
     restart: always
     # depends_on:
     #   - mongodb
-    networks:
-      - VPC
+    # networks:
+    #   - VPC
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -215,7 +234,7 @@ services:
         max-size: "10m"
     volumes:
       - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
-      - /var/www/uploads/twitter:/var/www/uploads/twitter
+      # - /var/www/uploads/twitter:/var/www/uploads/twitter
     ports:
       - 127.0.0.1:37851:37851
     entrypoint: python -m ramjet -e keyword
@@ -244,27 +263,21 @@ services:
   #     - 127.0.0.1:27850:27850
   #   command: run_gargantua
 
-  go-ramjet:
-    image: ppcelery/go-ramjet:0a86f8d
-    restart: "always"
-    # depends_on:
-    #   - mongodb
-    networks:
-      - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    environment:
-      - TASKS=heartbeat,ssl-monitor,rss,keyword,twitter-sync-search
-    volumes:
-      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
-      - /var/www/public:/Users/laisky/Downloads/
-    ports:
-      - 127.0.0.1:24456:24456
+  # go-ramjet:
+  #   # image: ppcelery/go-ramjet:ffe43af
+  #   image: ppcelery/go-ramjet:0e6f760
+  #   restart: "always"
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     - TASKS=heartbeat,ssl-monitor,rss,keyword
+  #   volumes:
+  #     - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
 
   # # dns over https
   # cloudflared:

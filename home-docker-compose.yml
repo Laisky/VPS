@@ -110,7 +110,7 @@ services:
       options:
         max-size: "10m"
     environment:
-      - TASKS=heartbeat,twitter-sync-search
+      - TASKS=heartbeat,ssl-monitor,rss,keyword
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
 
