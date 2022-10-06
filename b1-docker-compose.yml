@@ -124,9 +124,9 @@ services:
       options:
         max-size: "10m"
     volumes:
-      - /opt/configs/trojan-go:/etc/torjan-go:ro
-      - /opt/configs/pki/b1.laisky.com:/opt/configs/pki/b1.laisky.com:ro
-    command: /etc/torjan-go/server.json
+      - /opt/configs/trojan-go/b1:/etc/torjan-go/config:ro
+      - /opt/configs/pki/b1.laisky.com:/etc/torjan-go/pki:ro
+    command: /etc/torjan-go/config/server.json
 
   xray:
     image: teddysun/xray:latest
