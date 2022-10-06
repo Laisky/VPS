@@ -109,6 +109,25 @@ services:
       - /opt/configs/v2ray:/etc/v2ray:ro
     command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
+  trojan-go:
+    image: p4gefau1t/trojan-go:latest
+    restart: always
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 1021:1021/udp
+    #   - localhost:9953:9953
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /opt/configs/trojan-go:/etc/torjan-go:ro
+      - /opt/configs/pki/b1.laisky.com:/opt/configs/pki/b1.laisky.com:ro
+    command: /etc/torjan-go/server.json
+
   xray:
     image: teddysun/xray:latest
     restart: always
@@ -129,32 +148,32 @@ services:
       - /opt/configs/xray:/etc/xray:ro
     # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
-  # nginx:
-  #   image: nginx:1.21.3-alpine
-  #   restart: always
-  #   network_mode: host
-  #   # ports:
-  #   #   - 443:443
-  #   #   - 80:80
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   volumes:
-  #     - /var/www:/var/www
-  #     - /var/log:/var/log
-  #     - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
-  #     - /opt/configs/nginx/ssl:/opt/configs/nginx/ssl:ro
-  #     # - /opt/configs/nginx/passwd:/etc/nginx/passwd:ro
-  #     # - /opt/configs/nginx/conf.d/b1/http:/etc/nginx/conf.d:ro
-  #     # - /opt/configs/nginx/conf.d/b1/nginx.conf:/etc/nginx/nginx.conf:ro
-  #     # - /etc/letsencrypt:/etc/letsencrypt:ro
-  #     # - /etc/ssl:/etc/ssl:ro
-  #     # - /home/laisky/repo/laisky/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
-  #     # - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3  # cache
+  nginx:
+    image: nginx:1.21.3-alpine
+    restart: always
+    network_mode: host
+    # ports:
+    #   - 443:443
+    #   - 80:80
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /var/www:/var/www
+      - /var/log:/var/log
+      - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx/ssl:/opt/configs/nginx/ssl:ro
+      # - /opt/configs/nginx/passwd:/etc/nginx/passwd:ro
+      # - /opt/configs/nginx/conf.d/b1/http:/etc/nginx/conf.d:ro
+      # - /opt/configs/nginx/conf.d/b1/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+      # - /etc/ssl:/etc/ssl:ro
+      # - /home/laisky/repo/laisky/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
+      # - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3  # cache
 
   # graphql:
   #   # image: ppcelery/laisky-blog-graphql:a689e1f
