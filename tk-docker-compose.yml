@@ -1,23 +1,21 @@
 version: '3'
 services:
-  # docker run -itd -e DERP_HOSTNAME=b2.laisky.com -p 443:443 -p 3478:3478 --name derper ppcelery/derper:20211020-v2
-  # docker run -itd -e DERP_HOSTNAME=b2.laisky.com --net host --name derper ppcelery/derper:20211020-v2
-  # derper:
-  #   image: ppcelery/derper:20211021
-  #   restart: always
-  #   environment:
-  #     ADDR: b2.laisky.com
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   # network_mode: host
-  #   ports:
-  #     - 443:443
-  #     - 3478:3478/udp
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
+  # db ./derper -t ppcelery/derper:20220920
+  derper:
+    image: ppcelery/derper:20221011
+    restart: always
+    environment:
+      ADDR: tk.laisky.com
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 443:443
+      - 3478:3478/udp
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   # mongodb:
   #   image: mongo:3.6
@@ -32,7 +30,26 @@ services:
   #     - 1.1.1.1
   #   volumes:
   #     - /var/lib/mongodb:/data/db
-  #   command: mongod --auth --bind_ip 0.0.0.0 --storageEngine wiredTiger
+  #   command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger --auth
+
+  # curl -kv https://pccs.laisky.com/sgx/certification/v3/rootcacrl
+  # pccs:
+  #   image: ppcelery/pccs:v2.2
+  #   # build:
+  #   #   context: ./pccs
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - 127.0.0.1:8081:8081
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   volumes:
+  #     - /opt/configs/intel/pccs/default.json:/opt/intel/pccs/config/default.json:ro
+  #     - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
 
   # codeserver:
   #   image: codercom/code-server:latest
@@ -91,6 +108,25 @@ services:
       - /opt/configs/v2ray:/etc/v2ray:ro
     command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
+  trojan-go:
+    image: p4gefau1t/trojan-go:latest
+    restart: always
+    network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 1021:1021/udp
+    #   - localhost:9953:9953
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /opt/configs/trojan-go/tk:/etc/torjan-go/config:ro
+      - /opt/configs/pki/tk.laisky.com:/etc/torjan-go/pki:ro
+    command: /etc/torjan-go/config/server.json
+
   xray:
     image: teddysun/xray:latest
     restart: always
@@ -112,9 +148,12 @@ services:
     # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   # nginx:
-  #   image: nginx:1.15.6-alpine
+  #   image: nginx:1.21.3-alpine
   #   restart: always
   #   network_mode: host
+  #   # ports:
+  #   #   - 443:443
+  #   #   - 80:80
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1
@@ -125,19 +164,24 @@ services:
   #   volumes:
   #     - /var/www:/var/www
   #     - /var/log:/var/log
-  #     - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
-  #     - /opt/configs/nginx/ssl/b1:/etc/nginx/ssl:ro
-  #     - /etc/ssl:/etc/ssl:ro
-  #     - /home/laisky/repo/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
+  #     - /opt/configs/nginx/conf.d/tk:/etc/nginx/conf.d:ro
+  #     - /opt/configs/nginx/ssl:/opt/configs/nginx/ssl:ro
+  #     # - /opt/configs/nginx/passwd:/etc/nginx/passwd:ro
+  #     # - /opt/configs/nginx/conf.d/tk/http:/etc/nginx/conf.d:ro
+  #     # - /opt/configs/nginx/conf.d/tk/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     # - /etc/letsencrypt:/etc/letsencrypt:ro
+  #     # - /etc/ssl:/etc/ssl:ro
+  #     # - /home/laisky/repo/laisky/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
+  #     # - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3  # cache
 
   # graphql:
-  #   image: ppcelery/laisky-blog-graphql:658ce94
-  #   # image: ppcelery/laisky-blog-graphql:test
+  #   # image: ppcelery/laisky-blog-graphql:a689e1f
+  #   image: ppcelery/laisky-blog-graphql:7986be7
   #   restart: always
-  #   depends_on:
-  #     - mongodb
-  #   networks:
-  #     - VPC
+  #   # depends_on:
+  #   #   - mongodb
+  #   # networks:
+  #   #   - VPC
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1
@@ -151,21 +195,21 @@ services:
   #     driver: "json-file"
   #     options:
   #       max-size: "10m"
-  #   command: ./go-graphql-srv --addr=0.0.0.0:8080
+  #   command: api --listen=0.0.0.0:8080
   #     --config=/etc/laisky-blog-graphql/settings.yml
   #     --log-level=debug
   #     -t telegram
 
   # ramjet:
-  #   image: ppcelery/ramjet:9510394
-  #   # image: ppcelery/ramjet:test
+  #   # image: ppcelery/ramjet:4a9bdc6
+  #   image: ppcelery/ramjet:48735a7
   #   # build:
   #   #   context: ./ramjet
   #   restart: always
-  #   depends_on:
-  #     - mongodb
-  #   networks:
-  #     - VPC
+  #   # depends_on:
+  #   #   - mongodb
+  #   # networks:
+  #   #   - VPC
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1
@@ -175,7 +219,7 @@ services:
   #       max-size: "10m"
   #   volumes:
   #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
-  #     - /var/www/uploads/twitter:/var/www/uploads/twitter
+  #     # - /var/www/uploads/twitter:/var/www/uploads/twitter
   #   ports:
   #     - 127.0.0.1:37851:37851
   #   entrypoint: python -m ramjet -e keyword

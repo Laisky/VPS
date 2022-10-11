@@ -1,6 +1,6 @@
-FROM golang:1.19.1-bullseye
+FROM golang:1.19.2-bullseye
 
-RUN go install tailscale.com/cmd/derper@main
+RUN go install tailscale.com/cmd/derper@latest
 
 ENV ADDR=b1.laisky.com
 ENV PORT=443
