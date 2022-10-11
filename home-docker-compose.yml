@@ -19,7 +19,26 @@ services:
       --storageEngine wiredTiger
       --wiredTigerCacheSizeGB 3
       --auth
-    # command: mongod --bind_ip 0.0.0.0 --storageEngine wiredTiger
+
+  mongodb6:
+    image: mongo:6.0.1
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.97.108.34:27018:27017"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/mongodb6:/data/db
+    command: mongod
+      --bind_ip 0.0.0.0
+      --storageEngine wiredTiger
+      --wiredTigerCacheSizeGB 3
+      --auth
 
   # clickhouse:
   #   image: "yandex/clickhouse-server:21.10.2.15"
