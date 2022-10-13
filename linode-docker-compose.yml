@@ -162,6 +162,34 @@ services:
       - /opt/configs/pki/zz.laisky.com:/etc/torjan-go/pki:ro
     command: /etc/torjan-go/config/server.json
 
+  doh:
+    image: satishweb/doh-server:v2.3.2-ubuntu
+    restart: always
+    # network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 1021:1021/udp
+    #   - localhost:9953:9953
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      DEBUG: "0"
+      # Upstream DNS server: proto:host:port
+      # We are using OpenDNS DNS servers as default,
+      # Here is the list of addresses: https://use.opendns.com/
+      UPSTREAM_DNS_SERVER: "udp:1.1.1.1:53"
+      DOH_HTTP_PREFIX: "/query"
+      DOH_SERVER_LISTEN: "0.0.0.0:8053"
+      DOH_SERVER_TIMEOUT: "10"
+      DOH_SERVER_TRIES: "3"
+      DOH_SERVER_VERBOSE: "true"
+    ports:
+      - 127.0.0.1:8053:8053
+
   nginx:
     image: nginx:1.21.3-alpine
     restart: always

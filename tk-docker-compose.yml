@@ -201,8 +201,6 @@ services:
       DOH_SERVER_VERBOSE: "true"
     ports:
       - 127.0.0.1:8053:8053
-      # You can add more variables here or as docker secret and entrypoint
-      # script will replace them inside doh-server.conf file
 
   nginx:
     image: nginx:1.21.3-alpine
