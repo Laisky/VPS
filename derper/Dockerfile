@@ -13,6 +13,7 @@ WORKDIR /app
 COPY --from=build /go/bin/derper /app/derper
 
 ENV ADDR=b1.laisky.com
+ENV PORT=443
 
 WORKDIR /root
-ENTRYPOINT echo $ADDR && /app/derper -c=$HOME/derper.conf --hostname=$ADDR -a :443 -stun
+ENTRYPOINT echo $ADDR && /app/derper -c=$HOME/derper.conf --hostname=$ADDR -a :$PORT -stun
