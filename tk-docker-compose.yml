@@ -2,16 +2,17 @@ version: '3'
 services:
   # db ./derper -t ppcelery/derper:20220920
   derper:
-    image: ppcelery/derper:20221014-v2
+    image: ppcelery/derper:20221014-v5
     restart: always
     environment:
-      ADDR: tk.laisky.com
+      ADDR: derper.tk.laisky.com
+      PORT: 10444
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
     ports:
-      - 443:443
+      # - 127.0.0.1:10444:10444
       - 3478:3478/udp
     dns:
       - 8.8.8.8
@@ -147,32 +148,35 @@ services:
       - /opt/configs/xray:/etc/xray:ro
     # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
-  # swag:
-  #   image: lscr.io/linuxserver/swag:latest
-  #   container_name: swag
-  #   cap_add:
-  #     - NET_ADMIN
-  #   network_mode: host
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=UTC
-  #     - URL=tk.laisky.com
-  #     - VALIDATION=http
-  #     - SUBDOMAINS=www,dns,* #optional
-  #     # - CERTPROVIDER= #optional
-  #     # - DNSPLUGIN=cloudflare #optional
-  #     # - PROPAGATION= #optional
-  #     # - EMAIL= #optional
-  #     # - ONLY_SUBDOMAINS=false #optional
-  #     # - EXTRA_DOMAINS= #optional
-  #     # - STAGING=false #optional
-  #   volumes:
-  #     - /path/to/appdata/config:/config
-  #   # ports:
-  #   #   - 443:443
-  #   #   - 80:80 #optional
-  #   restart: unless-stopped
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    # network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - URL=tk.laisky.com
+      - VALIDATION=http
+      - SUBDOMAINS=www,dns,derper,* #optional
+      # - CERTPROVIDER= #optional
+      # - DNSPLUGIN=cloudflare #optional
+      # - PROPAGATION= #optional
+      # - EMAIL= #optional
+      # - ONLY_SUBDOMAINS=false #optional
+      # - EXTRA_DOMAINS= #optional
+      # - STAGING=false #optional
+    volumes:
+      - /var/www:/var/www
+      - /var/log/nginx:/var/log/nginx
+      - /opt/configs/swag/tk:/config
+      - /opt/configs/nginx/conf.d/tk:/config/nginx/site-confs
+    ports:
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
 
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
@@ -199,28 +203,28 @@ services:
       DOH_SERVER_TIMEOUT: "10"
       DOH_SERVER_TRIES: "3"
       DOH_SERVER_VERBOSE: "true"
-    ports:
-      - 127.0.0.1:8053:8053
+    # ports:
+    #   - 127.0.0.1:8053:8053
 
-  nginx:
-    image: nginx:1.21.3-alpine
-    restart: always
-    # network_mode: host
-    ports:
-      - 444:443
-      - 80:80
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    volumes:
-      - /var/www:/var/www
-      - /var/log/nginx:/var/log/nginx
-      - /opt/configs/nginx/conf.d/tk:/etc/nginx/conf.d:ro
-      - /opt/configs/pki/tk.laisky.com:/opt/configs/pki/tk.laisky.com:ro
+  # nginx:
+  #   image: nginx:1.21.3-alpine
+  #   restart: always
+  #   # network_mode: host
+  #   ports:
+  #     - 444:443
+  #     - 80:80
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   volumes:
+  #     - /var/www:/var/www
+  #     - /var/log/nginx:/var/log/nginx
+  #     - /opt/configs/nginx/conf.d/tk:/etc/nginx/conf.d:ro
+  #     - /opt/configs/pki/tk.laisky.com:/opt/configs/pki/tk.laisky.com:ro
 
   # graphql:
   #   # image: ppcelery/laisky-blog-graphql:a689e1f
