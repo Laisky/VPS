@@ -2,21 +2,22 @@ version: '3'
 services:
   # docker run -itd -e DERP_HOSTNAME=b2.laisky.com -p 443:443 -p 3478:3478 --name derper ppcelery/derper:20211020-v2
   # docker run -itd -e DERP_HOSTNAME=b2.laisky.com --net host --name derper ppcelery/derper:20211020-v2
-  # derper:
-  #   image: ppcelery/derper:20211020-v5
-  #   restart: always
-  #   environment:
-  #     ADDR: b1.laisky.com
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   ports:
-  #     - 443:443
-  #     - 3478:3478/udp
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
+  derper:
+    image: ppcelery/derper:20211020-v5
+    restart: always
+    environment:
+      ADDR: derper.laisky.com
+      PORT: 10444
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      # - 443:443
+      - 3478:3478/udp
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   # mongodb:
   #   image: mongo:3.6
@@ -43,8 +44,8 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    ports:
-      - 127.0.0.1:8081:8081
+    # ports:
+    #   - 127.0.0.1:8081:8081
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -187,16 +188,16 @@ services:
       DOH_SERVER_TIMEOUT: "10"
       DOH_SERVER_TRIES: "3"
       DOH_SERVER_VERBOSE: "true"
-    ports:
-      - 127.0.0.1:8053:8053
+    # ports:
+    #   - 127.0.0.1:8053:8053
 
   nginx:
     image: nginx:1.21.3-alpine
     restart: always
-    network_mode: host
-    # ports:
-    #   - 443:443
-    #   - 80:80
+    # network_mode: host
+    ports:
+      - 443:443
+      - 80:80
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -228,8 +229,8 @@ services:
     dns:
       - 8.8.8.8
       - 1.1.1.1
-    ports:
-      - 127.0.0.1:17800:8080
+    # ports:
+    #   - 127.0.0.1:17800:8080
     volumes:
       - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
     environment:
@@ -263,8 +264,8 @@ services:
     volumes:
       - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
       # - /var/www/uploads/twitter:/var/www/uploads/twitter
-    ports:
-      - 127.0.0.1:37851:37851
+    # ports:
+    #   - 127.0.0.1:37851:37851
     entrypoint: python -m ramjet -e keyword
 
   # gargantua:
