@@ -153,7 +153,6 @@ services:
     container_name: swag
     cap_add:
       - NET_ADMIN
-    # network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
@@ -169,8 +168,21 @@ services:
       - /opt/configs/nginx/conf.d/tk:/config/nginx/site-confs
     ports:
       - 443:443
-      - 80:80 #optional
+      - 80:80
     restart: unless-stopped
+
+  ssh:
+    image: niruix/sshwifty:latest
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 100.104.234.81:8121:8121
 
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
