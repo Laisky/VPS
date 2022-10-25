@@ -20,6 +20,22 @@ services:
       --wiredTigerCacheSizeGB 3
       --auth
 
+  sonic:
+    image: valeriansaliou/sonic:v1.4.0
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.97.108.34:21491:1491"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /var/lib/sonic:/data
+      - /opt/configs/sonic/config.cfg:/etc/sonic.cfg:ro
+
   mongodb6:
     image: mongo:6.0.1
     restart: always

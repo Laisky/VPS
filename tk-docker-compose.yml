@@ -146,7 +146,21 @@ services:
       - xray.vmess.aead.forced=false
     volumes:
       - /opt/configs/xray:/etc/xray:ro
-    # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
+
+  cow:
+    image: ppcelery/laisky:latest
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 100.104.234.81:17777:17777
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /opt/configs/cow:/etc/cow:ro
 
   swag:
     image: lscr.io/linuxserver/swag:latest
