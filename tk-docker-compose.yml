@@ -148,7 +148,7 @@ services:
       - /opt/configs/xray:/etc/xray:ro
 
   cow:
-    image: ppcelery/laisky:latest
+    image: ppcelery/cow:latest
     restart: always
     dns:
       - 8.8.8.8
