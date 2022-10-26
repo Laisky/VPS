@@ -2,7 +2,7 @@ version: '3'
 services:
   # db ./derper -t ppcelery/derper:20220920
   derper:
-    image: ppcelery/derper:20221014-v5
+    image: ppcelery/derper:20221026
     restart: always
     environment:
       ADDR: derper.tk.laisky.com
@@ -181,6 +181,7 @@ services:
       - /opt/configs/swag/tk:/config
       - /opt/configs/nginx/conf.d/tk:/config/nginx/site-confs
     ports:
+      - 10444:10444
       - 443:443
       - 80:80
     restart: unless-stopped
