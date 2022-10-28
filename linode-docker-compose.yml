@@ -193,7 +193,7 @@ services:
 
   nginx:
     image: nginx:1.21.3-alpine
-    restart: always
+    # restart: always
     # network_mode: host
     ports:
       - 443:443
@@ -218,19 +218,34 @@ services:
       # - /home/laisky/repo/laisky/laisky-blog/gargantua:/www/laisky-blog/gargantua:ro
       # - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3  # cache
 
+  # swag:
+  #   image: lscr.io/linuxserver/swag:latest
+  #   container_name: swag
+  #   cap_add:
+  #     - NET_ADMIN
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=UTC
+  #     - URL=linode.laisky.com
+  #     - VALIDATION=dns
+  #     - SUBDOMAINS=wildcard
+  #     - DNSPLUGIN=cloudflare
+  #   volumes:
+  #     - /var/log/nginx:/var/log/nginx
+  #     - /opt/configs/swag/linode:/config
+  #     - /opt/configs/nginx/conf.d/linode_swag:/config/nginx/site-confs
+  #   ports:
+  #     - 100.113.28.117:10443:443
+  #     # - 80:80
+  #   restart: unless-stopped
+
   graphql:
-    # image: ppcelery/laisky-blog-graphql:a689e1f
     image: ppcelery/laisky-blog-graphql:7986be7
     restart: always
-    # depends_on:
-    #   - mongodb
-    # networks:
-    #   - VPC
     dns:
       - 8.8.8.8
       - 1.1.1.1
-    # ports:
-    #   - 127.0.0.1:17800:8080
     volumes:
       - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
     environment:
@@ -243,6 +258,22 @@ services:
       --config=/etc/laisky-blog-graphql/settings.yml
       --log-level=debug
       -t telegram
+
+  glider:
+    image: nadoo/glider:latest
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 100.113.28.117:17777:8080
+      - 28448:8448
+    volumes:
+      - /opt/configs/glider/linode/glider.conf:/app/glider.conf:ro
 
   ramjet:
     # image: ppcelery/ramjet:4a9bdc6

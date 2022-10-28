@@ -199,6 +199,22 @@ services:
     ports:
       - 100.104.234.81:8182:8182
 
+  glider:
+    image: nadoo/glider:latest
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    # ports:
+    #   - 100.113.28.117:17777:8080
+    #   - 28448:8448
+    volumes:
+      - /opt/configs/glider/tk/glider.conf:/app/glider.conf:ro
+
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
     restart: always
