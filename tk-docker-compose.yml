@@ -147,20 +147,20 @@ services:
     volumes:
       - /opt/configs/xray:/etc/xray:ro
 
-  cow:
-    image: ppcelery/cow:latest
-    restart: always
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 100.104.234.81:17777:17777
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    volumes:
-      - /opt/configs/cow:/etc/cow:ro
+  # cow:
+  #   image: ppcelery/cow:latest
+  #   restart: always
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 100.104.234.81:17777:17777
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   volumes:
+  #     - /opt/configs/cow:/etc/cow:ro
 
   swag:
     image: lscr.io/linuxserver/swag:latest
@@ -209,11 +209,12 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    # ports:
-    #   - 100.113.28.117:17777:8080
-    #   - 28448:8448
+    ports:
+      # - 23444:23443
+      - 100.104.234.81:17777:8080
     volumes:
       - /opt/configs/glider/tk/glider.conf:/app/glider.conf:ro
+      # - /opt/configs/pki/tk.laisky.com:/etc/torjan-go/pki:ro
 
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
