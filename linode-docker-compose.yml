@@ -260,7 +260,7 @@ services:
       -t telegram
 
   glider:
-    image: nadoo/glider:latest
+    image: ppcelery/glider:latest
     restart: always
     dns:
       - 8.8.8.8

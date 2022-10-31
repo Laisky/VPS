@@ -1,7 +1,7 @@
 version: '3'
 services:
   glider:
-    image: nadoo/glider:latest
+    image: ppcelery/glider:latest
     restart: always
     dns:
       - 8.8.8.8

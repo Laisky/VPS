@@ -200,7 +200,7 @@ services:
       - 100.104.234.81:8182:8182
 
   glider:
-    image: nadoo/glider:latest
+    image: ppcelery/glider:latest
     restart: always
     dns:
       - 8.8.8.8
