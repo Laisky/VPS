@@ -1,0 +1,17 @@
+version: '3'
+services:
+  glider:
+    image: nadoo/glider:latest
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 100.96.127.120:17777:8080
+      - 28448:8448
+    volumes:
+      - /opt/configs/glider/bj/glider.conf:/app/glider.conf:ro
