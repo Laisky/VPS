@@ -15,3 +15,19 @@ services:
       - 28448:8448
     volumes:
       - /opt/configs/glider/bj/glider.conf:/app/glider.conf:ro
+
+  glider-cb:
+    image: ppcelery/glider:latest
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      # - 100.96.127.120:17777:8080
+      - 28449:8448
+    volumes:
+      - /opt/configs/glider/bj/glider-cb.conf:/app/glider.conf:ro
