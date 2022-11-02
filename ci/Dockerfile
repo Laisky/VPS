@@ -1,4 +1,4 @@
-# db . -f ./ci -t ppcelery/ci:20221102-2
+# db ./ci -t ppcelery/ci:20221102-2
 FROM python:3.11.0-buster
 
 ENV TZ=UTC
@@ -10,7 +10,6 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/*
 
 # install go
-WORKDIR /app
 RUN wget https://go.dev/dl/go1.19.3.linux-amd64.tar.gz \
     && tar -xzf go1.19.3.linux-amd64.tar.gz \
     && mv go /opt/go \
