@@ -13,6 +13,7 @@ services:
     ports:
       - 100.96.127.120:17777:8080
       - 28448:8448
+      - 28447:1234
     volumes:
       - /opt/configs/glider/bj/glider.conf:/app/glider.conf:ro
 
