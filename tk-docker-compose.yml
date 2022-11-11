@@ -216,10 +216,23 @@ services:
       - /opt/configs/glider/tk/glider.conf:/app/glider.conf:ro
       # - /opt/configs/pki/tk.laisky.com:/etc/torjan-go/pki:ro
 
+  dns:
+    image: cloudflare/cloudflared
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 53:53/udp
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    command: proxy-dns --address 0.0.0.0 --port 53
+
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
     restart: always
-    # network_mode: host
     dns:
       - 8.8.8.8
       - 1.1.1.1

@@ -31,3 +31,46 @@ services:
       - 28449:8448
     volumes:
       - /opt/configs/glider/bj/glider-cb.conf:/app/glider.conf:ro
+
+  doh:
+    image: satishweb/doh-server:v2.3.2-ubuntu
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      DEBUG: "0"
+      UPSTREAM_DNS_SERVER: "udp:1.1.1.1:53"
+      DOH_HTTP_PREFIX: "/query"
+      DOH_SERVER_LISTEN: "0.0.0.0:8053"
+      DOH_SERVER_TIMEOUT: "10"
+      DOH_SERVER_TRIES: "3"
+      DOH_SERVER_VERBOSE: "true"
+
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - URL=bj.laisky.com
+      - VALIDATION=dns
+      - SUBDOMAINS=wildcard
+      - DNSPLUGIN=cloudflare
+    volumes:
+      - /var/www:/var/www
+      - /var/log/nginx:/var/log/nginx
+      - /opt/configs/swag/bj:/config
+      - /opt/configs/nginx/conf.d/bj:/config/nginx/site-confs
+    ports:
+      - 10444:10444
+      - 443:443
+      - 80:80
+    restart: unless-stopped
