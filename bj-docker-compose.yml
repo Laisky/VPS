@@ -4,8 +4,7 @@ services:
     image: ppcelery/glider:latest
     restart: always
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.122.41.16
     logging:
       driver: "json-file"
       options:
@@ -21,8 +20,7 @@ services:
     image: ppcelery/glider:latest
     restart: always
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.122.41.16
     logging:
       driver: "json-file"
       options:
@@ -37,15 +35,14 @@ services:
     image: satishweb/doh-server:v2.3.2-ubuntu
     restart: always
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.122.41.16
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
     environment:
       DEBUG: "0"
-      UPSTREAM_DNS_SERVER: "udp:1.1.1.1:53"
+      UPSTREAM_DNS_SERVER: "udp:100.122.41.16:53"
       DOH_HTTP_PREFIX: "/query"
       DOH_SERVER_LISTEN: "0.0.0.0:8053"
       DOH_SERVER_TIMEOUT: "10"
@@ -71,7 +68,5 @@ services:
       - /opt/configs/swag/bj:/config
       - /opt/configs/nginx/conf.d/bj:/config/nginx/site-confs
     ports:
-      - 10444:10444
-      - 443:443
-      - 80:80
+      - 10443:443
     restart: unless-stopped
