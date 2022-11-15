@@ -10,8 +10,7 @@ services:
     ports:
       - "100.97.108.34:27017:27017"
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.113.28.117
     volumes:
       - /var/lib/mongodb:/data/db
     command: mongod
@@ -30,8 +29,7 @@ services:
     ports:
       - "100.97.108.34:21491:1491"
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.113.28.117
     volumes:
       - /var/lib/sonic:/data
       - /opt/configs/sonic/config.cfg:/etc/sonic.cfg:ro
@@ -46,8 +44,7 @@ services:
     ports:
       - "100.97.108.34:27018:27017"
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.113.28.117
     volumes:
       - /var/lib/mongodb6:/data/db
     command: mongod
@@ -85,8 +82,7 @@ services:
     ports:
       - "6379:6379"
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.113.28.117
     volumes:
       - /var/lib/redis:/data
 
@@ -116,8 +112,7 @@ services:
     # networks:
     #   - VPC
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.113.28.117
     ports:
       - 100.97.108.34:17800:8080
     volumes:
@@ -138,8 +133,7 @@ services:
     image: ppcelery/go-ramjet:c421ca0
     restart: "always"
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.113.28.117
     logging:
       driver: "json-file"
       options:
@@ -199,8 +193,7 @@ services:
       options:
         max-size: "10m"
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.113.28.117
     volumes:
       - /var/lib/minio:/data
     command: server /data --address :9000 --console-address ":9001"
@@ -209,8 +202,7 @@ services:
     image: ppcelery/glider:latest
     restart: always
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.113.28.117
     logging:
       driver: "json-file"
       options:
@@ -224,8 +216,7 @@ services:
     image: ppcelery/glider:latest
     restart: always
     dns:
-      - 8.8.8.8
-      - 1.1.1.1
+      - 100.113.28.117
     logging:
       driver: "json-file"
       options:
