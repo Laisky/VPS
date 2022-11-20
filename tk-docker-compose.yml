@@ -2,7 +2,7 @@ version: '3'
 services:
   # db ./derper -t ppcelery/derper:20220920
   derper:
-    image: ppcelery/derper:20221026
+    image: ppcelery/derper:20221120
     restart: always
     environment:
       ADDR: derper.tk.laisky.com

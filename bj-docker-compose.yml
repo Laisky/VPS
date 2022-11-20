@@ -83,3 +83,18 @@ services:
       options:
         max-size: "10m"
     command: proxy-dns --address 0.0.0.0 --port 53 --upstream https://dns.bj.laisky.com:10443/query
+
+  derper:
+    image: ppcelery/derper:20221120
+    restart: always
+    dns:
+      - 100.122.41.16
+    environment:
+      ADDR: derper.bj.laisky.com
+      PORT: 10443
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 3478:3478/udp
