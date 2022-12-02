@@ -1,3 +1,3 @@
 ```sh
-docker build . -t ppcelery/pccs:v2.2
+db ./pccs -t ppcelery/pccs:v2.2.1
 ```
