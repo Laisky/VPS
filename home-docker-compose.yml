@@ -130,7 +130,7 @@ services:
 
   go-ramjet:
     # image: ppcelery/go-ramjet:ffe43af
-    image: ppcelery/go-ramjet:c421ca0
+    image: ppcelery/go-ramjet:e6d6698
     restart: "always"
     dns:
       - 100.113.28.117
