@@ -35,7 +35,7 @@ services:
       - /opt/configs/sonic/config.cfg:/etc/sonic.cfg:ro
 
   mongodb6:
-    image: mongo:6.0.1
+    image: mongo:6.0.3
     restart: always
     logging:
       driver: "json-file"
