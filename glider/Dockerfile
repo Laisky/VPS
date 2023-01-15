@@ -1,4 +1,4 @@
-FROM golang:1.19.2-bullseye AS builder
+FROM golang:1.19.5-bullseye AS builder
 
 RUN go install github.com/nadoo/glider@latest
 

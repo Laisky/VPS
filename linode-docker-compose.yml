@@ -218,7 +218,7 @@ services:
   #   restart: unless-stopped
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:dfc458f
+    image: ppcelery/laisky-blog-graphql:1af13be
     restart: always
     dns:
       - 8.8.8.8
@@ -237,7 +237,7 @@ services:
       -t telegram
 
   glider:
-    image: ppcelery/glider:latest
+    image: ppcelery/glider:20230115
     restart: always
     dns:
       - 8.8.8.8
