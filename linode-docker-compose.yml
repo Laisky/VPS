@@ -218,7 +218,7 @@ services:
   #   restart: unless-stopped
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:7986be7
+    image: ppcelery/laisky-blog-graphql:dfc458f
     restart: always
     dns:
       - 8.8.8.8

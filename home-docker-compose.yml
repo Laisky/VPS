@@ -105,7 +105,7 @@ services:
 
   graphql:
     # image: ppcelery/laisky-blog-graphql:a689e1f
-    image: ppcelery/laisky-blog-graphql:7986be7
+    image: ppcelery/laisky-blog-graphql:dfc458f
     restart: always
     # depends_on:
     #   - mongodb
