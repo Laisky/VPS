@@ -73,7 +73,7 @@ services:
       - /opt/configs/xray:/etc/xray:ro
 
   trojan-go:
-    image: ppcelery/trojan-go:20221018
+    image: ppcelery/trojan-go:20230130
     restart: always
     network_mode: host
     dns:

@@ -37,7 +37,7 @@ services:
     command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   trojan-go:
-    image: ppcelery/trojan-go:20221018
+    image: ppcelery/trojan-go:20230130
     restart: always
     network_mode: host
     dns:
