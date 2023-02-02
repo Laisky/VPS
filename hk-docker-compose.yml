@@ -103,7 +103,7 @@ services:
     command: proxy-dns --address 0.0.0.0 --port 53
 
   monitor:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:v1.5.0
     container_name: node-exporter
     restart: unless-stopped
     volumes:
@@ -117,3 +117,34 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
       - 100.92.2.80:9100:9100
+
+  elasticsearch:
+    image: elasticsearch:8.6.1
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 100.92.2.80:9200:9200
+      - 100.92.2.80:9300:9300
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - discovery.type=single-node
+
+  glider:
+    image: ppcelery/glider:20230115
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 100.92.2.80:17777:8080
+    volumes:
+      - /opt/configs/glider/hk/glider.conf:/app/glider.conf:ro
