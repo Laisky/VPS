@@ -254,7 +254,7 @@ services:
 
   ramjet:
     # image: ppcelery/ramjet:4a9bdc6
-    image: ppcelery/ramjet:48735a7
+    image: ppcelery/ramjet:e8cdb1a
     # build:
     #   context: ./ramjet
     restart: always
