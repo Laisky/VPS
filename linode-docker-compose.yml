@@ -246,9 +246,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    ports:
-      - 100.113.28.117:17777:8080
-      - 28448:8448
+    network_mode: host
+    # ports:
+    #   - 100.122.41.16:17777:17777
     volumes:
       - /opt/configs/glider/linode/glider.conf:/app/glider.conf:ro
 
