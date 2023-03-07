@@ -104,7 +104,8 @@ services:
   #   command: server -s3 -dir=/data
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:1af13be
+    # image: ppcelery/laisky-blog-graphql:1af13be
+    image: ppcelery/laisky-blog-graphql:998c09e
     restart: always
     # depends_on:
     #   - mongodb
@@ -131,7 +132,6 @@ services:
       # -t telegram
 
   go-ramjet:
-    # image: ppcelery/go-ramjet:ffe43af
     image: ppcelery/go-ramjet:5b47d0a
     restart: "always"
     dns:
