@@ -1,9 +1,7 @@
 version: '3'
 services:
-  # docker run -itd -e DERP_HOSTNAME=b2.laisky.com -p 443:443 -p 3478:3478 --name derper ppcelery/derper:20211020-v2
-  # docker run -itd -e DERP_HOSTNAME=b2.laisky.com --net host --name derper ppcelery/derper:20211020-v2
   derper:
-    image: ppcelery/derper:20230115
+    image: ppcelery/derper:20230307
     restart: always
     environment:
       ADDR: derper.laisky.com

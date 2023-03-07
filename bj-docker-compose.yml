@@ -85,7 +85,7 @@ services:
     command: proxy-dns --address 0.0.0.0 --port 53 --upstream https://dns.bj.laisky.com:10443/query
 
   derper:
-    image: ppcelery/derper:20230115
+    image: ppcelery/derper:20230307
     restart: always
     dns:
       - 100.122.41.16
