@@ -67,19 +67,19 @@ services:
   #     - /home/laisky/repo/code-server:/home/coder/project
   #     - /opt/configs/codeserver:/home/coder/.config/code-server
 
-  dns:
-    image: cloudflare/cloudflared:latest
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - 53:53/udp
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    command: proxy-dns --address 0.0.0.0 --port 53
+  # dns:
+  #   image: cloudflare/cloudflared:latest
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - 53:53/udp
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   command: proxy-dns --address 0.0.0.0 --port 53
 
   v2ray:
     image: v2ray/official:latest
