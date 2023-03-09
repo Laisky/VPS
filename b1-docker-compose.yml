@@ -9,12 +9,12 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    ports:
-      - 443:443
-      - 3478:3478/udp
     dns:
       - 8.8.8.8
       - 1.1.1.1
+    ports:
+      - 443:443
+      - 3478:3478/udp
 
   # v2ray:
   #   image: v2ray/official:latest
@@ -37,13 +37,12 @@ services:
   trojan-go:
     image: ppcelery/trojan-go:20230130
     restart: always
-    network_mode: host
     dns:
       - 8.8.8.8
       - 1.1.1.1
-    # ports:
-    #   - 1021:1021/udp
-    #   - localhost:9953:9953
+    # network_mode: host
+    ports:
+      - 23443:23443
     logging:
       driver: "json-file"
       options:
@@ -76,29 +75,30 @@ services:
   glider:
     image: ppcelery/glider:20230115
     restart: always
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
-    network_mode: host
-    # ports:
-    #   - 100.122.41.16:17777:17777
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # network_mode: host
+    ports:
+      - "100.122.41.16:17776:17776"
+      - "100.122.41.16:17777:17777"
     volumes:
       - /opt/configs/glider/b1/glider.conf:/app/glider.conf:ro
 
   glider-warp:
     image: ppcelery/glider:20230115
     restart: always
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     network_mode: host
     # ports:
     #   - 100.122.41.16:17778:17778
@@ -134,3 +134,23 @@ services:
   #     - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
   #   ports:
   #     - 100.122.41.16:9100:9100
+
+  mongodb:
+    image: mongo:3.6
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - "100.122.41.16:27017:27017"
+    volumes:
+      - /var/lib/mongodb:/data/db
+    command: mongod
+      --bind_ip 0.0.0.0
+      --storageEngine wiredTiger
+      --wiredTigerCacheSizeGB 3
+      --auth
