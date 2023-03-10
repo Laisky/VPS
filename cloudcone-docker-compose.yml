@@ -311,7 +311,7 @@ services:
       --auth
 
   blog:
-    image: ppcelery/laisky-blog:3305a13
+    image: ppcelery/laisky-blog:1fab874
     restart: unless-stopped
     logging:
       driver: "json-file"
