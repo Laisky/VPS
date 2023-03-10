@@ -2,7 +2,7 @@ version: '3'
 services:
   derper:
     image: ppcelery/derper:20230307
-    restart: always
+    restart: unless-stopped
     environment:
       ADDR: derper.laisky.com
       PORT: 10444
@@ -22,7 +22,7 @@ services:
     image: ppcelery/pccs:v2.2
     # build:
     #   context: ./pccs
-    restart: always
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
@@ -38,7 +38,7 @@ services:
 
   # codeserver:
   #   image: codercom/code-server:latest
-  #   restart: always
+  #   restart: unless-stopped
   #   logging:
   #     driver: "json-file"
   #     options:
@@ -54,7 +54,7 @@ services:
 
   dns:
     image: cloudflare/cloudflared:latest
-    restart: always
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
@@ -68,7 +68,7 @@ services:
 
   # v2ray:
   #   image: v2ray/official:latest
-  #   restart: always
+  #   restart: unless-stopped
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1
@@ -86,7 +86,7 @@ services:
 
   # xray:
   #   image: teddysun/xray:latest
-  #   restart: always
+  #   restart: unless-stopped
   #   network_mode: host
   #   dns:
   #     - 8.8.8.8
@@ -106,7 +106,7 @@ services:
 
   trojan-go:
     image: ppcelery/trojan-go:20230130
-    restart: always
+    restart: unless-stopped
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -124,7 +124,7 @@ services:
 
   # doh:
   #   image: satishweb/doh-server:v2.3.2-ubuntu
-  #   restart: always
+  #   restart: unless-stopped
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1
@@ -149,7 +149,7 @@ services:
 
   nginx:
     image: nginx:1.21.3-alpine
-    restart: always
+    restart: unless-stopped
     network_mode: host
     # ports:
     #   - 443:443
@@ -194,8 +194,8 @@ services:
   #   restart: unless-stopped
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:1af13be
-    restart: always
+    image: ppcelery/laisky-blog-graphql:c0cd935
+    restart: unless-stopped
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -216,7 +216,7 @@ services:
 
   glider:
     image: ppcelery/glider:20230115
-    restart: always
+    restart: unless-stopped
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -235,7 +235,7 @@ services:
   #   image: ppcelery/ramjet:e8cdb1a
   #   # build:
   #   #   context: ./ramjet
-  #   restart: always
+  #   restart: unless-stopped
   #   # depends_on:
   #   #   - mongodb
   #   # networks:
@@ -272,7 +272,7 @@ services:
 
   # mongodb:
   #   image: mongo:3.6
-  #   restart: always
+  #   restart: unless-stopped
   #   logging:
   #     driver: "json-file"
   #     options:
@@ -292,7 +292,7 @@ services:
 
   mongodb6:
     image: mongo:6.0.3
-    restart: always
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
@@ -309,3 +309,20 @@ services:
       --storageEngine wiredTiger
       --wiredTigerCacheSizeGB 3
       --auth
+
+  blog:
+    image: ppcelery/laisky-blog:3305a13
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.114.71.73:27850:27850"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - /opt/configs/laisky-blog/settings.py:/www/gargantua/gargantua/settings/settings.py:ro
+    command: /usr/local/bin/run_gargantua
+    # command: sleep 10000

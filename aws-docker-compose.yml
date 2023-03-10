@@ -2,7 +2,7 @@ version: '3'
 services:
   derper:
     image: ppcelery/derper:20230307
-    restart: always
+    restart: unless-stopped
     environment:
       ADDR: aws.laisky.com
     logging:
@@ -18,7 +18,7 @@ services:
 
   # v2ray:
   #   image: v2ray/official:latest
-  #   restart: always
+  #   restart: unless-stopped
   #   network_mode: host
   #   dns:
   #     - 8.8.8.8
@@ -36,7 +36,7 @@ services:
 
   # trojan-go:
   #   image: ppcelery/trojan-go:20230130
-  #   restart: always
+  #   restart: unless-stopped
   #   network_mode: host
   #   dns:
   #     - 8.8.8.8
@@ -55,7 +55,7 @@ services:
 
   # xray:
   #   image: teddysun/xray:latest
-  #   restart: always
+  #   restart: unless-stopped
   #   network_mode: host
   #   dns:
   #     - 8.8.8.8
@@ -75,7 +75,7 @@ services:
 
   glider:
     image: ppcelery/glider:20230115
-    restart: always
+    restart: unless-stopped
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -91,7 +91,7 @@ services:
 
   # dns:
   #   image: cloudflare/cloudflared
-  #   restart: always
+  #   restart: unless-stopped
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1

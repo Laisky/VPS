@@ -2,7 +2,7 @@ version: '3'
 services:
   glider:
     image: ppcelery/glider:20230115
-    restart: always
+    restart: unless-stopped
     dns:
       - 100.122.41.16
     logging:
@@ -17,7 +17,7 @@ services:
 
   glider-cb:
     image: ppcelery/glider:20230115
-    restart: always
+    restart: unless-stopped
     dns:
       - 100.122.41.16
     logging:
@@ -32,7 +32,7 @@ services:
 
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
-    restart: always
+    restart: unless-stopped
     dns:
       - 100.122.41.16
     logging:
@@ -72,7 +72,7 @@ services:
 
   dns:
     image: cloudflare/cloudflared
-    restart: always
+    restart: unless-stopped
     dns:
       - 100.122.41.16
     ports:
@@ -85,7 +85,7 @@ services:
 
   derper:
     image: ppcelery/derper:20230307
-    restart: always
+    restart: unless-stopped
     dns:
       - 100.122.41.16
     environment:

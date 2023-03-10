@@ -2,7 +2,7 @@ version: '3'
 services:
   mongodb:
     image: mongo:3.6
-    restart: always
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
@@ -21,7 +21,7 @@ services:
 
   sonic:
     image: valeriansaliou/sonic:v1.4.0
-    restart: always
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
@@ -36,7 +36,7 @@ services:
 
   mongodb6:
     image: mongo:6.0.3
-    restart: always
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
@@ -55,7 +55,7 @@ services:
 
   # clickhouse:
   #   image: "yandex/clickhouse-server:21.10.2.15"
-  #   restart: always
+  #   restart: unless-stopped
   #   logging:
   #     driver: "json-file"
   #     options:
@@ -74,7 +74,7 @@ services:
 
   redis:
     image: "redis:6.2.6"
-    restart: always
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
@@ -89,7 +89,7 @@ services:
   # https://github.com/chrislusf/seaweedfs#quick-start
   # seaweedfs:
   #   image: "chrislusf/seaweedfs:3.01"
-  #   restart: always
+  #   restart: unless-stopped
   #   logging:
   #     driver: "json-file"
   #     options:
@@ -106,7 +106,7 @@ services:
   graphql:
     # image: ppcelery/laisky-blog-graphql:1af13be
     image: ppcelery/laisky-blog-graphql:998c09e
-    restart: always
+    restart: unless-stopped
     # depends_on:
     #   - mongodb
     # networks:
@@ -147,7 +147,7 @@ services:
 
   # nginx:
   #   image: nginx:1.21.3-alpine
-  #   restart: always
+  #   restart: unless-stopped
   #   network_mode: host
   #   dns:
   #     - 8.8.8.8
@@ -186,7 +186,7 @@ services:
 
   minio:
     image: minio/minio:latest
-    restart: always
+    restart: unless-stopped
     env_file:
       - /opt/configs/env/home/minio.env
     ports:
@@ -204,7 +204,7 @@ services:
 
   glider:
     image: ppcelery/glider:20230115
-    restart: always
+    restart: unless-stopped
     dns:
       - 100.113.28.117
     logging:
@@ -218,7 +218,7 @@ services:
 
   glider-gfw:
     image: ppcelery/glider:20230115
-    restart: always
+    restart: unless-stopped
     dns:
       - 100.113.28.117
     logging:

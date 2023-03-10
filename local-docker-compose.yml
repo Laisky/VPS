@@ -2,7 +2,7 @@ version: '3'
 services:
   mongodb:
     image: mongo:3.6
-    restart: always
+    restart: unless-stopped
     # logging:
     #   driver: "json-file"
     #   options:
@@ -19,7 +19,7 @@ services:
 
 #   nginx:
 #     image: nginx:1.15.6-alpine
-#     restart: always
+#     restart: unless-stopped
 #     network_mode: host
 #     dns:
 #       - 8.8.8.8
