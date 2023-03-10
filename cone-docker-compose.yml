@@ -1,0 +1,311 @@
+version: '3'
+services:
+  derper:
+    image: ppcelery/derper:20230307
+    restart: always
+    environment:
+      ADDR: derper.laisky.com
+      PORT: 10444
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      # - 443:443
+      - 3478:3478/udp
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
+  # curl -kv https://pccs.laisky.com/sgx/certification/v3/rootcacrl
+  pccs:
+    image: ppcelery/pccs:v2.2
+    # build:
+    #   context: ./pccs
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 127.0.0.1:8081:8081
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /opt/configs/intel/pccs/default.json:/opt/intel/pccs/config/default.json:ro
+      - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
+
+  # codeserver:
+  #   image: codercom/code-server:latest
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - 38080:8080
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   volumes:
+  #     - /home/laisky/repo/code-server:/home/coder/project
+  #     - /opt/configs/codeserver:/home/coder/.config/code-server
+
+  dns:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 53:53/udp
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    command: proxy-dns --address 0.0.0.0 --port 53
+
+  # v2ray:
+  #   image: v2ray/official:latest
+  #   restart: always
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   # network_mode: host
+  #   ports:
+  #     - 1021:1021/udp
+  #     - localhost:9953:9953
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   volumes:
+  #     - /opt/configs/v2ray:/etc/v2ray:ro
+  #   command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
+
+  # xray:
+  #   image: teddysun/xray:latest
+  #   restart: always
+  #   network_mode: host
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   # ports:
+  #   #   - 1021:1021/udp
+  #   #   - localhost:9953:9953
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     - xray.vmess.aead.forced=false
+  #   volumes:
+  #     - /opt/configs/xray:/etc/xray:ro
+  #   # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
+
+  trojan-go:
+    image: ppcelery/trojan-go:20230130
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # network_mode: host
+    ports:
+      - 23443:23443
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /opt/configs/trojan-go/zz:/etc/torjan-go/config:ro
+      - /opt/configs/pki/zz.laisky.com:/etc/torjan-go/pki:ro
+    command: /etc/torjan-go/config/server.json
+
+  # doh:
+  #   image: satishweb/doh-server:v2.3.2-ubuntu
+  #   restart: always
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   # network_mode: host
+  #   ports:
+  #     - 100.114.71.73:8053:8053
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     DEBUG: "0"
+  #     # Upstream DNS server: proto:host:port
+  #     # We are using OpenDNS DNS servers as default,
+  #     # Here is the list of addresses: https://use.opendns.com/
+  #     UPSTREAM_DNS_SERVER: "udp:1.1.1.1:53"
+  #     DOH_HTTP_PREFIX: "/query"
+  #     DOH_SERVER_LISTEN: "0.0.0.0:8053"
+  #     DOH_SERVER_TIMEOUT: "10"
+  #     DOH_SERVER_TRIES: "3"
+  #     DOH_SERVER_VERBOSE: "true"
+
+  # nginx:
+  #   image: nginx:1.21.3-alpine
+  #   # restart: always
+  #   # network_mode: host
+  #   ports:
+  #     - 443:443
+  #     - 80:80
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   volumes:
+  #     - /var/www:/var/www
+  #     - /var/log:/var/log
+  #     - /opt/configs/nginx/conf.d/cone:/etc/nginx/conf.d:ro
+  #     - /opt/configs/nginx/ssl:/opt/configs/nginx/ssl:ro
+  #     - /opt/configs/nginx/www:/opt/configs/nginx/www:ro
+
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - URL=laisky.com
+      - VALIDATION=dns
+      - SUBDOMAINS=wildcard
+      - DNSPLUGIN=cloudflare
+    volumes:
+      - /var/log/nginx:/var/log/nginx
+      - /opt/configs/swag/cloudcone:/config
+      - /opt/configs/nginx/conf.d/cloudcone:/config/nginx/site-confs
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+
+  graphql:
+    image: ppcelery/laisky-blog-graphql:1af13be
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 100.114.71.73:17800:17800
+    command: api --listen=0.0.0.0:17800
+      --config=/etc/laisky-blog-graphql/settings.yml
+      --log-level=debug
+      -t telegram
+
+  glider:
+    image: ppcelery/glider:20230115
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    # network_mode: host
+    ports:
+      - 100.114.71.73:17777:17777
+    volumes:
+      - /opt/configs/glider/cloudcone/glider.conf:/app/glider.conf:ro
+
+  ramjet:
+    # image: ppcelery/ramjet:4a9bdc6
+    image: ppcelery/ramjet:e8cdb1a
+    # build:
+    #   context: ./ramjet
+    restart: always
+    # depends_on:
+    #   - mongodb
+    # networks:
+    #   - VPC
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+      # - /var/www/uploads/twitter:/var/www/uploads/twitter
+    # ports:
+    #   - 127.0.0.1:37851:37851
+    entrypoint: python -m ramjet -e keyword
+
+  monitor:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 100.114.71.73:9100:9100
+
+  mongodb:
+    image: mongo:3.6
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.114.71.73:27017:27017"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - /var/lib/mongodb:/data/db
+    command: mongod
+      --bind_ip 0.0.0.0
+      --storageEngine wiredTiger
+      --wiredTigerCacheSizeGB 3
+      # --auth
+
+  mongodb6:
+    image: mongo:6.0.3
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.114.71.73:27018:27017"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - /var/lib/mongodb6:/data/db
+    command: mongod
+      --bind_ip 0.0.0.0
+      --storageEngine wiredTiger
+      --wiredTigerCacheSizeGB 3
+      # --auth
