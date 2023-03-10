@@ -103,33 +103,33 @@ services:
   #     - /var/lib/seaweedfs:/data
   #   command: server -s3 -dir=/data
 
-  graphql:
-    # image: ppcelery/laisky-blog-graphql:1af13be
-    image: ppcelery/laisky-blog-graphql:998c09e
-    restart: unless-stopped
-    # depends_on:
-    #   - mongodb
-    # networks:
-    #   - VPC
-    dns:
-      - 100.113.28.117
-    ports:
-      - 100.97.108.34:17800:8080
-    volumes:
-      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    environment:
-      GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
-      NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net
-      HTTP_PROXY: http://100.97.108.34:17777
-      HTTPS_PROXY: http://100.97.108.34:17777
-    command: api --listen=0.0.0.0:8080
-      --config=/etc/laisky-blog-graphql/settings.yml
-      --log-level=debug
-      # -t telegram
+  # graphql:
+  #   # image: ppcelery/laisky-blog-graphql:1af13be
+  #   image: ppcelery/laisky-blog-graphql:998c09e
+  #   restart: unless-stopped
+  #   # depends_on:
+  #   #   - mongodb
+  #   # networks:
+  #   #   - VPC
+  #   dns:
+  #     - 100.113.28.117
+  #   ports:
+  #     - 100.97.108.34:17800:8080
+  #   volumes:
+  #     - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
+  #     NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net
+  #     HTTP_PROXY: http://100.97.108.34:17777
+  #     HTTPS_PROXY: http://100.97.108.34:17777
+  #   command: api --listen=0.0.0.0:8080
+  #     --config=/etc/laisky-blog-graphql/settings.yml
+  #     --log-level=debug
+  #     # -t telegram
 
   go-ramjet:
     image: ppcelery/go-ramjet:5b47d0a
