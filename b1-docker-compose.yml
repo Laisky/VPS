@@ -154,3 +154,28 @@ services:
       --storageEngine wiredTiger
       --wiredTigerCacheSizeGB 3
       --auth
+
+  doh:
+    image: satishweb/doh-server:v2.3.2-ubuntu
+    restart: always
+    # network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 100.122.41.16:8053:8053
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      DEBUG: "0"
+      # Upstream DNS server: proto:host:port
+      # We are using OpenDNS DNS servers as default,
+      # Here is the list of addresses: https://use.opendns.com/
+      UPSTREAM_DNS_SERVER: "udp:1.1.1.1:53"
+      DOH_HTTP_PREFIX: "/query"
+      DOH_SERVER_LISTEN: "0.0.0.0:8053"
+      DOH_SERVER_TIMEOUT: "10"
+      DOH_SERVER_TRIES: "3"
+      DOH_SERVER_VERBOSE: "true"

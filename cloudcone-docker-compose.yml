@@ -11,7 +11,7 @@ services:
       options:
         max-size: "10m"
     ports:
-      # - 443:443
+      - 100.114.71.73:10444:10444
       - 3478:3478/udp
     dns:
       - 8.8.8.8
@@ -28,7 +28,7 @@ services:
       options:
         max-size: "10m"
     ports:
-      - 127.0.0.1:8081:8081
+      - 100.114.71.73:8081:8081
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -147,51 +147,51 @@ services:
   #     DOH_SERVER_TRIES: "3"
   #     DOH_SERVER_VERBOSE: "true"
 
-  # nginx:
-  #   image: nginx:1.21.3-alpine
-  #   # restart: always
-  #   # network_mode: host
-  #   ports:
-  #     - 443:443
-  #     - 80:80
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   volumes:
-  #     - /var/www:/var/www
-  #     - /var/log:/var/log
-  #     - /opt/configs/nginx/conf.d/cone:/etc/nginx/conf.d:ro
-  #     - /opt/configs/nginx/ssl:/opt/configs/nginx/ssl:ro
-  #     - /opt/configs/nginx/www:/opt/configs/nginx/www:ro
-
-  swag:
-    image: lscr.io/linuxserver/swag:latest
-    container_name: swag
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=UTC
-      - URL=laisky.com
-      - VALIDATION=dns
-      - SUBDOMAINS=wildcard
-      - DNSPLUGIN=cloudflare
-    volumes:
-      - /var/log/nginx:/var/log/nginx
-      - /opt/configs/swag/cloudcone:/config
-      - /opt/configs/nginx/conf.d/cloudcone:/config/nginx/site-confs
+  nginx:
+    image: nginx:1.21.3-alpine
+    restart: always
+    network_mode: host
+    # ports:
+    #   - 443:443
+    #   - 80:80
     dns:
       - 8.8.8.8
       - 1.1.1.1
-    ports:
-      - 443:443
-      - 80:80
-    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /var/www:/var/www
+      - /var/log:/var/log
+      - /opt/configs/nginx/conf.d/cloudcone:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx/ssl:/opt/configs/nginx/ssl:ro
+      - /opt/configs/nginx/www:/opt/configs/nginx/www:ro
+
+  # swag:
+  #   image: lscr.io/linuxserver/swag:latest
+  #   container_name: swag
+  #   cap_add:
+  #     - NET_ADMIN
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=UTC
+  #     - URL=laisky.com
+  #     - VALIDATION=dns
+  #     - SUBDOMAINS=wildcard
+  #     - DNSPLUGIN=cloudflare
+  #   volumes:
+  #     - /var/log/nginx:/var/log/nginx
+  #     - /opt/configs/swag/cloudcone:/config
+  #     - /opt/configs/nginx/conf.d/cloudcone:/config/nginx/site-confs
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 443:443
+  #     - 80:80
+  #   restart: unless-stopped
 
   graphql:
     image: ppcelery/laisky-blog-graphql:1af13be
@@ -212,7 +212,7 @@ services:
     command: api --listen=0.0.0.0:17800
       --config=/etc/laisky-blog-graphql/settings.yml
       --log-level=debug
-      -t telegram
+      # -t telegram
 
   glider:
     image: ppcelery/glider:20230115
@@ -230,29 +230,29 @@ services:
     volumes:
       - /opt/configs/glider/cloudcone/glider.conf:/app/glider.conf:ro
 
-  ramjet:
-    # image: ppcelery/ramjet:4a9bdc6
-    image: ppcelery/ramjet:e8cdb1a
-    # build:
-    #   context: ./ramjet
-    restart: always
-    # depends_on:
-    #   - mongodb
-    # networks:
-    #   - VPC
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    volumes:
-      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
-      # - /var/www/uploads/twitter:/var/www/uploads/twitter
-    # ports:
-    #   - 127.0.0.1:37851:37851
-    entrypoint: python -m ramjet -e keyword
+  # ramjet:
+  #   # image: ppcelery/ramjet:4a9bdc6
+  #   image: ppcelery/ramjet:e8cdb1a
+  #   # build:
+  #   #   context: ./ramjet
+  #   restart: always
+  #   # depends_on:
+  #   #   - mongodb
+  #   # networks:
+  #   #   - VPC
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   volumes:
+  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+  #     # - /var/www/uploads/twitter:/var/www/uploads/twitter
+  #   # ports:
+  #   #   - 100.114.71.73:37851:37851
+  #   entrypoint: python -m ramjet -e keyword
 
   monitor:
     image: prom/node-exporter:latest
@@ -270,8 +270,28 @@ services:
     ports:
       - 100.114.71.73:9100:9100
 
-  mongodb:
-    image: mongo:3.6
+  # mongodb:
+  #   image: mongo:3.6
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "100.114.71.73:27017:27017"
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   volumes:
+  #     - /var/lib/mongodb:/data/db
+  #   command: mongod
+  #     --bind_ip 0.0.0.0
+  #     --storageEngine wiredTiger
+  #     --wiredTigerCacheSizeGB 3
+  #     # --auth
+
+  mongodb6:
+    image: mongo:6.0.3
     restart: always
     logging:
       driver: "json-file"
@@ -283,29 +303,9 @@ services:
       - 1.1.1.1
       - 8.8.8.8
     volumes:
-      - /var/lib/mongodb:/data/db
-    command: mongod
-      --bind_ip 0.0.0.0
-      --storageEngine wiredTiger
-      --wiredTigerCacheSizeGB 3
-      # --auth
-
-  mongodb6:
-    image: mongo:6.0.3
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - "100.114.71.73:27018:27017"
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
-    volumes:
       - /var/lib/mongodb6:/data/db
     command: mongod
       --bind_ip 0.0.0.0
       --storageEngine wiredTiger
       --wiredTigerCacheSizeGB 3
-      # --auth
+      --auth
