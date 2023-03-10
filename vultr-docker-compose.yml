@@ -1,0 +1,17 @@
+version: '3'
+services:
+  derper:
+    image: ppcelery/derper:20230307
+    restart: unless-stopped
+    environment:
+      ADDR: vultr.laisky.com
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 443:443
+      - 3478:3478/udp
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1

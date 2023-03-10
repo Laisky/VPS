@@ -1,21 +1,21 @@
 version: '3'
 services:
-  derper:
-    image: ppcelery/derper:20230307
-    restart: unless-stopped
-    environment:
-      ADDR: derper.laisky.com
-      PORT: 10444
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - 100.114.71.73:10444:10444
-      - 3478:3478/udp
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
+  # derper:
+  #   image: ppcelery/derper:20230307
+  #   restart: unless-stopped
+  #   environment:
+  #     ADDR: cloudcone.laisky.com
+  #     PORT: 10444
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - 10444:10444
+  #     - 3478:3478/udp
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
 
   # curl -kv https://pccs.laisky.com/sgx/certification/v3/rootcacrl
   pccs:
