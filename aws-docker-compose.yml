@@ -83,9 +83,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    network_mode: host
-    # ports:
-    #   - 100.122.41.16:17777:8080
+    # network_mode: host
+    ports:
+      - 100.121.106.61:17777:8080
     volumes:
       - /opt/configs/glider/aws/glider.conf:/app/glider.conf:ro
 
