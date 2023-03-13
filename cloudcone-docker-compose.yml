@@ -320,3 +320,21 @@ services:
       - /opt/configs/laisky-blog/settings.py:/www/gargantua/gargantua/settings/settings.py:ro
     command: /usr/local/bin/run_gargantua
     # command: sleep 10000
+
+  go-ramjet:
+    image: ppcelery/go-ramjet:969de83
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - TASKS=heartbeat,gptchat
+    volumes:
+      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ports:
+      - 100.114.71.73:24456:24456
+    command: -t heartbeat,gptchat -c /etc/go-ramjet/settings.yml
