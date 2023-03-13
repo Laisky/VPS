@@ -194,7 +194,7 @@ services:
   #   restart: unless-stopped
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:c0cd935
+    image: ppcelery/laisky-blog-graphql:d3aa9cd
     restart: unless-stopped
     dns:
       - 8.8.8.8
@@ -212,7 +212,7 @@ services:
     command: api --listen=0.0.0.0:17800
       --config=/etc/laisky-blog-graphql/settings.yml
       --log-level=debug
-      # -t telegram
+      -t telegram
 
   glider:
     image: ppcelery/glider:20230115
@@ -230,29 +230,23 @@ services:
     volumes:
       - /opt/configs/glider/cloudcone/glider.conf:/app/glider.conf:ro
 
-  # ramjet:
-  #   # image: ppcelery/ramjet:4a9bdc6
-  #   image: ppcelery/ramjet:e8cdb1a
-  #   # build:
-  #   #   context: ./ramjet
-  #   restart: unless-stopped
-  #   # depends_on:
-  #   #   - mongodb
-  #   # networks:
-  #   #   - VPC
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   volumes:
-  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
-  #     # - /var/www/uploads/twitter:/var/www/uploads/twitter
-  #   # ports:
-  #   #   - 100.114.71.73:37851:37851
-  #   entrypoint: python -m ramjet -e keyword
+  ramjet:
+    image: ppcelery/ramjet:e8cdb1a
+    restart: unless-stopped
+    # depends_on:
+    #   - mongodb
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+    ports:
+      - 100.114.71.73:37851:37851
+    entrypoint: python -m ramjet -e keyword
 
   monitor:
     image: prom/node-exporter:latest
