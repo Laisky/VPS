@@ -194,7 +194,7 @@ services:
   #   restart: unless-stopped
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:d3aa9cd
+    image: ppcelery/laisky-blog-graphql:7f36817
     restart: unless-stopped
     dns:
       - 8.8.8.8
@@ -305,7 +305,7 @@ services:
       --auth
 
   blog:
-    image: ppcelery/laisky-blog:1fab874
+    image: ppcelery/laisky-blog:c961264
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -322,7 +322,7 @@ services:
     # command: sleep 10000
 
   go-ramjet:
-    image: ppcelery/go-ramjet:0d7b4e5
+    image: ppcelery/go-ramjet:78db510
     restart: "always"
     logging:
       driver: "json-file"
