@@ -322,7 +322,8 @@ services:
     # command: sleep 10000
 
   go-ramjet:
-    image: ppcelery/go-ramjet:1289034
+    # image: ppcelery/go-ramjet:c1a3392
+    image: ppcelery/go-ramjet:3ee9276
     restart: "always"
     logging:
       driver: "json-file"
