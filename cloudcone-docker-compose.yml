@@ -323,7 +323,7 @@ services:
 
   go-ramjet:
     # image: ppcelery/go-ramjet:c1a3392
-    image: ppcelery/go-ramjet:3ee9276
+    image: ppcelery/go-ramjet:beb0a6c
     restart: "always"
     logging:
       driver: "json-file"
