@@ -1,7 +1,7 @@
 version: '3'
 services:
   derper:
-    image: ppcelery/derper:20230307
+    image: ppcelery/derper:20230320
     restart: unless-stopped
     environment:
       ADDR: hk.laisky.com
