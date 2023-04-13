@@ -118,21 +118,21 @@ services:
     ports:
       - 100.92.2.80:9100:9100
 
-  elasticsearch:
-    image: elasticsearch:8.6.1
-    restart: unless-stopped
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 100.92.2.80:9200:9200
-      - 100.92.2.80:9300:9300
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    environment:
-      - discovery.type=single-node
+  # elasticsearch:
+  #   image: elasticsearch:8.6.1
+  #   restart: unless-stopped
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 100.92.2.80:9200:9200
+  #     - 100.92.2.80:9300:9300
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     - discovery.type=single-node
 
   glider:
     image: ppcelery/glider:20230115
