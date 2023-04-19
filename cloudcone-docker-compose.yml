@@ -165,8 +165,7 @@ services:
       - /var/www:/var/www
       - /var/log:/var/log
       - /opt/configs/nginx/conf.d/cloudcone:/etc/nginx/conf.d:ro
-      - /opt/configs/nginx/ssl:/opt/configs/nginx/ssl:ro
-      - /opt/configs/nginx/www:/opt/configs/nginx/www:ro
+      - /opt/configs/nginx:/opt/configs/nginx:ro
 
   # swag:
   #   image: lscr.io/linuxserver/swag:latest
