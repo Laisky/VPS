@@ -1,7 +1,7 @@
 version: '3'
 services:
   derper:
-    image: ppcelery/derper:20230419
+    image: ppcelery/derper:20230420
     restart: unless-stopped
     environment:
       ADDR: aws.laisky.com
