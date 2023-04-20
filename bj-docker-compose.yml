@@ -113,3 +113,18 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
       - 100.96.127.120:9100:9100
+
+  shadowsocks:
+    image: ghcr.io/shadowsocks/ssserver-rust:latest
+    container_name: ss
+    restart: unless-stopped
+    dns:
+      - 100.122.41.16
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /opt/configs/shadowsocks/config.json:/etc/shadowsocks-rust/config.json:RO
+    ports:
+      - 28448:28448
