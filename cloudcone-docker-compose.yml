@@ -338,3 +338,16 @@ services:
     ports:
       - 100.114.71.73:24456:24456
     command: -t heartbeat,gptchat -c /etc/go-ramjet/settings.yml
+
+  wiki:
+    image: ppcelery/wiki:20230421
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ports:
+      - 100.114.71.73:21313:1313
