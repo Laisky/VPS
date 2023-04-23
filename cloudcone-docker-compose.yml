@@ -193,7 +193,7 @@ services:
   #   restart: unless-stopped
 
   graphql:
-    image: ppcelery/laisky-blog-graphql:7f36817
+    image: ppcelery/laisky-blog-graphql:latest
     restart: unless-stopped
     dns:
       - 8.8.8.8
@@ -230,7 +230,7 @@ services:
       - /opt/configs/glider/cloudcone/glider.conf:/app/glider.conf:ro
 
   ramjet:
-    image: ppcelery/ramjet:cf742e9
+    image: ppcelery/ramjet:e8cdb1a
     restart: unless-stopped
     # depends_on:
     #   - mongodb
@@ -305,7 +305,7 @@ services:
 
   blog:
     # image: ppcelery/laisky-blog:test
-    image: ppcelery/laisky-blog:720903d
+    image: ppcelery/laisky-blog:00f3f31
     restart: unless-stopped
     logging:
       driver: "json-file"
