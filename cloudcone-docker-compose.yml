@@ -230,7 +230,7 @@ services:
       - /opt/configs/glider/cloudcone/glider.conf:/app/glider.conf:ro
 
   ramjet:
-    image: ppcelery/ramjet:e8cdb1a
+    image: ppcelery/ramjet:cf742e9
     restart: unless-stopped
     # depends_on:
     #   - mongodb
