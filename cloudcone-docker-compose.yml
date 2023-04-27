@@ -167,30 +167,30 @@ services:
       - /opt/configs/nginx/conf.d/cloudcone:/etc/nginx/conf.d:ro
       - /opt/configs/nginx:/opt/configs/nginx:ro
 
-  # swag:
-  #   image: lscr.io/linuxserver/swag:latest
-  #   container_name: swag
-  #   cap_add:
-  #     - NET_ADMIN
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=UTC
-  #     - URL=laisky.com
-  #     - VALIDATION=dns
-  #     - SUBDOMAINS=wildcard
-  #     - DNSPLUGIN=cloudflare
-  #   volumes:
-  #     - /var/log/nginx:/var/log/nginx
-  #     - /opt/configs/swag/cloudcone:/config
-  #     - /opt/configs/nginx/conf.d/cloudcone:/config/nginx/site-confs
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   ports:
-  #     - 443:443
-  #     - 80:80
-  #   restart: unless-stopped
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - URL=laisky.com
+      - VALIDATION=dns
+      - SUBDOMAINS=wildcard
+      - DNSPLUGIN=cloudflare
+    volumes:
+      - /var/log/nginx:/var/log/nginx
+      - /opt/configs/swag/cloudcone:/config
+      - /opt/configs/nginx/conf.d/cloudcone:/config/nginx/site-confs
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 443:443
+    #   - 80:80
+    restart: unless-stopped
 
   graphql:
     image: ppcelery/laisky-blog-graphql:latest
