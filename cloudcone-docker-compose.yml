@@ -181,9 +181,9 @@ services:
       - SUBDOMAINS=wildcard
       - DNSPLUGIN=cloudflare
     volumes:
-      - /var/log/nginx:/var/log/nginx
+      # - /var/log/nginx:/var/log/nginx
       - /opt/configs/swag/cloudcone:/config
-      - /opt/configs/nginx/conf.d/cloudcone:/config/nginx/site-confs
+      # - /opt/configs/nginx/conf.d/cloudcone:/config/nginx/site-confs
     dns:
       - 8.8.8.8
       - 1.1.1.1
