@@ -145,6 +145,45 @@ services:
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
 
+  ramjet-bbt:
+    image: ppcelery/ramjet:gpt-latest
+    restart: always
+    deploy:
+      replicas: 5
+    # ports:
+    #   - 100.97.108.34:37851:37851
+    dns:
+      - 100.122.41.16
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs/ramjet/prd-bbt.py:/app/ramjet/settings/prd.py:ro
+      - /home/laisky/data/langchain/index:/var/lib/openai/index
+    environment:
+      - http_proxy=http://100.122.41.16:17777
+      - https_proxy=http://100.122.41.16:17777
+      - HTTP_PROXY=http://100.122.41.16:17777
+      - HTTPS_PROXY=http://100.122.41.16:17777
+      - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
+    command: python -m ramjet -t gptchat
+
+  nginx:
+    image: nginx:1.21.3-alpine
+    restart: always
+    ports:
+      - 100.97.108.34:22280:80
+    dns:
+      - 100.122.41.16
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /var/log:/var/log
+      - /opt/configs/nginx/conf.d/home:/etc/nginx/conf.d:ro
+
   # nginx:
   #   image: nginx:1.21.3-alpine
   #   restart: unless-stopped
