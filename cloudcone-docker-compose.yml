@@ -341,7 +341,7 @@ services:
     command: -t heartbeat,gptchat -c /etc/go-ramjet/settings.yml
 
   wiki:
-    image: ppcelery/wiki:20230421
+    image: ppcelery/wiki:latest
     restart: "always"
     logging:
       driver: "json-file"
