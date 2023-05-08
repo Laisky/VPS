@@ -306,7 +306,7 @@ services:
 
   blog:
     # image: ppcelery/laisky-blog:test
-    image: ppcelery/laisky-blog:02dd33f
+    image: ppcelery/laisky-blog:c565900
     restart: unless-stopped
     logging:
       driver: "json-file"
