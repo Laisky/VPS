@@ -132,7 +132,7 @@ services:
   #     # -t telegram
 
   go-ramjet:
-    image: ppcelery/go-ramjet:5b47d0a
+    image: ppcelery/go-ramjet:c23124a
     restart: "always"
     dns:
       - 100.113.28.117
