@@ -306,7 +306,7 @@ services:
 
   blog:
     # image: ppcelery/laisky-blog:test
-    image: ppcelery/laisky-blog:8214cb8
+    image: ppcelery/laisky-blog:latest
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -339,7 +339,7 @@ services:
       - 8.8.8.8
     ports:
       - 100.114.71.73:24456:24456
-    command: -t heartbeat,gptchat -c /etc/go-ramjet/settings.yml
+    command: -t heartbeat,gptchat -c /etc/go-ramjet/settings.yml --debug
 
   wiki:
     image: ppcelery/wiki:latest
