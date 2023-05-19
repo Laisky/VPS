@@ -146,7 +146,7 @@ services:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
 
   ramjet-bbt:
-    image: ppcelery/ramjet:gpt-latest
+    image: ppcelery/ramjet:latest
     restart: always
     deploy:
       replicas: 5
