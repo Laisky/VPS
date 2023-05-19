@@ -73,7 +73,7 @@ services:
   #   # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
 
   glider:
-    image: ppcelery/glider:20230115
+    image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -90,7 +90,7 @@ services:
       - /opt/configs/glider/b1/glider.conf:/app/glider.conf:ro
 
   glider-warp:
-    image: ppcelery/glider:20230115
+    image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
       driver: "json-file"

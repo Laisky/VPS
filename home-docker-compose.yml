@@ -242,7 +242,7 @@ services:
     command: server /data --address :9000 --console-address ":9001"
 
   glider:
-    image: ppcelery/glider:20230115
+    image: ppcelery/glider:latest
     restart: unless-stopped
     dns:
       - 100.113.28.117
@@ -256,7 +256,7 @@ services:
       - /opt/configs/glider/home/glider.conf:/app/glider.conf:ro
 
   glider-gfw:
-    image: ppcelery/glider:20230115
+    image: ppcelery/glider:latest
     restart: unless-stopped
     dns:
       - 100.113.28.117

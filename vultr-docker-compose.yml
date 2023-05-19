@@ -17,7 +17,7 @@ services:
       - 1.1.1.1
 
   glider:
-    image: ppcelery/glider:20230115
+    image: ppcelery/glider:latest
     restart: unless-stopped
     dns:
       - 8.8.8.8

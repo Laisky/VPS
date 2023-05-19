@@ -1,7 +1,7 @@
 version: '3'
 services:
   glider:
-    image: ppcelery/glider:20230115
+    image: ppcelery/glider:latest
     restart: unless-stopped
     dns:
       - 100.122.41.16
@@ -16,7 +16,7 @@ services:
       - /opt/configs/glider/bj/glider.conf:/app/glider.conf:ro
 
   glider-cb:
-    image: ppcelery/glider:20230115
+    image: ppcelery/glider:latest
     restart: unless-stopped
     dns:
       - 100.122.41.16
