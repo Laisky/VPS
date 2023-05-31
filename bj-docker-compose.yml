@@ -1,6 +1,6 @@
 version: '3'
 services:
-  glider:
+  glider-gfw:
     image: ppcelery/glider:latest
     restart: unless-stopped
     dns:
@@ -12,6 +12,20 @@ services:
     ports:
       - 28448:28448
       - 28447:28447
+    volumes:
+      - /opt/configs/glider/bj/glider-gfw.conf:/app/glider.conf:ro
+
+  glider:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    # dns:
+    #   - 100.122.41.16
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 17777:17777
     volumes:
       - /opt/configs/glider/bj/glider.conf:/app/glider.conf:ro
 
