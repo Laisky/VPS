@@ -25,7 +25,7 @@ services:
       options:
         max-size: "10m"
     ports:
-      - 17777:17777
+      - 100.96.127.120:17777:17777
     volumes:
       - /opt/configs/glider/bj/glider.conf:/app/glider.conf:ro
 
