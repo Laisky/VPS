@@ -160,7 +160,8 @@ services:
         max-size: "30m"
     volumes:
       - /opt/configs/ramjet/prd-bbt.py:/app/ramjet/settings/prd.py:ro
-      - /home/laisky/data/langchain/index:/var/lib/openai/index
+      # - /home/laisky/data/langchain/index:/var/lib/openai/index
+      - /home/laisky/data/langchain/index-azure:/var/lib/openai/index
     environment:
       - http_proxy=http://100.122.41.16:17777
       - https_proxy=http://100.122.41.16:17777
