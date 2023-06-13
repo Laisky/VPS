@@ -28,6 +28,6 @@ services:
         max-size: "10m"
     # network_mode: host
     ports:
-      - 100.116.159.92:17777:8080
+      - 100.71.231.111:17777:8080
     volumes:
       - /opt/configs/glider/vultr/glider.conf:/app/glider.conf:ro
