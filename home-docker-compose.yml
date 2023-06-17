@@ -149,7 +149,7 @@ services:
     image: ppcelery/ramjet:latest
     restart: always
     deploy:
-      replicas: 5
+      replicas: 1
     # ports:
     #   - 100.97.108.34:37851:37851
     dns:
