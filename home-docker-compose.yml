@@ -159,7 +159,8 @@ services:
       options:
         max-size: "30m"
     volumes:
-      - /opt/configs/ramjet/prd-bbt.py:/app/ramjet/settings/prd.py:ro
+      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+      # - /opt/configs/ramjet/prd-bbt.py:/app/ramjet/settings/prd.py:ro
       # - /home/laisky/data/langchain/index:/var/lib/openai/index
       - /home/laisky/data/langchain/index-azure:/var/lib/openai/index
     environment:
