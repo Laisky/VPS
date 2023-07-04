@@ -148,7 +148,7 @@ services:
   #     DOH_SERVER_VERBOSE: "true"
 
   nginx:
-    image: nginx:1.23.4-bullseye
+    image: nginx:1.25
     restart: unless-stopped
     network_mode: host
     # ports:
