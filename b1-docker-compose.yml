@@ -135,25 +135,25 @@ services:
   #   ports:
   #     - 100.122.41.16:9100:9100
 
-  mongodb:
-    image: mongo:3.6
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - "100.122.41.16:27017:27017"
-    volumes:
-      - /var/lib/mongodb:/data/db
-    command: mongod
-      --bind_ip 0.0.0.0
-      --storageEngine wiredTiger
-      --wiredTigerCacheSizeGB 3
-      --auth
+  # mongodb:
+  #   image: mongo:3.6
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - "100.122.41.16:27017:27017"
+  #   volumes:
+  #     - /var/lib/mongodb:/data/db
+  #   command: mongod
+  #     --bind_ip 0.0.0.0
+  #     --storageEngine wiredTiger
+  #     --wiredTigerCacheSizeGB 3
+  #     --auth
 
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
