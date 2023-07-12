@@ -89,21 +89,36 @@ services:
     volumes:
       - /opt/configs/glider/b1/glider.conf:/app/glider.conf:ro
 
-  glider-warp:
-    image: ppcelery/glider:latest
-    restart: unless-stopped
+  haproxy:
+    image: haproxy:2.5.1-alpine
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     network_mode: host
-    # ports:
-    #   - 100.122.41.16:17778:17778
     volumes:
-      - /opt/configs/glider/b1/glider-warp.conf:/app/glider.conf:ro
+      - /opt/configs/haproxy/b1-warp.cfg:/etc/haproxy/b1-warp.cfg:ro
+    command: -f /etc/haproxy/b1-warp.cfg
+
+  # glider-warp:
+  #   image: ppcelery/glider:latest
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   network_mode: host
+  #   # ports:
+  #   #   - 100.122.41.16:17778:17778
+  #   volumes:
+  #     - /opt/configs/glider/b1/glider-warp.conf:/app/glider.conf:ro
 
   dns:
     image: cloudflare/cloudflared
