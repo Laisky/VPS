@@ -32,6 +32,21 @@ services:
     volumes:
       - /opt/configs/glider/vultr/glider.conf:/app/glider.conf:ro
 
+  haproxy:
+    image: haproxy:2.5.1-alpine
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    network_mode: host
+    volumes:
+      - /opt/configs/haproxy/vultr.cfg:/etc/haproxy/vultr.cfg:ro
+    command: -f /etc/haproxy/vultr.cfg
+
   dns:
     image: cloudflare/cloudflared
     restart: unless-stopped
