@@ -31,3 +31,17 @@ services:
       - 100.71.231.111:17777:17777
     volumes:
       - /opt/configs/glider/vultr/glider.conf:/app/glider.conf:ro
+
+  dns:
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    ports:
+      - 53:53/udp
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    command: proxy-dns --address 0.0.0.0 --port 53
