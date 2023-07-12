@@ -1,4 +1,5 @@
-FROM golang:1.20.4-bullseye AS build
+# db . -f ./derper/Dockerfile -t ppcelery/derper:latest
+FROM golang:1.20.5-bullseye AS build
 
 ADD https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain /tmp/random
 RUN go install tailscale.com/cmd/derper@latest
