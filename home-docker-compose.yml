@@ -132,7 +132,7 @@ services:
   #     # -t telegram
 
   go-ramjet:
-    image: ppcelery/go-ramjet:c23124a
+    image: ppcelery/go-ramjet:latest
     restart: "always"
     dns:
       - 100.113.28.117
@@ -169,6 +169,31 @@ services:
       - HTTPS_PROXY=http://100.122.41.16:17777
       - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
     command: python -m ramjet -t gptchat
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    dns:
+      - 100.122.41.16
+    ports:
+      - 100.97.108.34:9200:9200
+    environment:
+      - discovery.type=single-node
+      # - node.name=es01
+      # - cluster.name=laisky-elasticsearch
+      # - discovery.seed_hosts=es02,es03
+      # - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /var/lib/elasticsearch:/usr/share/elasticsearch/data
 
   # nginx:
   #   image: nginx:1.21.3-alpine
