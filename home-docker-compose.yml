@@ -182,10 +182,13 @@ services:
       - 100.97.108.34:9200:9200
     environment:
       - discovery.type=single-node
-      # - node.name=es01
-      # - cluster.name=laisky-elasticsearch
-      # - discovery.seed_hosts=es02,es03
-      # - cluster.initial_master_nodes=es01,es02,es03
+      - xpack.security.enabled=false
+      - http.port=9200
+      - http.max_content_length=10MB
+      - http.cors.enabled=true
+      - http.cors.allow-origin="*"
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=true
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
     ulimits:
@@ -194,6 +197,17 @@ services:
         hard: -1
     volumes:
       - /var/lib/elasticsearch:/usr/share/elasticsearch/data
+
+  dejavu:
+    image: appbaseio/dejavu:3.6.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    dns:
+      - 100.122.41.16
+    ports:
+      - 100.97.108.34:9201:1358
 
   # nginx:
   #   image: nginx:1.21.3-alpine
