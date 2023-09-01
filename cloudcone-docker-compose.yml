@@ -248,6 +248,39 @@ services:
       - 100.114.71.73:37851:37851
     entrypoint: python -m ramjet -e keyword
 
+  oneapi:
+    # image: justsong/one-api:v0.5.4
+    image: justsong/one-api:latest
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - FRONTEND_BASE_URL=https://oneapi.laisky.com
+    volumes:
+      - /var/lib/oneapi:/data
+    ports:
+      - 100.114.71.73:33000:3000
+
+  chatgpt:
+    image: yidadaa/chatgpt-next-web:latest
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - BASE_URL=https://chatgpt.laisky.com
+    ports:
+      - 100.114.71.73:33001:3000
+
   monitor:
     image: prom/node-exporter:latest
     container_name: node-exporter
