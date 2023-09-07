@@ -198,17 +198,6 @@ services:
     volumes:
       - /var/lib/elasticsearch:/usr/share/elasticsearch/data
 
-  dejavu:
-    image: appbaseio/dejavu:3.6.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    dns:
-      - 100.122.41.16
-    ports:
-      - 100.97.108.34:9201:1358
-
   # nginx:
   #   image: nginx:1.21.3-alpine
   #   restart: always
