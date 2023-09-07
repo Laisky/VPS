@@ -1,20 +1,20 @@
 version: '3'
 services:
-  derper:
-    image: ppcelery/derper:latest
-    restart: unless-stopped
-    environment:
-      ADDR: b1.laisky.com
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 443:443
-      - 3478:3478/udp
+  # derper:
+  #   image: ppcelery/derper:latest
+  #   restart: unless-stopped
+  #   environment:
+  #     ADDR: b1.laisky.com
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 443:443
+  #     - 3478:3478/udp
 
   # v2ray:
   #   image: v2ray/official:latest
@@ -194,3 +194,208 @@ services:
       DOH_SERVER_TIMEOUT: "10"
       DOH_SERVER_TRIES: "3"
       DOH_SERVER_VERBOSE: "true"
+
+  ramjet:
+    image: ppcelery/ramjet:latest
+    restart: unless-stopped
+    # depends_on:
+    #   - mongodb
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+    ports:
+      - 100.122.41.16:37851:37851
+    entrypoint: python -m ramjet -e keyword
+
+  oneapi:
+    # image: justsong/one-api:v0.5.4
+    image: justsong/one-api:latest
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - FRONTEND_BASE_URL=https://oneapi.laisky.com
+    volumes:
+      - /var/lib/oneapi:/data
+    ports:
+      - 100.122.41.16:33000:3000
+
+  chatgpt:
+    image: yidadaa/chatgpt-next-web:latest
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - BASE_URL=https://chatgpt.laisky.com
+    ports:
+      - 100.122.41.16:33001:3000
+
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - URL=laisky.com
+      - VALIDATION=dns
+      - SUBDOMAINS=wildcard
+      - DNSPLUGIN=cloudflare
+    volumes:
+      # - /var/log/nginx:/var/log/nginx
+      - /opt/configs/swag/cloudcone:/config
+      # - /opt/configs/nginx/conf.d/cloudcone:/config/nginx/site-confs
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 443:443
+    #   - 80:80
+    restart: unless-stopped
+
+  graphql:
+    image: ppcelery/laisky-blog-graphql:latest
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 100.122.41.16:17800:17800
+    command: api --listen=0.0.0.0:17800
+      --config=/etc/laisky-blog-graphql/settings.yml
+      --log-level=debug
+      -t telegram
+
+  nginx:
+    image: nginx:1.25
+    restart: unless-stopped
+    network_mode: host
+    # ports:
+    #   - 443:443
+    #   - 80:80
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /var/www:/var/www
+      - /var/log:/var/log
+      - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
+      - /opt/configs/nginx/conf.d/cloudcone:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx:/opt/configs/nginx:ro
+
+  pccs:
+    image: ppcelery/pccs:v2.2
+    # build:
+    #   context: ./pccs
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 100.122.41.16:8081:8081
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - /opt/configs/intel/pccs/default.json:/opt/intel/pccs/config/default.json:ro
+      - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
+
+  blog:
+    # image: ppcelery/laisky-blog:test
+    image: ppcelery/laisky-blog:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.122.41.16:27850:27850"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - /opt/configs/laisky-blog/settings.py:/www/gargantua/gargantua/settings/settings.py:ro
+    command: /usr/local/bin/run_gargantua
+
+  go-ramjet:
+    # image: ppcelery/go-ramjet:c23124a
+    image: ppcelery/go-ramjet:latest
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - TASKS=heartbeat,gptchat
+    volumes:
+      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ports:
+      - 100.122.41.16:24456:24456
+    command: -t heartbeat,gptchat -c /etc/go-ramjet/settings.yml --debug
+
+  wiki:
+    image: ppcelery/wiki:latest
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ports:
+      - 100.122.41.16:21313:1313
+
+  # mongodb6:
+  #   image: mongo:6.0.3
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "100.122.41.16:27017:27017"
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   volumes:
+  #     - /var/lib/mongodb6:/data/db
+  #   command: mongod
+  #     --bind_ip 0.0.0.0
+  #     --storageEngine wiredTiger
+  #     --wiredTigerCacheSizeGB 3
+  #     --auth
