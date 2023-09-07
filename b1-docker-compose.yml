@@ -16,24 +16,6 @@ services:
   #     - 443:443
   #     - 3478:3478/udp
 
-  # v2ray:
-  #   image: v2ray/official:latest
-  #   restart: unless-stopped
-  #   network_mode: host
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   # ports:
-  #   #   - 1021:1021/udp
-  #   #   - localhost:9953:9953
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   volumes:
-  #     - /opt/configs/v2ray:/etc/v2ray:ro
-  #   command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
-
   trojan-go:
     image: ppcelery/trojan-go:20230130
     restart: unless-stopped
@@ -52,26 +34,6 @@ services:
       - /opt/configs/pki/b1.laisky.com:/etc/torjan-go/pki:ro
     command: /etc/torjan-go/config/server.json
 
-  # xray:
-  #   image: teddysun/xray:latest
-  #   restart: unless-stopped
-  #   network_mode: host
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   # ports:
-  #   #   - 1021:1021/udp
-  #   #   - localhost:9953:9953
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   environment:
-  #     - xray.vmess.aead.forced=false
-  #   volumes:
-  #     - /opt/configs/xray:/etc/xray:ro
-  #   # command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
-
   glider:
     image: ppcelery/glider:latest
     restart: unless-stopped
@@ -89,36 +51,36 @@ services:
     volumes:
       - /opt/configs/glider/b1/glider.conf:/app/glider.conf:ro
 
-  haproxy:
-    image: haproxy:2.5.1-alpine
-    restart: always
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    network_mode: host
-    volumes:
-      - /opt/configs/haproxy/b1-warp.cfg:/etc/haproxy/b1-warp.cfg:ro
-    command: -f /etc/haproxy/b1-warp.cfg
-
-  # glider-warp:
-  #   image: ppcelery/glider:latest
-  #   restart: unless-stopped
+  # haproxy:
+  #   image: haproxy:2.5.1-alpine
+  #   restart: always
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
   #   logging:
   #     driver: "json-file"
   #     options:
   #       max-size: "10m"
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
   #   network_mode: host
-  #   # ports:
-  #   #   - 100.122.41.16:17778:17778
   #   volumes:
-  #     - /opt/configs/glider/b1/glider-warp.conf:/app/glider.conf:ro
+  #     - /opt/configs/haproxy/b1-warp.cfg:/etc/haproxy/b1-warp.cfg:ro
+  #   command: -f /etc/haproxy/b1-warp.cfg
+
+  glider-warp:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    network_mode: host
+    # ports:
+    #   - 100.122.41.16:17778:17778
+    volumes:
+      - /opt/configs/glider/b1/glider-warp.conf:/app/glider.conf:ro
 
   dns:
     image: cloudflare/cloudflared
@@ -150,25 +112,25 @@ services:
   #   ports:
   #     - 100.122.41.16:9100:9100
 
-  # mongodb:
-  #   image: mongo:3.6
-  #   restart: unless-stopped
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   ports:
-  #     - "100.122.41.16:27017:27017"
-  #   volumes:
-  #     - /var/lib/mongodb:/data/db
-  #   command: mongod
-  #     --bind_ip 0.0.0.0
-  #     --storageEngine wiredTiger
-  #     --wiredTigerCacheSizeGB 3
-  #     --auth
+  mongodb6:
+    image: mongo:6.0.3
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.122.41.16:27017:27017"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - /var/lib/mongodb6:/data/db
+    command: mongod
+      --bind_ip 0.0.0.0
+      --storageEngine wiredTiger
+      --wiredTigerCacheSizeGB 3
+      --auth
 
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
@@ -261,8 +223,8 @@ services:
       - DNSPLUGIN=cloudflare
     volumes:
       # - /var/log/nginx:/var/log/nginx
-      - /opt/configs/swag/cloudcone:/config
-      # - /opt/configs/nginx/conf.d/cloudcone:/config/nginx/site-confs
+      - /opt/configs/swag/b1:/config
+      # - /opt/configs/nginx/conf.d/b1:/config/nginx/site-confs
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -310,7 +272,7 @@ services:
       - /var/www:/var/www
       - /var/log:/var/log
       - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
-      - /opt/configs/nginx/conf.d/cloudcone:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
       - /opt/configs/nginx:/opt/configs/nginx:ro
 
   pccs:
@@ -379,23 +341,3 @@ services:
       - 8.8.8.8
     ports:
       - 100.122.41.16:21313:1313
-
-  # mongodb6:
-  #   image: mongo:6.0.3
-  #   restart: unless-stopped
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   ports:
-  #     - "100.122.41.16:27017:27017"
-  #   dns:
-  #     - 1.1.1.1
-  #     - 8.8.8.8
-  #   volumes:
-  #     - /var/lib/mongodb6:/data/db
-  #   command: mongod
-  #     --bind_ip 0.0.0.0
-  #     --storageEngine wiredTiger
-  #     --wiredTigerCacheSizeGB 3
-  #     --auth
