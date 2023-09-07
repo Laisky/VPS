@@ -168,7 +168,7 @@ services:
       - HTTP_PROXY=http://100.122.41.16:17777
       - HTTPS_PROXY=http://100.122.41.16:17777
       - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
-    command: python -m ramjet -t gptchat
+    command: python -m ramjet -t gptchat --debug
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.8.1
