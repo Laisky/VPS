@@ -157,23 +157,23 @@ services:
       DOH_SERVER_TRIES: "3"
       DOH_SERVER_VERBOSE: "true"
 
-  ramjet:
-    image: ppcelery/ramjet:latest
-    restart: unless-stopped
-    # depends_on:
-    #   - mongodb
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    volumes:
-      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
-    ports:
-      - 100.122.41.16:37851:37851
-    entrypoint: python -m ramjet -e keyword
+  # ramjet:
+  #   image: ppcelery/ramjet:latest
+  #   restart: unless-stopped
+  #   # depends_on:
+  #   #   - mongodb
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   volumes:
+  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+  #   ports:
+  #     - 100.122.41.16:37851:37851
+  #   entrypoint: python -m ramjet -e keyword
 
   oneapi:
     # image: justsong/one-api:v0.5.4
