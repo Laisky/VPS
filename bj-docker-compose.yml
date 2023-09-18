@@ -131,27 +131,27 @@ services:
     ports:
       - 100.96.127.120:9100:9100
 
-  # ramjet:
-  #   image: ppcelery/ramjet:latest
-  #   restart: always
-  #   deploy:
-  #     replicas: 1
-  #   ports:
-  #     - 100.96.127.120:22280:37851
-  #   dns:
-  #     - 100.122.41.16
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   volumes:
-  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
-  #     # - /home/ubuntu/data/langchain/index:/var/lib/openai/index
-  #     - /home/ubuntu/data/langchain/index-azure:/var/lib/openai/index
-  #   environment:
-  #     - http_proxy=http://100.122.41.16:17777
-  #     - https_proxy=http://100.122.41.16:17777
-  #     - HTTP_PROXY=http://100.122.41.16:17777
-  #     - HTTPS_PROXY=http://100.122.41.16:17777
-  #     - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
-  #   command: python -m ramjet -e keyword --debug
+  ramjet:
+    image: ppcelery/ramjet:latest
+    restart: always
+    deploy:
+      replicas: 1
+    ports:
+      - 100.96.127.120:22280:37851
+    dns:
+      - 100.122.41.16
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+      # - /home/ubuntu/data/langchain/index:/var/lib/openai/index
+      - /home/ubuntu/data/langchain/index-azure:/var/lib/openai/index
+    environment:
+      - http_proxy=http://100.122.41.16:17777
+      - https_proxy=http://100.122.41.16:17777
+      - HTTP_PROXY=http://100.122.41.16:17777
+      - HTTPS_PROXY=http://100.122.41.16:17777
+      - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
+    command: python -m ramjet -e keyword --debug
