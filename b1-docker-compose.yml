@@ -319,7 +319,7 @@ services:
       options:
         max-size: "10m"
     environment:
-      - GPTCHAT_CHUNK_SEARCH_URL=https://app.laisky.com/gptchat/query/chunks
+      - GPTCHAT_CHUNK_SEARCH_URL=https://app.laisky.com
       - TASKS=heartbeat,gptchat
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
