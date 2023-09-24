@@ -184,8 +184,8 @@ services:
   #   command: python -m ramjet -t gptchat --debug
 
   oneapi:
-    # image: justsong/one-api:v0.5.4
-    image: justsong/one-api:latest
+    image: justsong/one-api:v0.5.5
+    # image: justsong/one-api:latest
     restart: unless-stopped
     dns:
       - 8.8.8.8
