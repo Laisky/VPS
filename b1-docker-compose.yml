@@ -350,3 +350,22 @@ services:
       - 8.8.8.8
     ports:
       - 100.122.41.16:21313:1313
+
+  # docker run -d -p 8998:8998/udp --name hysteria --restart=always -v /etc/hysteria:/etc/hysteria teddysun/hysteria
+  hysteria:
+    # image: teddysun/hysteria
+    image: tobyxdd/hysteria
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ports:
+      - 28998:8998/udp
+    volumes:
+      - /opt/configs/swag/b1/etc/letsencrypt:/etc/letsencrypt:ro
+      - /opt/configs/hysteria/b1:/etc/hysteria:ro
+    command: ["server", "-c", "/etc/hysteria/server.yaml"]
