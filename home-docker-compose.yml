@@ -310,3 +310,19 @@ services:
   #     - '--web.enable-lifecycle'
   #   ports:
   #     - 100.97.108.34:9090:9090
+
+  hysteria:
+    # image: teddysun/hysteria
+    image: tobyxdd/hysteria
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 100.113.28.117
+    ports:
+      - 100.97.108.34:28998:8998
+    volumes:
+      - /opt/configs/hysteria/b1:/etc/hysteria:ro
+    command: ["client", "-c", "/etc/hysteria/client.yaml"]

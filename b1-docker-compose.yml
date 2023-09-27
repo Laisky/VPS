@@ -351,7 +351,6 @@ services:
     ports:
       - 100.122.41.16:21313:1313
 
-  # docker run -d -p 8998:8998/udp --name hysteria --restart=always -v /etc/hysteria:/etc/hysteria teddysun/hysteria
   hysteria:
     # image: teddysun/hysteria
     image: tobyxdd/hysteria
