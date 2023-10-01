@@ -85,3 +85,20 @@ services:
     #   - 443:443
     #   - 80:80
     restart: unless-stopped
+
+  hysteria:
+    image: tobyxdd/hysteria
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ports:
+      - 28998:8998/udp
+    volumes:
+      - /opt/configs/swag/vultr/etc/letsencrypt:/etc/letsencrypt:ro
+      - /opt/configs/hysteria/server.yaml:/etc/hysteria/server.yaml:ro
+    command: ["server", "-c", "/etc/hysteria/server.yaml"]

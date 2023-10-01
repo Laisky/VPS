@@ -352,7 +352,6 @@ services:
       - 100.122.41.16:21313:1313
 
   hysteria:
-    # image: teddysun/hysteria
     image: tobyxdd/hysteria
     restart: "always"
     logging:
