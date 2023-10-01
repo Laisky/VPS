@@ -366,5 +366,5 @@ services:
       - 28998:8998/udp
     volumes:
       - /opt/configs/swag/b1/etc/letsencrypt:/etc/letsencrypt:ro
-      - /opt/configs/hysteria/b1:/etc/hysteria:ro
+      - /opt/configs/hysteria/server.yaml:/etc/hysteria/server.yaml:ro
     command: ["server", "-c", "/etc/hysteria/server.yaml"]
