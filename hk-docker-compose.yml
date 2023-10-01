@@ -175,3 +175,28 @@ services:
     #   - HTTPS_PROXY=http://100.122.41.16:17777
     #   - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
     command: python -m ramjet -e keyword --debug
+
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - URL=hk.laisky.com
+      - VALIDATION=dns
+      - SUBDOMAINS=wildcard
+      - DNSPLUGIN=cloudflare
+    volumes:
+      # - /var/log/nginx:/var/log/nginx
+      - /opt/configs/swag/hk:/config
+      # - /opt/configs/nginx/conf.d/b1:/config/nginx/site-confs
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 443:443
+    #   - 80:80
+    restart: unless-stopped

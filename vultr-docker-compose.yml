@@ -60,3 +60,28 @@ services:
       options:
         max-size: "10m"
     command: proxy-dns --address 0.0.0.0 --port 53
+
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - URL=vultr.laisky.com
+      - VALIDATION=dns
+      - SUBDOMAINS=wildcard
+      - DNSPLUGIN=cloudflare
+    volumes:
+      # - /var/log/nginx:/var/log/nginx
+      - /opt/configs/swag/vultr:/config
+      # - /opt/configs/nginx/conf.d/b1:/config/nginx/site-confs
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # ports:
+    #   - 443:443
+    #   - 80:80
+    restart: unless-stopped
