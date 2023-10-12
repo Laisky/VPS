@@ -85,17 +85,15 @@ services:
     restart: unless-stopped
 
   dns:
-    image: cloudflare/cloudflared
-    restart: unless-stopped
-    dns:
-      - 100.122.41.16
-    ports:
-      - 53:53/udp
+    image: axeleroy/dnsproxy:latest
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
-    command: proxy-dns --address 0.0.0.0 --port 53
+    environment:
+      - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
+    ports:
+      - "53:53"
 
   derper:
     image: ppcelery/derper:latest

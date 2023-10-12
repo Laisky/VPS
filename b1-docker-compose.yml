@@ -83,18 +83,15 @@ services:
       - /opt/configs/glider/b1/glider-warp.conf:/app/glider.conf:ro
 
   dns:
-    image: cloudflare/cloudflared
-    restart: unless-stopped
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 53:53/udp
+    image: axeleroy/dnsproxy:latest
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
-    command: proxy-dns --address 0.0.0.0 --port 53
+    environment:
+      - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
+    ports:
+      - "53:53"
 
   # monitor:
   #   image: prom/node-exporter:latest
