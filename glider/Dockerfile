@@ -1,4 +1,5 @@
-FROM golang:1.20.7-bullseye AS builder
+# db . -f ./glider/Dockerfile -t ppcelery/glider:latest
+FROM golang:1.21.3-bullseye AS builder
 
 RUN go install github.com/nadoo/glider@latest
 

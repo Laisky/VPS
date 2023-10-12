@@ -17,7 +17,7 @@ services:
   #     - 3478:3478/udp
 
   trojan-go:
-    image: ppcelery/trojan-go:20230130
+    image: ppcelery/trojan-go:latest
     restart: unless-stopped
     dns:
       - 8.8.8.8
