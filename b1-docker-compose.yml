@@ -267,8 +267,9 @@ services:
     restart: unless-stopped
     network_mode: host
     # ports:
+    #   # - 100.122.41.16:443:443
     #   - 443:443
-    #   - 80:80
+    #   # - 80:80
     dns:
       - 8.8.8.8
       - 1.1.1.1
