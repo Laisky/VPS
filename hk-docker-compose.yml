@@ -97,7 +97,7 @@ services:
     environment:
       - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
     ports:
-      - "53:53"
+      - 53:53/udp
 
   monitor:
     image: prom/node-exporter:v1.5.0
