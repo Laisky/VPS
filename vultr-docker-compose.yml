@@ -47,19 +47,19 @@ services:
   #     - /opt/configs/haproxy/vultr.cfg:/etc/haproxy/vultr.cfg:ro
   #   command: -f /etc/haproxy/vultr.cfg
 
-  dns:
-    image: cloudflare/cloudflared
-    restart: unless-stopped
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 53:53/udp
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    command: proxy-dns --address 0.0.0.0 --port 53
+  # dns:
+  #   image: cloudflare/cloudflared
+  #   restart: unless-stopped
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 53:53/udp
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   command: proxy-dns --address 0.0.0.0 --port 53
 
   swag:
     image: lscr.io/linuxserver/swag:latest

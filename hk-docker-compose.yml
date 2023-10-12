@@ -88,19 +88,19 @@ services:
       - /opt/configs/pki/hk.laisky.com:/etc/torjan-go/pki:ro
     command: /etc/torjan-go/config/server.json
 
-  dns:
-    image: cloudflare/cloudflared
-    restart: unless-stopped
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    ports:
-      - 53:53/udp
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    command: proxy-dns --address 0.0.0.0 --port 53
+  # dns:
+  #   image: cloudflare/cloudflared
+  #   restart: unless-stopped
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   ports:
+  #     - 53:53/udp
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   command: proxy-dns --address 0.0.0.0 --port 53
 
   monitor:
     image: prom/node-exporter:v1.5.0
