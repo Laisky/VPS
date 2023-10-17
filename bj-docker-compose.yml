@@ -93,7 +93,7 @@ services:
     environment:
       - ARGS=-u 100.122.41.16:53 --cache
     ports:
-      - 53:53/udp
+      - 100.96.127.120:53:53/udp
 
   derper:
     image: ppcelery/derper:latest

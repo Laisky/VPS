@@ -41,7 +41,7 @@ services:
     environment:
       - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
     ports:
-      - 53:53/udp
+      - 100.71.231.111:53:53/udp
 
   swag:
     image: lscr.io/linuxserver/swag:latest
