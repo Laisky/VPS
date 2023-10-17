@@ -32,16 +32,16 @@ services:
     volumes:
       - /opt/configs/glider/vultr/glider.conf:/app/glider.conf:ro
 
-  dns:
-    image: axeleroy/dnsproxy:latest
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    environment:
-      - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
-    ports:
-      - 100.71.231.111:53:53/udp
+  # dns:
+  #   image: axeleroy/dnsproxy:latest
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
+  #   ports:
+  #     - 100.71.231.111:53:53/udp
 
   swag:
     image: lscr.io/linuxserver/swag:latest

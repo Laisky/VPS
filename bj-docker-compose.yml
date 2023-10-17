@@ -84,16 +84,16 @@ services:
       - 10443:443
     restart: unless-stopped
 
-  dns:
-    image: axeleroy/dnsproxy:latest
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    environment:
-      - ARGS=-u 100.122.41.16:53 --cache
-    ports:
-      - 100.96.127.120:53:53/udp
+  # dns:
+  #   image: axeleroy/dnsproxy:latest
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     - ARGS=-u 100.122.41.16:53 --cache
+  #   ports:
+  #     - 100.96.127.120:53:53/udp
 
   derper:
     image: ppcelery/derper:latest
