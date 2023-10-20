@@ -112,5 +112,5 @@ services:
       - /var/www:/var/www
       - /var/log:/var/log
       - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
-      - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx/conf.d/vultr:/etc/nginx/conf.d:ro
       - /opt/configs/nginx:/opt/configs/nginx:ro
