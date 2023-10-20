@@ -1,20 +1,20 @@
 version: '3'
 services:
-  derper:
-    image: ppcelery/derper:latest
-    restart: unless-stopped
-    environment:
-      ADDR: vultr.laisky.com
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - 443:443
-      - 3478:3478/udp
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
+  # derper:
+  #   image: ppcelery/derper:latest
+  #   restart: unless-stopped
+  #   environment:
+  #     ADDR: vultr.laisky.com
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - 443:443
+  #     - 3478:3478/udp
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
 
   glider:
     image: ppcelery/glider:latest
@@ -31,17 +31,6 @@ services:
       - 100.71.231.111:17777:17777
     volumes:
       - /opt/configs/glider/vultr/glider.conf:/app/glider.conf:ro
-
-  # dns:
-  #   image: axeleroy/dnsproxy:latest
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   environment:
-  #     - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
-  #   ports:
-  #     - 100.71.231.111:53:53/udp
 
   swag:
     image: lscr.io/linuxserver/swag:latest
