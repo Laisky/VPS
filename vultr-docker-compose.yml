@@ -74,24 +74,24 @@ services:
       - /opt/configs/hysteria/vultr/server.yaml:/etc/hysteria/server.yaml:ro
     command: ["server", "-c", "/etc/hysteria/server.yaml"]
 
-  go-ramjet:
-    # image: ppcelery/go-ramjet:c23124a
-    image: ppcelery/go-ramjet:latest
-    restart: "always"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    environment:
-      - TASKS=heartbeat,gptchat
-    volumes:
-      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
-    ports:
-      - 100.71.231.111:24456:24456
-    command: -t heartbeat,gptchat -c /etc/go-ramjet/settings.yml --debug
+  # go-ramjet:
+  #   # image: ppcelery/go-ramjet:c23124a
+  #   image: ppcelery/go-ramjet:latest
+  #   restart: "always"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     - TASKS=heartbeat,gptchat
+  #   volumes:
+  #     - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   ports:
+  #     - 100.71.231.111:24456:24456
+  #   command: -t heartbeat,gptchat -c /etc/go-ramjet/settings.yml --debug
 
   # nginx:
   #   image: nginx:1.25
