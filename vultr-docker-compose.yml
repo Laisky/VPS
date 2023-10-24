@@ -1,20 +1,20 @@
 version: '3'
 services:
-  # derper:
-  #   image: ppcelery/derper:latest
-  #   restart: unless-stopped
-  #   environment:
-  #     ADDR: vultr.laisky.com
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   ports:
-  #     - 443:443
-  #     - 3478:3478/udp
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
+  derper:
+    image: ppcelery/derper:latest
+    restart: unless-stopped
+    environment:
+      ADDR: vultr.laisky.com
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 443:443
+      - 3478:3478/udp
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   glider:
     image: ppcelery/glider:latest
@@ -93,24 +93,24 @@ services:
       - 100.71.231.111:24456:24456
     command: -t heartbeat,gptchat -c /etc/go-ramjet/settings.yml --debug
 
-  nginx:
-    image: nginx:1.25
-    restart: unless-stopped
-    # network_mode: host
-    ports:
-      # - 100.122.41.16:443:443
-      - 443:443
-      # - 80:80
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    volumes:
-      - /var/www:/var/www
-      - /var/log:/var/log
-      - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
-      - /opt/configs/nginx/conf.d/vultr:/etc/nginx/conf.d:ro
-      - /opt/configs/nginx:/opt/configs/nginx:ro
+  # nginx:
+  #   image: nginx:1.25
+  #   restart: unless-stopped
+  #   # network_mode: host
+  #   ports:
+  #     # - 100.122.41.16:443:443
+  #     - 443:443
+  #     # - 80:80
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   volumes:
+  #     - /var/www:/var/www
+  #     - /var/log:/var/log
+  #     - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
+  #     - /opt/configs/nginx/conf.d/vultr:/etc/nginx/conf.d:ro
+  #     - /opt/configs/nginx:/opt/configs/nginx:ro
