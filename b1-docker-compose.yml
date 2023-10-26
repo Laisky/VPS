@@ -86,16 +86,16 @@ services:
     volumes:
       - /opt/configs/glider/b1/glider-warp.conf:/app/glider.conf:ro
 
-  # dns:
-  #   image: axeleroy/dnsproxy:latest
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   environment:
-  #     - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
-  #   ports:
-  #     - 100.122.41.16:53:53/udp
+  dns:
+    image: axeleroy/dnsproxy:latest
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
+    ports:
+      - 100.122.41.16:53:53/udp
 
   # monitor:
   #   image: prom/node-exporter:latest
@@ -141,7 +141,7 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     ports:
-      - 100.122.41.16:53:53
+      - 100.122.41.16:8053:8053
     logging:
       driver: "json-file"
       options:
@@ -153,7 +153,7 @@ services:
       # Here is the list of addresses: https://use.opendns.com/
       UPSTREAM_DNS_SERVER: "udp:1.1.1.1:53"
       DOH_HTTP_PREFIX: "/query"
-      DOH_SERVER_LISTEN: "0.0.0.0:53"
+      DOH_SERVER_LISTEN: "0.0.0.0:8053"
       DOH_SERVER_TIMEOUT: "10"
       DOH_SERVER_TRIES: "3"
       DOH_SERVER_VERBOSE: "true"
@@ -220,6 +220,7 @@ services:
   swag:
     image: lscr.io/linuxserver/swag:latest
     container_name: swag
+    restart: unless-stopped
     cap_add:
       - NET_ADMIN
     environment:
@@ -240,7 +241,6 @@ services:
     # ports:
     #   - 443:443
     #   - 80:80
-    restart: unless-stopped
 
   graphql:
     image: ppcelery/laisky-blog-graphql:latest
