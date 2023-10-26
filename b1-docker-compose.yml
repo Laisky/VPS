@@ -13,8 +13,8 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     volumes:
-      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/fullchain.pem:/etc/live/b1.laisky.com.crt:ro
-      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/privkey.pem:/etc/live/b1.laisky.com.key:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/b1.laisky.com.crt:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/b1.laisky.com.key:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
