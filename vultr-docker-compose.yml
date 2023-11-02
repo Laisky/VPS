@@ -88,7 +88,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    network_mode: host
+    # network_mode: host
+    ports:
+      - 443:28443
     volumes:
       - /opt/configs/haproxy/vultr.cfg:/etc/haproxy/proxy.cfg:ro
     command: -f /etc/haproxy/proxy.cfg
