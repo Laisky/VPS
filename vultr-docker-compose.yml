@@ -77,3 +77,18 @@ services:
       - /opt/configs/swag/vultr/etc/letsencrypt:/etc/letsencrypt:ro
       - /opt/configs/hysteria/vultr/server.yaml:/etc/hysteria/server.yaml:ro
     command: ["server", "-c", "/etc/hysteria/server.yaml"]
+
+  haproxy:
+    image: haproxy:2.5.1-alpine
+    restart: always
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    network_mode: host
+    volumes:
+      - /opt/configs/haproxy/vultr.cfg:/etc/haproxy/proxy.cfg:ro
+    command: -f /etc/haproxy/proxy.cfg
