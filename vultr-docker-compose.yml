@@ -30,9 +30,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    # network_mode: host
-    ports:
-      - 100.71.231.111:17777:17777
+    network_mode: host
+    # ports:
+    #   - 100.71.231.111:17777:17777
     volumes:
       - /opt/configs/glider/vultr/glider.conf:/app/glider.conf:ro
 
