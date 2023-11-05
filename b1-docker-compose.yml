@@ -368,3 +368,21 @@ services:
       - /opt/configs/swag/b1/etc/letsencrypt:/etc/letsencrypt:ro
       - /opt/configs/hysteria/b1/server.yaml:/etc/hysteria/server.yaml:ro
     command: ["server", "-c", "/etc/hysteria/server.yaml"]
+
+  # pki:
+  #   image: ppcelery/pki
+  #   restart: "always"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   ports:
+  #     - 23333:23333
+  #     - 23334:23334
+  #     - 23335:23335
+  #   volumes:
+  #     - /opt/configs/basebit/pki-server.json:/etc/pki/server.json
+  #   command: ["-c", "/etc/pki/server.json", "--debug"]
