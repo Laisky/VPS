@@ -88,8 +88,9 @@ services:
       options:
         max-size: "10m"
     volumes:
+      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
       - /opt/configs/trojan-go/hk:/etc/torjan-go/config:ro
-      - /opt/configs/pki/hk.laisky.com:/etc/torjan-go/pki:ro
     command: /etc/torjan-go/config/server.json
 
   # dns:
