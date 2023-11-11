@@ -98,7 +98,7 @@ services:
   trojan-go:
     image: ppcelery/trojan-go:latest
     restart: unless-stopped
-    network_mode: host
+    # network_mode: host
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -106,6 +106,8 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
+    ports:
+      - 23443:23443
     volumes:
       - /opt/configs/swag/vultr/etc/letsencrypt/live/vultr.laisky.com/fullchain.pem:/etc/live/vultr.laisky.com.crt:ro
       - /opt/configs/swag/vultr/etc/letsencrypt/live/vultr.laisky.com/privkey.pem:/etc/live/vultr.laisky.com.key:ro

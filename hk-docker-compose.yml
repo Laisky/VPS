@@ -79,7 +79,7 @@ services:
   trojan-go:
     image: ppcelery/trojan-go:latest
     restart: unless-stopped
-    network_mode: host
+    # network_mode: host
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -87,6 +87,8 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
+    ports:
+      - 23443:23443
     volumes:
       - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
       - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
