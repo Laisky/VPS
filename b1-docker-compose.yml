@@ -187,7 +187,7 @@ services:
 
   oneapi:
     # image: ppcelery/one-api:v0.5.7-1
-    image: ppcelery/one-api:v0.5.7-1
+    image: ppcelery/one-api:latest
     restart: unless-stopped
     dns:
       - 8.8.8.8
