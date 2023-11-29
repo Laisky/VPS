@@ -322,7 +322,7 @@ services:
     command: /usr/local/bin/run_gargantua
 
   go-ramjet:
-    # image: ppcelery/go-ramjet:a540ea6
+    # image: ppcelery/go-ramjet:89601e7
     image: ppcelery/go-ramjet:latest
     restart: "always"
     logging:
