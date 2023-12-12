@@ -274,8 +274,10 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    ports:
-      - 100.97.108.34:17777:8080
+    network_mode: host
+    # ports:
+    #   - 100.97.108.34:17777:8080
+    #   - 100.97.108.34:17778:8080
     volumes:
       - /opt/configs/glider/home/glider-gfw.conf:/app/glider.conf:ro
 
