@@ -186,7 +186,7 @@ services:
   #   command: python -m ramjet -t gptchat --debug
 
   oneapi:
-    # image: ppcelery/one-api:14108ce
+    # image: ppcelery/one-api:1608038
     image: ppcelery/one-api:latest
     restart: unless-stopped
     dns:
