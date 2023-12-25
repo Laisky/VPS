@@ -56,6 +56,22 @@ services:
     volumes:
       - /opt/configs/glider/b1/glider.conf:/app/glider.conf:ro
 
+  glider-turkey:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # network_mode: host
+    ports:
+      - "100.122.41.16:17233:17777"
+    volumes:
+      - /opt/configs/glider/b1/glider-turkey.conf:/app/glider.conf:ro
+
   # haproxy:
   #   image: haproxy:2.5.1-alpine
   #   restart: always
@@ -197,6 +213,7 @@ services:
       options:
         max-size: "10m"
     environment:
+      - GLOBAL_API_RATE_LIMIT=1000
       - FRONTEND_BASE_URL=https://oneapi.laisky.com
     volumes:
       - /var/lib/oneapi:/data
@@ -305,8 +322,8 @@ services:
       - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
 
   blog:
-    # image: ppcelery/laisky-blog:test
-    image: ppcelery/laisky-blog:latest
+    # image: ppcelery/laisky-blog:latest
+    image: ppcelery/laisky-blog:7abbca4
     restart: unless-stopped
     logging:
       driver: "json-file"
