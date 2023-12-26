@@ -84,8 +84,8 @@ services:
   #       max-size: "10m"
   #   network_mode: host
   #   volumes:
-  #     - /opt/configs/haproxy/b1-warp.cfg:/etc/haproxy/b1-warp.cfg:ro
-  #   command: -f /etc/haproxy/b1-warp.cfg
+  #     - /opt/configs/haproxy/b1.cfg:/etc/haproxy/b1.cfg:ro
+  #   command: -f /etc/haproxy/b1.cfg
 
   glider-warp:
     image: ppcelery/glider:latest
@@ -102,17 +102,6 @@ services:
     #   - 100.122.41.16:17778:17778
     volumes:
       - /opt/configs/glider/b1/glider-warp.conf:/app/glider.conf:ro
-
-  dns:
-    image: axeleroy/dnsproxy:latest
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    environment:
-      - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
-    ports:
-      - 100.122.41.16:53:53/udp
 
   # monitor:
   #   image: prom/node-exporter:latest
@@ -150,6 +139,18 @@ services:
       --wiredTigerCacheSizeGB 3
       --auth
 
+  dns:
+    image: axeleroy/dnsproxy:latest
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
+    ports:
+      - 100.122.41.16:53:53/udp
+
+  # https://github.com/satishweb/docker-doh
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
     restart: unless-stopped
