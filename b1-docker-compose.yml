@@ -352,6 +352,7 @@ services:
         max-size: "10m"
     environment:
       - TASKS=heartbeat,gptchat
+      - DISABLE_LLM_CONSERVATION_AUDIO=true
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
     dns:
