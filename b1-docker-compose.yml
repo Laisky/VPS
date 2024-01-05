@@ -217,6 +217,7 @@ services:
     environment:
       - GLOBAL_API_RATE_LIMIT=1000
       - FRONTEND_BASE_URL=https://oneapi.laisky.com
+      - LLM_CONSERVATION_AUDIT=https://chat.laisky.com/audit/conservation
     volumes:
       - /var/lib/oneapi:/data
     ports:
@@ -326,7 +327,7 @@ services:
   blog:
     # image: ppcelery/laisky-blog:7abbca4
     # image: ppcelery/laisky-blog:83918ff
-    image: ppcelery/laisky-blog:5611aab
+    image: ppcelery/laisky-blog:6eccb1e
     restart: unless-stopped
     logging:
       driver: "json-file"
