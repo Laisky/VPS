@@ -325,9 +325,11 @@ services:
       - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
 
   blog:
-    # image: ppcelery/laisky-blog:7abbca4
-    # image: ppcelery/laisky-blog:83918ff
-    image: ppcelery/laisky-blog:6eccb1e
+    # image: ppcelery/laisky-blog:6dc1fcc
+    # image: ppcelery/laisky-blog:6500211
+    # image: ppcelery/laisky-blog:e7172d5
+    # image: ppcelery/laisky-blog:3c95dc9
+    image: ppcelery/laisky-blog:cf2b3af
     restart: unless-stopped
     logging:
       driver: "json-file"
