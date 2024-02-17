@@ -130,6 +130,7 @@ services:
       - 100.96.127.120:9100:9100
 
   ramjet:
+    # image: ppcelery/ramjet:b145697
     image: ppcelery/ramjet:latest
     restart: always
     deploy:
