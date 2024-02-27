@@ -3,8 +3,8 @@ services:
   glider-gfw:
     image: ppcelery/glider:latest
     restart: unless-stopped
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     logging:
       driver: "json-file"
       options:
@@ -32,8 +32,8 @@ services:
   glider-cb:
     image: ppcelery/glider:latest
     restart: unless-stopped
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     logging:
       driver: "json-file"
       options:
@@ -47,8 +47,8 @@ services:
   doh:
     image: satishweb/doh-server:v2.3.2-ubuntu
     restart: unless-stopped
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     logging:
       driver: "json-file"
       options:
@@ -98,8 +98,8 @@ services:
   derper:
     image: ppcelery/derper:latest
     restart: unless-stopped
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     logging:
       driver: "json-file"
       options:
@@ -137,8 +137,8 @@ services:
       replicas: 1
     ports:
       - 100.96.127.120:22280:37851
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     logging:
       driver: "json-file"
       options:

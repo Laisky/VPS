@@ -9,8 +9,8 @@ services:
         max-size: "10m"
     ports:
       - "100.97.108.34:27017:27017"
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     volumes:
       - /var/lib/mongodb:/data/db
     command: mongod
@@ -28,8 +28,8 @@ services:
         max-size: "10m"
     ports:
       - "100.97.108.34:21491:1491"
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     volumes:
       - /var/lib/sonic:/data
       - /opt/configs/sonic/config.cfg:/etc/sonic.cfg:ro
@@ -43,8 +43,8 @@ services:
         max-size: "10m"
     ports:
       - "100.97.108.34:27018:27017"
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     volumes:
       - /var/lib/mongodb6:/data/db
     command: mongod
@@ -81,8 +81,8 @@ services:
         max-size: "10m"
     ports:
       - "6379:6379"
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     volumes:
       - /var/lib/redis:/data
 
@@ -134,8 +134,8 @@ services:
   go-ramjet:
     image: ppcelery/go-ramjet:latest
     restart: "always"
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     logging:
       driver: "json-file"
       options:
@@ -176,8 +176,8 @@ services:
       driver: "json-file"
       options:
         max-size: "30m"
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     ports:
       - 100.97.108.34:9200:9200
     environment:
@@ -245,8 +245,8 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     volumes:
       - /var/lib/minio:/data
     command: server /data --address :9000 --console-address ":9001"
@@ -254,8 +254,8 @@ services:
   glider:
     image: ppcelery/glider:latest
     restart: unless-stopped
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     logging:
       driver: "json-file"
       options:
@@ -268,8 +268,8 @@ services:
   glider-gfw:
     image: ppcelery/glider:latest
     restart: unless-stopped
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     logging:
       driver: "json-file"
       options:
@@ -321,8 +321,8 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    dns:
-      - 100.122.41.16
+    # dns:
+    #   - 100.122.41.16
     ports:
       - 100.97.108.34:28998:8998
     volumes:
