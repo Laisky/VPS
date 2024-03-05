@@ -213,6 +213,8 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
+    env_file:
+      - /opt/configs/env/b1/oneapi.env
     environment:
       - GLOBAL_API_RATE_LIMIT=1000
       - FRONTEND_BASE_URL=https://oneapi.laisky.com
