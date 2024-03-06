@@ -1,5 +1,5 @@
 # db . -f ./trojan-go/Dockerfile -t ppcelery/trojan-go:latest
-FROM golang:1.21.4-bullseye AS builder
+FROM golang:1.22.1-bullseye AS builder
 
 WORKDIR /
 
