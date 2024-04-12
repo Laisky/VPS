@@ -431,6 +431,7 @@ services:
         max-size: "10m"
     environment:
       - 'ALLOWED_NETWORKS=0.0.0.0/0'
+      - TIMEOUT=600
     env_file:
       - /opt/configs/tinyproxy/auth.env
     ports:
