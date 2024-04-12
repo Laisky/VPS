@@ -328,3 +328,21 @@ services:
     volumes:
       - /opt/configs/hysteria/b1:/etc/hysteria:ro
     command: ["client", "-c", "/etc/hysteria/client.yaml"]
+
+  pdf:
+    image: frooodle/s-pdf:latest
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - '100.97.108.34:22080:8080'
+    volumes:
+      - /var/lib/stirling-pdf/trainingData:/usr/share/tessdata #Required for extra OCR languages
+      - /opt/configs/stirling-pdf:/configs
+      - /var/lib/stirling-pdf/customFiles:/customFiles/
+      - /var/lib/stirling-pdf/logs:/logs/
+    environment:
+      - DOCKER_ENABLE_SECURITY=false
+      - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
