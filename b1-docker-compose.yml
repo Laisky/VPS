@@ -434,4 +434,4 @@ services:
     env_file:
       - /opt/configs/tinyproxy/auth.env
     ports:
-      - 100.122.41.16:23491:8888
+      - 23491:8888
