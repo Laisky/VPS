@@ -418,3 +418,20 @@ services:
   #   environment:
   #     - DOCKER_ENABLE_SECURITY=false
   #     - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
+
+  proxy_bbt:
+    image: ppcelery/tinyproxy:latest
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - 'ALLOWED_NETWORKS=0.0.0.0/0'
+    env_file:
+      - /opt/configs/tinyproxy/auth.env
+    ports:
+      - 100.122.41.16:23491:8888
