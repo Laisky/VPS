@@ -115,6 +115,9 @@ services:
     dns:
       - 1.1.1.1
       - 8.8.8.8
+    ulimits:
+      nproc: 65535
+      nofile: 65535
     volumes:
       - /var/lib/mongodb6:/data/db
     command: mongod
