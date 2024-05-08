@@ -56,6 +56,22 @@ services:
     volumes:
       - /opt/configs/glider/b1/glider.conf:/app/glider.conf:ro
 
+  glider-sg:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    # network_mode: host
+    ports:
+      - "100.122.41.16:17779:17777"
+    volumes:
+      - /opt/configs/glider/b1/glider-sg.conf:/app/glider.conf:ro
+
   # haproxy:
   #   image: haproxy:2.5.1-alpine
   #   restart: always
