@@ -80,7 +80,7 @@ services:
       options:
         max-size: "10m"
     ports:
-      - "6379:6379"
+      - "100.97.108.34:6379:6379"
     # dns:
     #   - 100.122.41.16
     volumes:
