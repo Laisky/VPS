@@ -257,6 +257,7 @@ services:
       - URL=laisky.com
       - VALIDATION=dns
       - SUBDOMAINS=wildcard
+      - EXTRA_DOMAINS=*.argw.laisky.com
       - DNSPLUGIN=cloudflare
     volumes:
       # - /var/log/nginx:/var/log/nginx
@@ -311,6 +312,8 @@ services:
       - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
       - /opt/configs/nginx/conf.d/b1:/etc/nginx/conf.d:ro
       - /opt/configs/nginx:/opt/configs/nginx:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/fullchain.pem:/opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/fullchain.pem:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:ro
 
   pccs:
     image: ppcelery/pccs:v2.2
