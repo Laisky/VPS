@@ -86,6 +86,25 @@ services:
     volumes:
       - /var/lib/redis:/data
 
+  liteseed:
+    image: ppcelery/liteseed-edge:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      http_proxy: http://100.122.41.16:17777
+      https_proxy: http://100.122.41.16:17777
+      HTTP_PROXY: http://100.122.41.16:17777
+      HTTPS_PROXY: http://100.122.41.16:17777
+      NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
+    ports:
+      - "100.97.108.34:21108:8080"
+    volumes:
+      - /var/lib/liteseed:/data
+    command: ["start"]
+
   # https://github.com/chrislusf/seaweedfs#quick-start
   # seaweedfs:
   #   image: "chrislusf/seaweedfs:3.01"
