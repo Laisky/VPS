@@ -1,10 +1,11 @@
 # db . -f ./trojan-go/Dockerfile -t ppcelery/trojan-go:latest
-FROM golang:1.22.4-bullseye AS builder
+FROM golang:1.22.5-bullseye AS builder
 
 WORKDIR /
 
 RUN apt-get install git make &&\
-    git clone https://github.com/p4gefau1t/trojan-go.git --depth=1
+    # git clone https://github.com/p4gefau1t/trojan-go.git --depth=1
+    git clone https://github.com/fregie/trojan-go.git --depth=1
 
 RUN cd trojan-go &&\
     make &&\
