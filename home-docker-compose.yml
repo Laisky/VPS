@@ -382,3 +382,17 @@ services:
   #     - /opt/configs/tinyproxy/auth.env
   #   ports:
   #     - 100.97.108.34:23491:8888
+
+  metube:
+    image: ghcr.io/alexta69/metube
+    restart: unless-stopped
+    ports:
+      - "100.97.108.34:22081:8081"
+    volumes:
+      - /var/lib/ytdownload:/downloads
+    environment:
+      http_proxy: http://100.122.41.16:17777
+      https_proxy: http://100.122.41.16:17777
+      HTTP_PROXY: http://100.122.41.16:17777
+      HTTPS_PROXY: http://100.122.41.16:17777
+      NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
