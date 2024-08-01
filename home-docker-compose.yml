@@ -391,6 +391,7 @@ services:
     volumes:
       - /var/lib/ytdownload:/downloads
     environment:
+      DELETE_FILE_ON_TRASHCAN: true
       http_proxy: http://100.122.41.16:17777
       https_proxy: http://100.122.41.16:17777
       HTTP_PROXY: http://100.122.41.16:17777
