@@ -474,3 +474,21 @@ services:
       - /opt/configs/tinyproxy/auth.env
     ports:
       - 23491:8888
+
+  channel_boardcast:
+    image: ppcelery/boardcastchannel:latest
+    restart: unless-stopped
+    env_file:
+      - /opt/configs/env/b1/broadcastchannel.env
+    ports:
+      - 100.97.108.34:14321:4321
+    environment:
+      http_proxy: http://100.122.41.16:17777
+      https_proxy: http://100.122.41.16:17777
+      HTTP_PROXY: http://100.122.41.16:17777
+      HTTPS_PROXY: http://100.122.41.16:17777
+      NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
