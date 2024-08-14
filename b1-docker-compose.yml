@@ -371,7 +371,7 @@ services:
     # image: ppcelery/go-ramjet:89601e7
     image: ppcelery/go-ramjet:latest
     restart: "always"
-    init: true
+    init: true # to prevent zombie processes of Chrome
     logging:
       driver: "json-file"
       options:
