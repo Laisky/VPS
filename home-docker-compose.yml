@@ -35,7 +35,7 @@ services:
       - /opt/configs/sonic/config.cfg:/etc/sonic.cfg:ro
 
   mongodb6:
-    image: mongo:6.0.3
+    image: mongo:6.0.16
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -189,33 +189,33 @@ services:
   #     - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
   #   command: python -m ramjet -t gptchat --debug
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.1
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    # dns:
-    #   - 100.122.41.16
-    ports:
-      - 100.97.108.34:9200:9200
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - http.port=9200
-      - http.max_content_length=10MB
-      - http.cors.enabled=true
-      - http.cors.allow-origin="*"
-      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
-      - http.cors.allow-credentials=true
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - /var/lib/elasticsearch:/usr/share/elasticsearch/data
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.8.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   # dns:
+  #   #   - 100.122.41.16
+  #   ports:
+  #     - 100.97.108.34:9200:9200
+  #   environment:
+  #     - discovery.type=single-node
+  #     - xpack.security.enabled=false
+  #     - http.port=9200
+  #     - http.max_content_length=10MB
+  #     - http.cors.enabled=true
+  #     - http.cors.allow-origin="*"
+  #     - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+  #     - http.cors.allow-credentials=true
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   volumes:
+  #     - /var/lib/elasticsearch:/usr/share/elasticsearch/data
 
   # nginx:
   #   image: nginx:1.21.3-alpine
