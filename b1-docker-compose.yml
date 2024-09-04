@@ -144,9 +144,9 @@ services:
         max-size: "10m"
     ports:
       - "100.122.41.16:27017:27017"
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
+    # dns:
+    #   - 1.1.1.1
+    #   - 8.8.8.8
     ulimits:
       nproc: 65535
       nofile: 65535
@@ -360,9 +360,9 @@ services:
         max-size: "10m"
     ports:
       - "100.122.41.16:27850:27850"
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
+    # dns:
+    #   - 1.1.1.1
+    #   - 8.8.8.8
     volumes:
       - /opt/configs/laisky-blog/settings.py:/www/gargantua/gargantua/settings/settings.py:ro
     command: /usr/local/bin/run_gargantua
@@ -380,9 +380,9 @@ services:
       - DISABLE_LLM_CONSERVATION_AUDIO=true
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
+    # dns:
+    #   - 1.1.1.1
+    #   - 8.8.8.8
     ports:
       - 100.122.41.16:24456:24456
     command: -t heartbeat,gptchat,arweave,jav -c /etc/go-ramjet/settings.yml --debug
@@ -394,9 +394,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
+    # dns:
+    #   - 1.1.1.1
+    #   - 8.8.8.8
     ports:
       - 100.122.41.16:21313:1313
 
@@ -407,9 +407,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
+    # dns:
+    #   - 1.1.1.1
+    #   - 8.8.8.8
     network_mode: host
     # ports:
     #   - 28998:8998/udp
