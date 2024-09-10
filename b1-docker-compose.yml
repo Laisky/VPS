@@ -30,7 +30,6 @@ services:
     dns:
       - 1.1.1.1
       - 8.8.8.8
-    # network_mode: host
     ports:
       - 23443:23443
     logging:
@@ -55,7 +54,6 @@ services:
     dns:
       - 1.1.1.1
       - 8.8.8.8
-    # network_mode: host
     ports:
       - "100.122.41.16:17776:17776"
       - "100.122.41.16:17777:17777"
@@ -74,7 +72,6 @@ services:
     dns:
       - 1.1.1.1
       - 8.8.8.8
-    # network_mode: host
     ports:
       - "100.122.41.16:17779:17777"
     volumes:
@@ -92,7 +89,6 @@ services:
     dns:
       - 1.1.1.1
       - 8.8.8.8
-    # network_mode: host
     ports:
       - "100.122.41.16:17780:17777"
     volumes:
@@ -114,8 +110,6 @@ services:
   #   command: -f /etc/haproxy/b1.cfg
 
   glider-warp:
-    networks:
-      - custom_network
     image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
@@ -191,7 +185,6 @@ services:
       - custom_network
     image: satishweb/doh-server:v2.3.2-ubuntu
     restart: unless-stopped
-    # network_mode: host
     dns:
       - 1.1.1.1
       - 8.8.8.8
@@ -332,8 +325,6 @@ services:
       -t telegram
 
   nginx:
-    networks:
-      - custom_network
     image: nginx:1.25
     restart: unless-stopped
     network_mode: host
@@ -435,8 +426,6 @@ services:
       - 100.122.41.16:21313:1313
 
   hysteria:
-    networks:
-      - custom_network
     image: tobyxdd/hysteria
     restart: "always"
     logging:
