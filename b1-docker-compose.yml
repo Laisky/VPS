@@ -1,6 +1,8 @@
 version: '3'
 services:
   derper:
+    networks:
+      - custom_network
     image: ppcelery/derper:latest
     restart: unless-stopped
     environment:
@@ -21,6 +23,8 @@ services:
     entrypoint: /app/derper -c=$HOME/derper.conf --hostname=b1.laisky.com -a :12444 -stun -certdir=/etc/live -certmode=manual
 
   trojan-go:
+    networks:
+      - custom_network
     image: ppcelery/trojan-go:latest
     restart: unless-stopped
     dns:
@@ -40,6 +44,8 @@ services:
     command: /etc/torjan-go/config/server.json
 
   glider:
+    networks:
+      - custom_network
     image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
@@ -57,6 +63,8 @@ services:
       - /opt/configs/glider/b1/glider.conf:/app/glider.conf:ro
 
   glider-sg:
+    networks:
+      - custom_network
     image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
@@ -73,6 +81,8 @@ services:
       - /opt/configs/glider/b1/glider-sg.conf:/app/glider.conf:ro
 
   glider-ukraine:
+    networks:
+      - custom_network
     image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
@@ -104,6 +114,8 @@ services:
   #   command: -f /etc/haproxy/b1.cfg
 
   glider-warp:
+    networks:
+      - custom_network
     image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
@@ -136,6 +148,8 @@ services:
   #     - 100.122.41.16:9100:9100
 
   mongodb6:
+    networks:
+      - custom_network
     image: mongo:6
     restart: unless-stopped
     logging:
@@ -159,6 +173,8 @@ services:
       --auth
 
   dns:
+    networks:
+      - custom_network
     image: axeleroy/dnsproxy:latest
     logging:
       driver: "json-file"
@@ -171,6 +187,8 @@ services:
 
   # https://github.com/satishweb/docker-doh
   doh:
+    networks:
+      - custom_network
     image: satishweb/doh-server:v2.3.2-ubuntu
     restart: unless-stopped
     # network_mode: host
@@ -223,6 +241,8 @@ services:
 
   oneapi:
     #image: ppcelery/one-api:82b2f2c
+    networks:
+      - custom_network
     image: ppcelery/one-api:latest
     restart: unless-stopped
     dns:
@@ -261,6 +281,8 @@ services:
   #     - 100.122.41.16:33001:3000
 
   swag:
+    networks:
+      - custom_network
     image: lscr.io/linuxserver/swag:latest
     container_name: swag
     restart: unless-stopped
@@ -287,6 +309,8 @@ services:
     #   - 80:80
 
   graphql:
+    networks:
+      - custom_network
     image: ppcelery/laisky-blog-graphql:latest
     restart: unless-stopped
     dns:
@@ -308,6 +332,8 @@ services:
       -t telegram
 
   nginx:
+    networks:
+      - custom_network
     image: nginx:1.25
     restart: unless-stopped
     network_mode: host
@@ -332,6 +358,8 @@ services:
       - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:ro
 
   pccs:
+    networks:
+      - custom_network
     image: ppcelery/pccs:v2.2
     # build:
     #   context: ./pccs
@@ -352,6 +380,8 @@ services:
   blog:
     # image: ppcelery/laisky-blog:2b3779e
     # image: ppcelery/laisky-blog:f124935
+    networks:
+      - custom_network
     image: ppcelery/laisky-blog:latest
     restart: unless-stopped
     logging:
@@ -369,6 +399,8 @@ services:
 
   go-ramjet:
     # image: ppcelery/go-ramjet:89601e7
+    networks:
+      - custom_network
     image: ppcelery/go-ramjet:latest
     restart: "always"
     init: true # to prevent zombie processes of Chrome
@@ -388,6 +420,8 @@ services:
     command: -t heartbeat,gptchat,arweave,jav -c /etc/go-ramjet/settings.yml --debug
 
   wiki:
+    networks:
+      - custom_network
     image: ppcelery/wiki:latest
     restart: "always"
     logging:
@@ -401,6 +435,8 @@ services:
       - 100.122.41.16:21313:1313
 
   hysteria:
+    networks:
+      - custom_network
     image: tobyxdd/hysteria
     restart: "always"
     logging:
@@ -458,6 +494,8 @@ services:
   #     - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
 
   proxy_bbt:
+    networks:
+      - custom_network
     image: ppcelery/tinyproxy:latest
     restart: unless-stopped
     dns:
@@ -476,6 +514,8 @@ services:
       - 23491:8888
 
   channel_boardcast:
+    networks:
+      - custom_network
     image: ppcelery/boardcastchannel:latest
     restart: unless-stopped
     env_file:
@@ -486,3 +526,7 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
+
+networks:
+  custom_network:
+    driver: bridge
