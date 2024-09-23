@@ -350,8 +350,6 @@ services:
       - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
 
   blog:
-    # image: ppcelery/laisky-blog:2b3779e
-    # image: ppcelery/laisky-blog:f124935
     image: ppcelery/laisky-blog:latest
     restart: unless-stopped
     logging:
@@ -366,6 +364,19 @@ services:
     volumes:
       - /opt/configs/laisky-blog/settings.py:/www/gargantua/gargantua/settings/settings.py:ro
     command: /usr/local/bin/run_gargantua
+
+  blog-v2:
+    image: ppcelery/laisky-blog-v2:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.122.41.16:27080:80"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
 
   go-ramjet:
     # image: ppcelery/go-ramjet:89601e7
