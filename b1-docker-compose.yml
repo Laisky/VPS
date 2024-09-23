@@ -349,21 +349,21 @@ services:
       - /opt/configs/intel/pccs/default.json:/opt/intel/pccs/config/default.json:ro
       - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
 
-  blog:
-    image: ppcelery/laisky-blog:latest
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - "100.122.41.16:27850:27850"
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
-    volumes:
-      - /opt/configs/laisky-blog/settings.py:/www/gargantua/gargantua/settings/settings.py:ro
-    command: /usr/local/bin/run_gargantua
+  # blog:
+  #   image: ppcelery/laisky-blog:latest
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "100.122.41.16:27850:27850"
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   volumes:
+  #     - /opt/configs/laisky-blog/settings.py:/www/gargantua/gargantua/settings/settings.py:ro
+  #   command: /usr/local/bin/run_gargantua
 
   blog-v2:
     image: ppcelery/laisky-blog-v2:latest
