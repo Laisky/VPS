@@ -20,44 +20,6 @@ services:
       - 12444:12444
     entrypoint: /app/derper -c=$HOME/derper.conf --hostname=hk.laisky.com -a :12444 -stun -certdir=/etc/live -certmode=manual
 
-  # mongodb:
-  #   image: mongo:6.0.1
-  #   restart: unless-stopped
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   ports:
-  #     - "100.92.2.80:27017:27017"
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   volumes:
-  #     - /var/lib/mongodb:/data/db
-  #   command: mongod
-  #     --bind_ip 0.0.0.0
-  #     --storageEngine wiredTiger
-  #     --wiredTigerCacheSizeGB 3
-  #     # --auth
-
-  # v2ray:
-  #   image: v2ray/official:latest
-  #   restart: unless-stopped
-  #   network_mode: host
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   # ports:
-  #   #   - 1021:1021/udp
-  #   #   - localhost:9953:9953
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   volumes:
-  #     - /opt/configs/v2ray:/etc/v2ray:ro
-  #   command: /usr/bin/v2ray/v2ray -config=/etc/v2ray/config.json
-
   xray:
     image: teddysun/xray:latest
     restart: unless-stopped
@@ -95,49 +57,6 @@ services:
       - /opt/configs/trojan-go/hk:/etc/torjan-go/config:ro
     command: /etc/torjan-go/config/server.json
 
-  # dns:
-  #   image: axeleroy/dnsproxy:latest
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   environment:
-  #     - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
-  #   ports:
-  #     - 100.92.2.80:53:53/udp
-
-  monitor:
-    image: prom/node-exporter:v1.5.0
-    container_name: node-exporter
-    restart: unless-stopped
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.rootfs=/rootfs'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    ports:
-      - 100.92.2.80:9100:9100
-
-  # elasticsearch:
-  #   image: elasticsearch:8.6.1
-  #   restart: unless-stopped
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   ports:
-  #     - 100.92.2.80:9200:9200
-  #     - 100.92.2.80:9300:9300
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   environment:
-  #     - discovery.type=single-node
-
   glider:
     image: ppcelery/glider:latest
     restart: unless-stopped
@@ -153,32 +72,6 @@ services:
     #   - 100.92.2.80:17777:17777
     volumes:
       - /opt/configs/glider/hk/glider.conf:/app/glider.conf:ro
-
-  # ramjet:
-  #   image: ppcelery/ramjet:latest
-  #   restart: always
-  #   deploy:
-  #     replicas: 1
-  #   ports:
-  #     - 100.92.2.80:22280:37851
-  #   dns:
-  #     - 8.8.8.8
-  #     - 1.1.1.1
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "30m"
-  #   volumes:
-  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
-  #     # - /home/laisky/data/langchain/index:/var/lib/openai/index
-  #     - /home/laisky/data/langchain/index-azure:/var/lib/openai/index
-  #   # environment:
-  #   #   - http_proxy=http://100.122.41.16:17777
-  #   #   - https_proxy=http://100.122.41.16:17777
-  #   #   - HTTP_PROXY=http://100.122.41.16:17777
-  #   #   - HTTPS_PROXY=http://100.122.41.16:17777
-  #   #   - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
-  #   command: python -m ramjet -e keyword --debug
 
   swag:
     image: lscr.io/linuxserver/swag:latest

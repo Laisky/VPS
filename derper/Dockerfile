@@ -1,7 +1,7 @@
 # db . -f ./derper/Dockerfile -t ppcelery/derper:latest
-FROM golang:1.23.0-bullseye AS build
+FROM golang:1.23.1-bullseye AS build
 
-ADD https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain /tmp/random
+# ADD https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain /tmp/random
 RUN go install tailscale.com/cmd/derper@latest
 
 FROM debian:bullseye
