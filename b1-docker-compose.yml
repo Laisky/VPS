@@ -72,7 +72,7 @@ services:
     volumes:
       - /opt/configs/glider/b1/glider-sg.conf:/app/glider.conf:ro
 
-  glider-ukraine:
+  glider-isp:
     image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
@@ -86,7 +86,7 @@ services:
     ports:
       - "100.122.41.16:17780:17777"
     volumes:
-      - /opt/configs/glider/b1/glider-ukraine.conf:/app/glider.conf:ro
+      - /opt/configs/glider/b1/glider-isp.conf:/app/glider.conf:ro
 
   # haproxy:
   #   image: haproxy:2.5.1-alpine
