@@ -73,6 +73,38 @@ services:
     volumes:
       - /opt/configs/glider/hk/glider.conf:/app/glider.conf:ro
 
+  glider-isp:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    # network_mode: host
+    ports:
+      - "100.97.189.32:17780:17777"
+    volumes:
+      - /opt/configs/glider/hk/glider-isp.conf:/app/glider.conf:ro
+
+  glider-sg:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    # network_mode: host
+    ports:
+      - "100.97.189.32:17780:17777"
+    volumes:
+      - /opt/configs/glider/hk/glider-sg.conf:/app/glider.conf:ro
+
   swag:
     image: lscr.io/linuxserver/swag:latest
     container_name: swag
