@@ -101,7 +101,7 @@ services:
       - 8.8.8.8
     # network_mode: host
     ports:
-      - "100.97.189.32:17780:17777"
+      - "100.97.189.32:17779:17777"
     volumes:
       - /opt/configs/glider/hk/glider-sg.conf:/app/glider.conf:ro
 
