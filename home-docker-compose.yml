@@ -94,10 +94,10 @@ services:
       options:
         max-size: "10m"
     environment:
-      http_proxy: http://100.122.41.16:17777
-      https_proxy: http://100.122.41.16:17777
-      HTTP_PROXY: http://100.122.41.16:17777
-      HTTPS_PROXY: http://100.122.41.16:17777
+      http_proxy: http://100.97.189.32:17777
+      https_proxy: http://100.97.189.32:17777
+      HTTP_PROXY: http://100.97.189.32:17777
+      HTTPS_PROXY: http://100.97.189.32:17777
       NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
     ports:
       - "100.97.108.34:21108:8080"
@@ -182,10 +182,10 @@ services:
   #     # - /home/laisky/data/langchain/index:/var/lib/openai/index
   #     - /home/laisky/data/langchain/index-azure:/var/lib/openai/index
   #   environment:
-  #     - http_proxy=http://100.122.41.16:17777
-  #     - https_proxy=http://100.122.41.16:17777
-  #     - HTTP_PROXY=http://100.122.41.16:17777
-  #     - HTTPS_PROXY=http://100.122.41.16:17777
+  #     - http_proxy=http://100.97.189.32:17777
+  #     - https_proxy=http://100.97.189.32:17777
+  #     - HTTP_PROXY=http://100.97.189.32:17777
+  #     - HTTPS_PROXY=http://100.97.189.32:17777
   #     - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
   #   command: python -m ramjet -t gptchat --debug
 
@@ -392,8 +392,8 @@ services:
       - /var/lib/ytdownload:/downloads
     environment:
       DELETE_FILE_ON_TRASHCAN: true
-      http_proxy: http://100.122.41.16:17777
-      https_proxy: http://100.122.41.16:17777
-      HTTP_PROXY: http://100.122.41.16:17777
-      HTTPS_PROXY: http://100.122.41.16:17777
+      http_proxy: http://100.97.189.32:17777
+      https_proxy: http://100.97.189.32:17777
+      HTTP_PROXY: http://100.97.189.32:17777
+      HTTPS_PROXY: http://100.97.189.32:17777
       NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
