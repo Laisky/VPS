@@ -54,7 +54,26 @@ services:
     volumes:
       - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
       - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
-      - /opt/configs/trojan-go/hk:/etc/torjan-go/config:ro
+      - /opt/configs/trojan-go/hk/server.json:/etc/torjan-go/config/server.json:ro
+    command: /etc/torjan-go/config/server.json
+
+  trojan-go-isp:
+    image: ppcelery/trojan-go:latest
+    restart: unless-stopped
+    # network_mode: host
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 23444:23444
+    volumes:
+      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
+      - /opt/configs/trojan-go/hk/server-isp.json:/etc/torjan-go/config/server.json:ro
     command: /etc/torjan-go/config/server.json
 
   glider:
