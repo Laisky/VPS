@@ -322,7 +322,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "30m"
     volumes:
       - /var/www:/var/www
       - /var/log:/var/log
