@@ -235,7 +235,7 @@ services:
     env_file:
       - /opt/configs/env/b1/oneapi.env
     environment:
-      - THEME=berry
+      # - THEME=berry
       - IDLE_TIMEOUT=10
       - GLOBAL_API_RATE_LIMIT=1000
       - GLOBAL_WEB_RATE_LIMIT=1000
