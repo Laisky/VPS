@@ -500,16 +500,16 @@ services:
       options:
         max-size: "10m"
 
-postgre:
-  image: postgres:17
-  restart: unless-stopped
-  logging:
-    driver: "json-file"
-    options:
-      max-size: "10m"
-  env_file:
-    - /opt/configs/env/b1/postgre.env
-  volumes:
-    - /var/lib/postgresql:/var/lib/postgresql
-  ports:
-    - 100.122.41.16:5432:5432
+  postgre:
+    image: postgres:17
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    env_file:
+      - /opt/configs/env/b1/postgre.env
+    volumes:
+      - /var/lib/postgresql:/var/lib/postgresql
+    ports:
+      - 100.122.41.16:5432:5432
