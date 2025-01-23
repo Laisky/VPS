@@ -501,7 +501,7 @@ services:
         max-size: "10m"
 
   postgre:
-    image: pgvector/pgvector:pg17
+    image: ppcelery/postgres:latest
     restart: unless-stopped
     logging:
       driver: "json-file"
