@@ -237,6 +237,7 @@ services:
     environment:
       # - THEME=berry
       - IDLE_TIMEOUT=10
+      - ENFORCE_INCLUDE_USAGE=true
       - GLOBAL_API_RATE_LIMIT=1000
       - GLOBAL_WEB_RATE_LIMIT=1000
       - FRONTEND_BASE_URL=https://oneapi.laisky.com
