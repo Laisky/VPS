@@ -514,3 +514,17 @@ services:
       - /var/lib/postgresql:/var/lib/postgresql
     ports:
       - 100.122.41.16:5432:5432
+
+  redis:
+      image: redis:7.4.2
+      restart: unless-stopped
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "10m"
+      volumes:
+        - ./var/lib/redis:/data
+        - ./opt/configs/redis/b1/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      ports:
+        - "6379:6379"
+      command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
