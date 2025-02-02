@@ -526,5 +526,5 @@ services:
         - ./var/lib/redis:/data
         - ./opt/configs/redis/b1/redis.conf:/usr/local/etc/redis/redis.conf:ro
       ports:
-        - "6379:6379"
+        - "100.122.41.16:6379:6379"
       command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
