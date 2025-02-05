@@ -356,7 +356,7 @@ services:
       options:
         max-size: "10m"
     ports:
-      - '100.97.108.34:22080:8080'
+      - '100.97.108.34:22082:8080'
     volumes:
       - /var/lib/stirling-pdf/trainingData:/usr/share/tessdata #Required for extra OCR languages
       - /opt/configs/stirling-pdf:/configs
@@ -386,12 +386,70 @@ services:
   metube:
     image: ghcr.io/alexta69/metube
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     ports:
       - "100.97.108.34:22081:8081"
     volumes:
       - /var/lib/ytdownload:/downloads
     environment:
       DELETE_FILE_ON_TRASHCAN: true
+      http_proxy: http://100.97.189.32:17777
+      https_proxy: http://100.97.189.32:17777
+      HTTP_PROXY: http://100.97.189.32:17777
+      HTTPS_PROXY: http://100.97.189.32:17777
+      NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
+
+  greptime:
+    image: greptime/greptimedb:v0.11.2
+    restart: "unless-stopped"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.97.108.34:14000:4000"
+      - "100.97.108.34:14001:4001"
+      - "100.97.108.34:14002:4002"
+      - "100.97.108.34:14003:4003"
+    volumes:
+      - ./var/lib/greptimedb:/tmp/greptimedb
+    command: ["standalone", "start",
+      "--http-addr", "0.0.0.0:4000",
+      "--rpc-addr", "0.0.0.0:4001",
+      "--mysql-addr", "0.0.0.0:4002",
+      "--postgres-addr", "0.0.0.0:4003"
+    ]
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.97.108.34:13000:3000"
+    volumes:
+      - /var/lib/grafana:/var/lib/grafana
+      - /var/log/grafana:/var/log/grafana
+
+  llmstorm:
+    image: ppcelery/llm-storm:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.97.108.34:22083:8080"
+    env_file:
+      - /opt/configs/env/home/storm.env
+    environment:
+      OPENAI_API_TYPE: openai
+      OPENAI_MAX_TOKENS: 4000
       http_proxy: http://100.97.189.32:17777
       https_proxy: http://100.97.189.32:17777
       HTTP_PROXY: http://100.97.189.32:17777
