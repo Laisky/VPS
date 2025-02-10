@@ -444,8 +444,10 @@ services:
       options:
         max-size: "10m"
     ports:
+      # HTTP POST /deep-research {"prompt": "PUT YOUT QUERY HERE"}
       - "100.97.108.34:22083:8080"
     env_file:
+      # set BING_SEARCH_API_KEY in env file
       - /opt/configs/env/home/storm.env
     environment:
       OPENAI_API_TYPE: openai
