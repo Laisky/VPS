@@ -450,6 +450,8 @@ services:
     environment:
       OPENAI_API_TYPE: openai
       OPENAI_MAX_TOKENS: 4000
+      OPENAI_MODEL_NAME: gemini-2.0-flash-001
+      OPENAI_API_BASE: https://oneapi.laisky.com/v1/
       http_proxy: http://100.97.189.32:17777
       https_proxy: http://100.97.189.32:17777
       HTTP_PROXY: http://100.97.189.32:17777
