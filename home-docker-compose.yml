@@ -445,6 +445,7 @@ services:
         max-size: "10m"
     ports:
       # HTTP POST /deep-research {"prompt": "PUT YOUT QUERY HERE"}
+      # with HEADER "Authorization: Bearer YOUR_API_KEY"
       - "100.97.108.34:22083:8080"
     env_file:
       # set BING_SEARCH_API_KEY in env file
