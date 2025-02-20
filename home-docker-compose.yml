@@ -1,57 +1,57 @@
 version: '3'
 services:
-  mongodb:
-    image: mongo:3.6
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - "100.97.108.34:27017:27017"
-    # dns:
-    #   - 100.122.41.16
-    volumes:
-      - /var/lib/mongodb:/data/db
-    command: mongod
-      --bind_ip 0.0.0.0
-      --storageEngine wiredTiger
-      --wiredTigerCacheSizeGB 3
-      --auth
+  # mongodb:
+  #   image: mongo:3.6
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "100.97.108.34:27017:27017"
+  #   # dns:
+  #   #   - 100.122.41.16
+  #   volumes:
+  #     - /var/lib/mongodb:/data/db
+  #   command: mongod
+  #     --bind_ip 0.0.0.0
+  #     --storageEngine wiredTiger
+  #     --wiredTigerCacheSizeGB 3
+  #     --auth
 
-  sonic:
-    image: valeriansaliou/sonic:v1.4.0
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - "100.97.108.34:21491:1491"
-    # dns:
-    #   - 100.122.41.16
-    volumes:
-      - /var/lib/sonic:/data
-      - /opt/configs/sonic/config.cfg:/etc/sonic.cfg:ro
+  # sonic:
+  #   image: valeriansaliou/sonic:v1.4.0
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "100.97.108.34:21491:1491"
+  #   # dns:
+  #   #   - 100.122.41.16
+  #   volumes:
+  #     - /var/lib/sonic:/data
+  #     - /opt/configs/sonic/config.cfg:/etc/sonic.cfg:ro
 
-  mongodb6:
-    image: mongo:6.0.16
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - "100.97.108.34:27018:27017"
-    # dns:
-    #   - 100.122.41.16
-    volumes:
-      - /var/lib/mongodb6:/data/db
-    command: mongod
-      --bind_ip 0.0.0.0
-      --storageEngine wiredTiger
-      --wiredTigerCacheSizeGB 3
-      --auth
+  # mongodb6:
+  #   image: mongo:6.0.16
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "100.97.108.34:27018:27017"
+  #   # dns:
+  #   #   - 100.122.41.16
+  #   volumes:
+  #     - /var/lib/mongodb6:/data/db
+  #   command: mongod
+  #     --bind_ip 0.0.0.0
+  #     --storageEngine wiredTiger
+  #     --wiredTigerCacheSizeGB 3
+  #     --auth
 
   # clickhouse:
   #   image: "yandex/clickhouse-server:21.10.2.15"
@@ -72,38 +72,38 @@ services:
   #     - /var/log/clickhouse-server:/var/log/clickhouse-server
   #     - /opt/configs/clickhouse-server:/etc/clickhouse-server
 
-  redis:
-    image: "redis:6.2.6"
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - "100.97.108.34:6379:6379"
-    # dns:
-    #   - 100.122.41.16
-    volumes:
-      - /var/lib/redis:/data
+  # redis:
+  #   image: "redis:6.2.6"
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "100.97.108.34:6379:6379"
+  #   # dns:
+  #   #   - 100.122.41.16
+  #   volumes:
+  #     - /var/lib/redis:/data
 
-  liteseed:
-    image: ppcelery/liteseed-edge:latest
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    environment:
-      http_proxy: http://100.97.189.32:17777
-      https_proxy: http://100.97.189.32:17777
-      HTTP_PROXY: http://100.97.189.32:17777
-      HTTPS_PROXY: http://100.97.189.32:17777
-      NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
-    ports:
-      - "100.97.108.34:21108:8080"
-    volumes:
-      - /var/lib/liteseed:/data
-    command: ["start"]
+  # liteseed:
+  #   image: ppcelery/liteseed-edge:latest
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     http_proxy: http://100.97.189.32:17777
+  #     https_proxy: http://100.97.189.32:17777
+  #     HTTP_PROXY: http://100.97.189.32:17777
+  #     HTTPS_PROXY: http://100.97.189.32:17777
+  #     NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
+  #   ports:
+  #     - "100.97.108.34:21108:8080"
+  #   volumes:
+  #     - /var/lib/liteseed:/data
+  #   command: ["start"]
 
   # https://github.com/chrislusf/seaweedfs#quick-start
   # seaweedfs:
@@ -466,3 +466,21 @@ services:
       HTTP_PROXY: http://100.97.189.32:17777
       HTTPS_PROXY: http://100.97.189.32:17777
       NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
+
+  # ario:
+  #   image: ppcelery/ar-io-core:latest
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "100.97.108.34:22084:4000"
+  #   volumes:
+  #     - /var/lib/ario:/app/data
+  #   environment:
+  #     http_proxy: http://100.97.189.32:17777
+  #     https_proxy: http://100.97.189.32:17777
+  #     HTTP_PROXY: http://100.97.189.32:17777
+  #     HTTPS_PROXY: http://100.97.189.32:17777
+  #     NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
