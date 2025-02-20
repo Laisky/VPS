@@ -242,6 +242,7 @@ services:
       - GLOBAL_WEB_RATE_LIMIT=1000
       - FRONTEND_BASE_URL=https://oneapi.laisky.com
       - LLM_CONSERVATION_AUDIT=https://chat.laisky.com/audit/conservation
+      - OPENROUTER_PROVIDER_SORT=throughput
     volumes:
       - /var/lib/oneapi:/data
     ports:
