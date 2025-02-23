@@ -160,9 +160,10 @@ services:
       options:
         max-size: "10m"
     environment:
-      - TASKS=heartbeat,ssl-monitor,rss,keyword
+      - CHROMEDP_SEMA_LIMIT=6
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
+    command: -t heartbeat,ssl-monitor,rss,keyword,gptchat -c /etc/go-ramjet/settings.yml --debug
 
   # ramjet:
   #   image: ppcelery/ramjet:latest
