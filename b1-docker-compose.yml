@@ -235,14 +235,14 @@ services:
     env_file:
       - /opt/configs/env/b1/oneapi.env
     environment:
-      # - THEME=berry
-      - IDLE_TIMEOUT=10
-      - ENFORCE_INCLUDE_USAGE=true
-      - GLOBAL_API_RATE_LIMIT=1000
-      - GLOBAL_WEB_RATE_LIMIT=1000
-      - FRONTEND_BASE_URL=https://oneapi.laisky.com
-      - LLM_CONSERVATION_AUDIT=https://chat.laisky.com/audit/conservation
-      - OPENROUTER_PROVIDER_SORT=throughput
+      IDLE_TIMEOUT: 30
+      DEBUG: true
+      ENFORCE_INCLUDE_USAGE: true
+      GLOBAL_API_RATE_LIMIT: 1000
+      GLOBAL_WEB_RATE_LIMIT: 1000
+      FRONTEND_BASE_URL: https://oneapi.laisky.com
+      LLM_CONSERVATION_AUDIT: https://chat.laisky.com/audit/conservation
+      OPENROUTER_PROVIDER_SORT: throughput
     volumes:
       - /var/lib/oneapi:/data
     ports:
