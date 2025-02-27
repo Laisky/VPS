@@ -240,7 +240,7 @@ services:
       ENFORCE_INCLUDE_USAGE: true
       GLOBAL_API_RATE_LIMIT: 1000
       GLOBAL_WEB_RATE_LIMIT: 1000
-      REDIS_CONN_STRING: redis://100.122.41.16:6379
+      REDIS_CONN_STRING: redis://100.122.41.16:6379/1
       FRONTEND_BASE_URL: https://oneapi.laisky.com
       LLM_CONSERVATION_AUDIT: https://chat.laisky.com/audit/conservation
       OPENROUTER_PROVIDER_SORT: throughput
