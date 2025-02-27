@@ -237,6 +237,7 @@ services:
     environment:
       IDLE_TIMEOUT: 30
       DEBUG: true
+      DEBUG_SQL: true
       ENFORCE_INCLUDE_USAGE: true
       GLOBAL_API_RATE_LIMIT: 1000
       GLOBAL_WEB_RATE_LIMIT: 1000
