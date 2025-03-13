@@ -6,8 +6,8 @@ services:
     env_file:
       - /opt/configs/env/fs/minio.env
     ports:
-      - 100.97.108.34:19000:9000
-      - 100.97.108.34:19001:9001
+      - 100.66.87.128:19000:9000
+      - 100.66.87.128:19001:9001
     logging:
       driver: "json-file"
       options:
