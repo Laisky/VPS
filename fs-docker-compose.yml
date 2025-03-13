@@ -1,0 +1,19 @@
+version: '3'
+services:
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    env_file:
+      - /opt/configs/env/fs/minio.env
+    ports:
+      - 100.97.108.34:19000:9000
+      - 100.97.108.34:19001:9001
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    # dns:
+    #   - 100.122.41.16
+    volumes:
+      - /var/lib/minio:/data
+    command: server /data --address :9000 --console-address ":9001"
