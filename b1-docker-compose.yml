@@ -239,6 +239,7 @@ services:
       DEBUG: "true"
       DEBUG_SQL: "true"
       ENFORCE_INCLUDE_USAGE: "true"
+      SYNC_FREQUENCY: 30
       GLOBAL_API_RATE_LIMIT: 1000
       GLOBAL_WEB_RATE_LIMIT: 1000
       # REDIS_CONN_STRING: redis://100.122.41.16:6379/1
