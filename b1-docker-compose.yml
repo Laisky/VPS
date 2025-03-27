@@ -396,7 +396,7 @@ services:
       options:
         max-size: "10m"
     environment:
-      - DISABLE_LLM_CONSERVATION_AUDIO=true
+      # - DISABLE_LLM_CONSERVATION_AUDIT=true
       - CHROMEDP_SEMA_LIMIT=2
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
