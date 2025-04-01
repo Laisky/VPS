@@ -255,7 +255,7 @@ services:
   #     - /var/lib/registry
 
   minio:
-    image: minio/minio:latest
+    image: quay.io/minio/minio:latest
     restart: unless-stopped
     env_file:
       - /opt/configs/env/home/minio.env
