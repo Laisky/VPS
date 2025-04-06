@@ -33,6 +33,4 @@ services:
       net.core.somaxconn: 65535
     volumes:
       - /var/lib/minio:/data
-      # Add prometheus metrics config
-      - /opt/configs/minio/prometheus:/prometheus
-    command: server /data --address :9000 --console-address ":9001" --metrics-path /prometheus
+    command: server /data --address :9000 --console-address ":9001"
