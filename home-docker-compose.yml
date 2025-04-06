@@ -259,6 +259,19 @@ services:
     restart: unless-stopped
     env_file:
       - /opt/configs/env/home/minio.env
+    environment:
+      MINIO_API_OBJECT_MAX_VERSIONS: 10
+      # API configurations
+      MINIO_API_REQUESTS_MAX: 1000
+      MINIO_API_READ_TIMEOUT: 300s
+      MINIO_API_WRITE_TIMEOUT: 300s
+      # Healing configurations
+      MINIO_HEAL_INTERVAL: 1h
+      MINIO_HEAL_QUEUE_DELAY: 10s
+      # Compression settings
+      MINIO_COMPRESSION_ENABLE: "on"
+      MINIO_COMPRESSION_EXTENSIONS: ".txt,.log,.csv"
+      MINIO_COMPRESSION_MIME_TYPES: "text/*,application/json"
     ports:
       - 100.97.108.34:19000:9000
       - 100.97.108.34:19001:9001
@@ -266,11 +279,17 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-    # dns:
-    #   - 100.122.41.16
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    sysctls:
+      net.core.somaxconn: 65535
     volumes:
       - /var/lib/minio:/data
-    command: server /data --address :9000 --console-address ":9001"
+      # Add prometheus metrics config
+      # - /opt/configs/minio/prometheus:/prometheus
+    command: server /data --address :9000 --console-address ":9001" --metrics-path /prometheus
 
   glider:
     image: ppcelery/glider:latest
