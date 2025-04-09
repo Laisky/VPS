@@ -3,6 +3,10 @@ services:
   minio:
     image: quay.io/minio/minio:latest
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 750M
     env_file:
       - /opt/configs/env/fs/minio.env
     environment:
