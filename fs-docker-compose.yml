@@ -6,7 +6,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 750M
+          memory: 700M
     env_file:
       - /opt/configs/env/fs/minio.env
     environment:
