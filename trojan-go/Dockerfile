@@ -1,5 +1,5 @@
 # db . -f ./trojan-go/Dockerfile -t ppcelery/trojan-go:latest
-FROM golang:1.24.1-bullseye AS builder
+FROM golang:1.24.3-bookworm AS builder
 
 WORKDIR /
 
@@ -13,7 +13,7 @@ RUN cd trojan-go &&\
     wget https://github.com/v2fly/geoip/raw/release/geoip.dat -O build/geoip.dat &&\
     wget https://github.com/v2fly/geoip/raw/release/geoip-only-cn-private.dat -O build/geoip-only-cn-private.dat
 
-FROM debian:bullseye
+FROM debian:bookworm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates haveged \

@@ -1,10 +1,10 @@
 # db . -f ./derper/Dockerfile -t ppcelery/derper:latest
-FROM golang:1.24.1-bullseye AS build
+FROM golang:1.24.3-bookworm AS build
 
 # ADD https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain /tmp/random
 RUN go install tailscale.com/cmd/derper@latest
 
-FROM debian:bullseye
+FROM debian:bookworm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates haveged \
