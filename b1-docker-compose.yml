@@ -277,10 +277,9 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=UTC
-      - URL=laisky.com
+      - URL=b1.laisky.com
       - VALIDATION=dns
       - SUBDOMAINS=wildcard
-      - EXTRA_DOMAINS=*.argw.laisky.com
       - DNSPLUGIN=cloudflare
     volumes:
       # - /var/log/nginx:/var/log/nginx
