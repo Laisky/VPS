@@ -1,0 +1,535 @@
+version: '3'
+services:
+  derper:
+    image: ppcelery/derper:latest
+    restart: unless-stopped
+    environment:
+      ADDR: racknerd.laisky.com
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/racknerd.laisky.com.crt:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/racknerd.laisky.com.key:ro
+    ports:
+      - 3478:3478/udp
+      - 12444:12444
+    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=racknerd.laisky.com -a :12444 -stun -certdir=/etc/live -certmode=manual
+
+  trojan-go:
+    image: ppcelery/trojan-go:latest
+    restart: unless-stopped
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    # network_mode: host
+    ports:
+      - 23443:23443
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    volumes:
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/racknerd.laisky.com.crt:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/racknerd.laisky.com.key:ro
+      - /opt/configs/trojan-go/racknerd:/etc/torjan-go/config:ro
+    command: /etc/torjan-go/config/server.json
+
+  glider:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    # network_mode: host
+    ports:
+      - "100.113.170.10:17776:17776"
+      - "100.113.170.10:17777:17777"
+    volumes:
+      - /opt/configs/glider/racknerd/glider.conf:/app/glider.conf:ro
+
+  glider-sg:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    # network_mode: host
+    ports:
+      - "100.113.170.10:17779:17777"
+    volumes:
+      - /opt/configs/glider/racknerd/glider-sg.conf:/app/glider.conf:ro
+
+  glider-isp:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    # network_mode: host
+    ports:
+      - "100.113.170.10:17780:17777"
+    volumes:
+      - /opt/configs/glider/racknerd/glider-isp.conf:/app/glider.conf:ro
+
+  # haproxy:
+  #   image: haproxy:2.5.1-alpine
+  #   restart: always
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   network_mode: host
+  #   volumes:
+  #     - /opt/configs/haproxy/racknerd.cfg:/etc/haproxy/racknerd.cfg:ro
+  #   command: -f /etc/haproxy/racknerd.cfg
+
+  glider-warp:
+    image: ppcelery/glider:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    network_mode: host
+    # ports:
+    #   - 100.113.170.10:17778:17778
+    volumes:
+      - /opt/configs/glider/racknerd/glider-warp.conf:/app/glider.conf:ro
+
+  # monitor:
+  #   image: prom/node-exporter:latest
+  #   container_name: node-exporter
+  #   restart: unless-stopped
+  #   volumes:
+  #     - /proc:/host/proc:ro
+  #     - /sys:/host/sys:ro
+  #     - /:/rootfs:ro
+  #   command:
+  #     - '--path.procfs=/host/proc'
+  #     - '--path.rootfs=/rootfs'
+  #     - '--path.sysfs=/host/sys'
+  #     - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+  #   ports:
+  #     - 100.113.170.10:9100:9100
+
+  mongodb6:
+    image: mongo:6
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.113.170.10:27017:27017"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ulimits:
+      nproc: 65535
+      nofile: 65535
+    volumes:
+      - /var/lib/mongodb6:/data/db
+    command: mongod
+      --bind_ip 0.0.0.0
+      --storageEngine wiredTiger
+      --wiredTigerCacheSizeGB 3
+      --auth
+
+  dns:
+    image: axeleroy/dnsproxy:latest
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
+    ports:
+      - 100.113.170.10:53:53/udp
+
+  # https://github.com/satishweb/docker-doh
+  doh:
+    image: satishweb/doh-server:v2.3.2-ubuntu
+    restart: unless-stopped
+    # network_mode: host
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ports:
+      - 100.113.170.10:8053:8053
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      DEBUG: "0"
+      # Upstream DNS server: proto:host:port
+      # We are using OpenDNS DNS servers as default,
+      # Here is the list of addresses: https://use.opendns.com/
+      UPSTREAM_DNS_SERVER: "udp:1.1.1.1:53"
+      DOH_HTTP_PREFIX: "/query"
+      DOH_SERVER_LISTEN: "0.0.0.0:8053"
+      DOH_SERVER_TIMEOUT: "10"
+      DOH_SERVER_TRIES: "3"
+      DOH_SERVER_VERBOSE: "true"
+
+  # ramjet:
+  #   image: ppcelery/ramjet:latest
+  #   restart: always
+  #   deploy:
+  #     replicas: 1
+  #   ports:
+  #     - 100.113.170.10:22280:37851
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
+  #     # - /home/laisky/data/langchain/index:/var/lib/openai/index
+  #     - /home/laisky/data/langchain/index-azure:/var/lib/openai/index
+  #   # environment:
+  #   #   - http_proxy=http://100.113.170.10:17777
+  #   #   - https_proxy=http://100.113.170.10:17777
+  #   #   - HTTP_PROXY=http://100.113.170.10:17777
+  #   #   - HTTPS_PROXY=http://100.113.170.10:17777
+  #   #   - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
+  #   command: python -m ramjet -t gptchat --debug
+
+  oneapi:
+    #image: ppcelery/one-api:82b2f2c
+    image: ppcelery/one-api:latest
+    restart: unless-stopped
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    env_file:
+      - /opt/configs/env/racknerd/oneapi.env
+    environment:
+      IDLE_TIMEOUT: 30
+      DEBUG: "true"
+      DEBUG_SQL: "true"
+      ENFORCE_INCLUDE_USAGE: "true"
+      FORCE_EMAIL_TLS_VERIFY: "true"
+      SYNC_FREQUENCY: 30
+      GLOBAL_API_RATE_LIMIT: 1000
+      GLOBAL_WEB_RATE_LIMIT: 1000
+      # REDIS_CONN_STRING: redis://100.113.170.10:6379/1
+      FRONTEND_BASE_URL: https://oneapi.laisky.com
+      LLM_CONSERVATION_AUDIT: https://chat.laisky.com/audit/conservation
+      OPENROUTER_PROVIDER_SORT: throughput
+    volumes:
+      - /var/lib/oneapi:/data
+    ports:
+      - 100.113.170.10:33000:3000
+
+  # chatgpt:
+  #   image: yidadaa/chatgpt-next-web:latest
+  #   restart: unless-stopped
+  #   dns:
+  #     - 8.8.8.8
+  #     - 1.1.1.1
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   environment:
+  #     - BASE_URL=https://chatgpt.laisky.com
+  #   ports:
+  #     - 100.113.170.10:33001:3000
+
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - URL=racknerd.laisky.com
+      - VALIDATION=dns
+      - SUBDOMAINS=wildcard
+      - DNSPLUGIN=cloudflare
+    volumes:
+      # - /var/log/nginx:/var/log/nginx
+      - /opt/configs/swag/racknerd:/config
+      # - /opt/configs/nginx/conf.d/racknerd:/config/nginx/site-confs
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    # ports:
+    #   - 443:443
+    #   - 80:80
+
+  graphql:
+    image: ppcelery/laisky-blog-graphql:latest
+    restart: unless-stopped
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
+      - /opt/configs/arweave:/opt/configs/arweave:ro
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 100.113.170.10:17800:17800
+    command: api --listen=0.0.0.0:17800
+      --config=/etc/laisky-blog-graphql/settings.yml
+      --log-level=debug
+      -t telegram
+
+  nginx:
+    image: nginx:1.25
+    restart: unless-stopped
+    network_mode: host
+    # ports:
+    #   # - 100.113.170.10:443:443
+    #   - 443:443
+    #   # - 80:80
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+    volumes:
+      - /var/www:/var/www
+      - /var/log:/var/log
+      - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
+      - /opt/configs/nginx/conf.d/racknerd:/etc/nginx/conf.d:ro
+      - /opt/configs/nginx:/opt/configs/nginx:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:/opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:/opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:ro
+
+  pccs:
+    image: ppcelery/pccs:v2.2
+    # build:
+    #   context: ./pccs
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - 100.113.170.10:8081:8081
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - /opt/configs/intel/pccs/default.json:/opt/intel/pccs/config/default.json:ro
+      - /opt/configs/intel/pccs/ssl_key:/opt/intel/pccs/ssl_key
+
+  # blog:
+  #   image: ppcelery/laisky-blog:latest
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "100.113.170.10:27850:27850"
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   volumes:
+  #     - /opt/configs/laisky-blog/settings.py:/www/gargantua/gargantua/settings/settings.py:ro
+  #   command: /usr/local/bin/run_gargantua
+
+  blog-v2:
+    image: ppcelery/laisky-blog-v2:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.113.170.10:27080:80"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+
+  go-ramjet:
+    # image: ppcelery/go-ramjet:89601e7
+    image: ppcelery/go-ramjet:latest
+    restart: "always"
+    init: true # to prevent zombie processes of Chrome
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      # - DISABLE_LLM_CONSERVATION_AUDIT=true
+      - CHROMEDP_SEMA_LIMIT=2
+    volumes:
+      - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ports:
+      - 100.113.170.10:24456:24456
+    command: -t heartbeat,gptchat,arweave,jav,telegram_notes -c /etc/go-ramjet/settings.yml --debug
+
+  wiki:
+    image: ppcelery/wiki:latest
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    ports:
+      - 100.113.170.10:21313:1313
+
+  hysteria:
+    image: tobyxdd/hysteria
+    restart: "always"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    network_mode: host
+    # ports:
+    #   - 28998:8998/udp
+    volumes:
+      - /opt/configs/swag/racknerd/etc/letsencrypt:/etc/letsencrypt:ro
+      - /opt/configs/hysteria/racknerd/server.yaml:/etc/hysteria/server.yaml:ro
+    command: ["server", "-c", "/etc/hysteria/server.yaml"]
+
+  # pki:
+  #   image: ppcelery/pki
+  #   restart: "always"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   ports:
+  #     - 23333:23333
+  #     - 23334:23334
+  #     - 23335:23335
+  #   volumes:
+  #     - /opt/configs/basebit/pki-server.json:/etc/pki/server.json
+  #   command: ["-c", "/etc/pki/server.json", "--debug"]
+
+  # stirling-pdf:
+  #   image: frooodle/s-pdf:latest
+  #   restart: "always"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   ports:
+  #     - '100.113.170.10:22080:8080'
+  #   volumes:
+  #     - /var/lib/stirling-pdf/trainingData:/usr/share/tessdata #Required for extra OCR languages
+  #     - /opt/configs/stirling-pdf:/configs
+  #     - /var/lib/stirling-pdf/customFiles:/customFiles/
+  #     - /var/lib/stirling-pdf/logs:/logs/
+  #   environment:
+  #     - DOCKER_ENABLE_SECURITY=false
+  #     - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
+
+  proxy_bbt:
+    image: ppcelery/tinyproxy:latest
+    restart: unless-stopped
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    environment:
+      - 'ALLOWED_NETWORKS=0.0.0.0/0'
+      - TIMEOUT=600
+    env_file:
+      - /opt/configs/tinyproxy/auth.env
+    ports:
+      - 23491:8888
+
+  channel_boardcast:
+    image: ppcelery/boardcastchannel:latest
+    restart: unless-stopped
+    env_file:
+      - /opt/configs/env/racknerd/broadcastchannel.env
+    ports:
+      - 100.113.170.10:14321:4321
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+
+  postgre:
+    image: ppcelery/postgres:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    env_file:
+      - /opt/configs/env/racknerd/postgre.env
+    volumes:
+      - /var/lib/postgresql:/var/lib/postgresql
+    ports:
+      - 100.113.170.10:5432:5432
+
+  redis:
+      image: redis:7.4.2
+      restart: unless-stopped
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "10m"
+      volumes:
+        - ./var/lib/redis:/data
+        - ./opt/configs/redis/racknerd/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      ports:
+        - "100.113.170.10:6379:6379"
+      command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
