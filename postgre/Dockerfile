@@ -1,5 +1,5 @@
 # docker build . -f postgre/Dockerfile  -t ppcelery/postgres:latest
-FROM postgres:17.2-bullseye
+FROM postgres:17-bullseye
 
 # Install build dependencies
 RUN apt-get update \
@@ -15,9 +15,11 @@ RUN git clone --branch v0.8.0 https://github.com/pgvector/pgvector.git \
     && make \
     && make install
 
-# Install ctext extension
+# Install extension: ctext, PostGIS
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends postgresql-contrib-17 \
+    && apt-get install -y --no-install-recommends \
+        postgresql-contrib-17 \
+        postgresql-17-postgis-3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -32,4 +34,5 @@ RUN apt-get remove -y build-essential postgresql-server-dev-17 git \
 RUN echo "shared_preload_libraries='vector'" >> /usr/share/postgresql/postgresql.conf.sample
 
 # Expose the default PostgreSQL port
+EXPOSE 5432
 EXPOSE 5432
