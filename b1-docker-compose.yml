@@ -84,7 +84,7 @@ services:
       - 8.8.8.8
     # network_mode: host
     ports:
-      - "0.0.0.0:17778:17778"
+      - "17778:17778"
       - "100.122.41.16:17780:17777"
     volumes:
       - /opt/configs/glider/b1/glider-isp.conf:/app/glider.conf:ro
