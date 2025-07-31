@@ -248,6 +248,8 @@ services:
       FRONTEND_BASE_URL: https://oneapi.laisky.com
       LLM_CONSERVATION_AUDIT: https://chat.laisky.com/audit/conservation
       OPENROUTER_PROVIDER_SORT: throughput
+      LOG_PUSH_API: "https://gq.laisky.com/query/"
+      LOG_PUSH_TYPE: "oneapi"
     volumes:
       - /var/lib/oneapi:/data
     ports:
