@@ -8,7 +8,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     dns:
       - 1.1.1.1
       - 8.8.8.8
@@ -32,7 +32,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     volumes:
       - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/b1.laisky.com.crt:ro
       - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/b1.laisky.com.key:ro
@@ -45,7 +45,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     dns:
       - 1.1.1.1
       - 8.8.8.8
@@ -62,7 +62,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     dns:
       - 1.1.1.1
       - 8.8.8.8
@@ -78,7 +78,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     dns:
       - 1.1.1.1
       - 8.8.8.8
@@ -98,7 +98,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "10m"
+  #       max-size: "50m"
   #   network_mode: host
   #   volumes:
   #     - /opt/configs/haproxy/b1.cfg:/etc/haproxy/b1.cfg:ro
@@ -110,7 +110,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     dns:
       - 1.1.1.1
       - 8.8.8.8
@@ -142,7 +142,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     ports:
       - "100.122.41.16:27017:27017"
     dns:
@@ -164,7 +164,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     environment:
       - ARGS=-u 8.8.8.8:53 -u 1.1.1.1:53 --cache
     ports:
@@ -183,7 +183,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     environment:
       DEBUG: "0"
       # Upstream DNS server: proto:host:port
@@ -232,7 +232,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "100m"
     env_file:
       - /opt/configs/env/b1/oneapi.env
     environment:
@@ -264,7 +264,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "10m"
+  #       max-size: "50m"
   #   environment:
   #     - BASE_URL=https://chatgpt.laisky.com
   #   ports:
@@ -309,7 +309,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     ports:
       - 100.122.41.16:17800:17800
     command: api --listen=0.0.0.0:17800
@@ -349,7 +349,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     ports:
       - 100.122.41.16:8081:8081
     dns:
@@ -365,7 +365,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "10m"
+  #       max-size: "50m"
   #   ports:
   #     - "100.122.41.16:27850:27850"
   #   dns:
@@ -381,7 +381,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     ports:
       - "100.122.41.16:27080:80"
     dns:
@@ -396,7 +396,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     environment:
       # - DISABLE_LLM_CONSERVATION_AUDIT=true
       - CHROMEDP_SEMA_LIMIT=2
@@ -415,7 +415,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     dns:
       - 1.1.1.1
       - 8.8.8.8
@@ -428,7 +428,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     dns:
       - 1.1.1.1
       - 8.8.8.8
@@ -446,7 +446,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "10m"
+  #       max-size: "50m"
   #   dns:
   #     - 1.1.1.1
   #     - 8.8.8.8
@@ -464,7 +464,7 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options:
-  #       max-size: "10m"
+  #       max-size: "50m"
   #   dns:
   #     - 1.1.1.1
   #     - 8.8.8.8
@@ -488,7 +488,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     environment:
       - 'ALLOWED_NETWORKS=0.0.0.0/0'
       - TIMEOUT=600
@@ -507,7 +507,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
 
   postgre:
     image: ppcelery/postgres:latest
@@ -515,7 +515,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
+        max-size: "50m"
     env_file:
       - /opt/configs/env/b1/postgre.env
     volumes:
@@ -529,7 +529,7 @@ services:
       logging:
         driver: "json-file"
         options:
-          max-size: "10m"
+          max-size: "50m"
       volumes:
         - ./var/lib/redis:/data
         - ./opt/configs/redis/b1/redis.conf:/usr/local/etc/redis/redis.conf:ro
