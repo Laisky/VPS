@@ -236,6 +236,7 @@ services:
     env_file:
       - /opt/configs/env/b1/oneapi.env
     environment:
+      THEME: "modern"
       IDLE_TIMEOUT: 30
       DEBUG: "true"
       DEBUG_SQL: "true"
