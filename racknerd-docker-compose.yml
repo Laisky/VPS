@@ -213,12 +213,6 @@ services:
   #     - /opt/configs/ramjet/prd.py:/app/ramjet/settings/prd.py:ro
   #     # - /home/laisky/data/langchain/index:/var/lib/openai/index
   #     - /home/laisky/data/langchain/index-azure:/var/lib/openai/index
-  #   # environment:
-  #   #   - http_proxy=http://100.113.170.10:17777
-  #   #   - https_proxy=http://100.113.170.10:17777
-  #   #   - HTTP_PROXY=http://100.113.170.10:17777
-  #   #   - HTTPS_PROXY=http://100.113.170.10:17777
-  #   #   - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
   #   command: python -m ramjet -t gptchat --debug
 
   oneapi:
@@ -292,27 +286,27 @@ services:
     #   - 443:443
     #   - 80:80
 
-  graphql:
-    image: ppcelery/laisky-blog-graphql:latest
-    restart: unless-stopped
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
-    volumes:
-      - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
-      - /opt/configs/arweave:/opt/configs/arweave:ro
-    environment:
-      GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - 100.113.170.10:17800:17800
-    command: api --listen=0.0.0.0:17800
-      --config=/etc/laisky-blog-graphql/settings.yml
-      --log-level=debug
-      -t telegram
+  # graphql:
+  #   image: ppcelery/laisky-blog-graphql:latest
+  #   restart: unless-stopped
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   volumes:
+  #     - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
+  #     - /opt/configs/arweave:/opt/configs/arweave:ro
+  #   environment:
+  #     GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - 100.113.170.10:17800:17800
+  #   command: api --listen=0.0.0.0:17800
+  #     --config=/etc/laisky-blog-graphql/settings.yml
+  #     --log-level=debug
+  #     -t telegram
 
   nginx:
     image: nginx:1.25
@@ -404,7 +398,7 @@ services:
       - 8.8.8.8
     ports:
       - 100.113.170.10:24456:24456
-    command: -t heartbeat,gptchat,arweave,jav,telegram_notes -c /etc/go-ramjet/settings.yml --debug
+    command: -t heartbeat,gptchat,arweave,jav,telegram_notes,ssl-monitor,rss,keyword -c /etc/go-ramjet/settings.yml --debug
 
   wiki:
     image: ppcelery/wiki:latest
@@ -533,3 +527,29 @@ services:
       ports:
         - "100.113.170.10:6379:6379"
       command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  llmstorm:
+    image: ppcelery/llm-storm:latest
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      # HTTP POST /deep-research {"prompt": "PUT YOUT QUERY HERE"}
+      # with HEADER "Authorization: Bearer YOUR_API_KEY"
+      - "100.97.108.34:22083:8080"
+    env_file:
+      # set BING_SEARCH_API_KEY in env file
+      - /opt/configs/env/racknerd/storm.env
+    environment:
+      OPENAI_API_TYPE: openai
+      OPENAI_MAX_TOKENS: 10000
+      OPENAI_MODEL_NAME: o4-mini
+      OPENAI_API_BASE: https://oneapi.laisky.com/v1/
+      # (optional) set REDIS_HOST to activate the Redis-based async task worker
+      REDIS_HOST: 100.122.41.16
+      # (optional) co-storm tuning
+      COSTORM_MAX_CONV_TURN: 8
+      COSTORM_MAX_PERSPECTIVE: 8
+      COSTORM_MAX_SEARCH_TOP_K: 8
