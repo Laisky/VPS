@@ -538,7 +538,7 @@ services:
     ports:
       # HTTP POST /deep-research {"prompt": "PUT YOUT QUERY HERE"}
       # with HEADER "Authorization: Bearer YOUR_API_KEY"
-      - "100.97.108.34:22083:8080"
+      - "100.113.170.10:22083:8080"
     env_file:
       # set BING_SEARCH_API_KEY in env file
       - /opt/configs/env/racknerd/storm.env
