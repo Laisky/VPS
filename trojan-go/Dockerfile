@@ -1,5 +1,5 @@
 # db . -f ./trojan-go/Dockerfile -t ppcelery/trojan-go:latest
-FROM golang:1.24.3-bookworm AS builder
+FROM golang:1.25.1-bookworm AS builder
 
 WORKDIR /
 
