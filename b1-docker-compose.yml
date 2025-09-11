@@ -520,7 +520,7 @@ services:
     env_file:
       - /opt/configs/env/b1/postgre.env
     volumes:
-      - /var/lib/postgresql:/var/lib/postgresql
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
     ports:
       - 100.122.41.16:5432:5432
 
