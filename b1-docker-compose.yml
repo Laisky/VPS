@@ -13,8 +13,8 @@ services:
       - 1.1.1.1
       - 8.8.8.8
     volumes:
-      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/fullchain.pem:/etc/live/b1.laisky.com.crt:ro
-      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/privkey.pem:/etc/live/b1.laisky.com.key:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/laisky.com.crt:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/laisky.com.key:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
@@ -437,8 +437,9 @@ services:
     # ports:
     #   - 28998:8998/udp
     volumes:
-      - /opt/configs/swag/b1/etc/letsencrypt:/etc/letsencrypt:ro
       - /opt/configs/hysteria/b1/server.yaml:/etc/hysteria/server.yaml:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/fullchain.pem:/etc/live/b1.laisky.com.crt:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/privkey.pem:/etc/live/b1.laisky.com.key:ro
     command: ["server", "-c", "/etc/hysteria/server.yaml"]
 
   # pki:
