@@ -242,6 +242,7 @@ services:
       DEBUG_SQL: "true"
       ENFORCE_INCLUDE_USAGE: "true"
       FORCE_EMAIL_TLS_VERIFY: "true"
+      ENABLE_COOKIE_SECURE: "true"
       SYNC_FREQUENCY: 30
       GLOBAL_API_RATE_LIMIT: 1000
       GLOBAL_WEB_RATE_LIMIT: 1000
