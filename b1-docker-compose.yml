@@ -502,7 +502,7 @@ services:
       - 23491:8888
 
   channel_boardcast:
-    image: ppcelery/boardcastchannel:latest
+    image: ghcr.io/ccbikai/broadcastchannel:main
     restart: unless-stopped
     env_file:
       - /opt/configs/env/b1/broadcastchannel.env
