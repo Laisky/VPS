@@ -13,11 +13,13 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     volumes:
-      - /opt/configs/swag/hk/etc/letsencrypt:/etc/letsencrypt:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/fullchain.pem:/etc/letsencrypt/hk.laisky.com.crt:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/privkey.pem:/etc/letsencrypt/hk.laisky.com.key:ro
+
     ports:
       - 3478:3478/udp
       - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=hk.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt/live -certmode=manual
+    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=hk.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt -certmode=manual
 
   xray:
     image: teddysun/xray:latest

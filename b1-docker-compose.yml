@@ -13,11 +13,12 @@ services:
       - 1.1.1.1
       - 8.8.8.8
     volumes:
-      - /opt/configs/swag/b1/etc/letsencrypt:/etc/letsencrypt:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/fullchain.pem:/etc/letsencrypt/b1.laisky.com.crt:ro
+      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/privkey.pem:/etc/letsencrypt/b1.laisky.com.key:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=b1.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt/live -certmode=manual
+    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=b1.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt -certmode=manual
 
   trojan-go:
     image: ppcelery/trojan-go:latest

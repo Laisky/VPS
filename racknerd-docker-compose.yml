@@ -13,11 +13,12 @@ services:
       - 1.1.1.1
       - 8.8.8.8
     volumes:
-      - /opt/configs/swag/racknerd/etc/letsencrypt:/etc/letsencrypt:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/racknerd.laisky.com/fullchain.pem:/etc/letsencrypt/racknerd.laisky.com.crt:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/racknerd.laisky.com/privkey.pem:/etc/letsencrypt/racknerd.laisky.com.key:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=racknerd.laisky.com -a :12444 -stun -cert-file=/etc/letsencrypt/live/racknerd.laisky.com/fullchain.crt -key-file=/etc/letsencrypt/live/racknerd.laisky.com.key -certmode=manual
+    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=racknerd.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt -certmode=manual
 
   trojan-go:
     image: ppcelery/trojan-go:latest
