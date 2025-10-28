@@ -13,8 +13,8 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     volumes:
-      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
-      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
@@ -52,8 +52,8 @@ services:
     ports:
       - 23443:23443
     volumes:
-      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
-      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
       - /opt/configs/trojan-go/hk/server.json:/etc/torjan-go/config/server.json:ro
     command: /etc/torjan-go/config/server.json
 
@@ -71,8 +71,8 @@ services:
     ports:
       - 23444:23443
     volumes:
-      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
-      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/hk.laisky.com.crt:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/hk.laisky.com.key:ro
       - /opt/configs/trojan-go/hk/server-b1.json:/etc/torjan-go/config/server.json:ro
     command: /etc/torjan-go/config/server.json
 

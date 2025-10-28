@@ -329,8 +329,8 @@ services:
       - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
       - /opt/configs/nginx/conf.d/racknerd:/etc/nginx/conf.d:ro
       - /opt/configs/nginx:/opt/configs/nginx:ro
-      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:/opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:ro
-      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:/opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/racknerd.laisky.com.crt:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/racknerd.laisky.com.key:ro
 
   pccs:
     image: ppcelery/pccs:v2.2

@@ -10,12 +10,15 @@ RUN apt-get update \
         ca-certificates
 
 # Build and install pgvector
+# pgvector is an extension for PostgreSQL that provides vector data types and functions for machine learning applications.
 RUN git clone --branch v0.8.0 https://github.com/pgvector/pgvector.git \
     && cd pgvector \
     && make \
     && make install
 
 # Install extension: ctext, PostGIS
+# ctext is a case-insensitive text search extension.
+# PostGIS adds support for geographic objects to the PostgreSQL database.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         postgresql-contrib-17 \
