@@ -17,7 +17,7 @@ services:
     ports:
       - 3478:3478/udp
       - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=racknerd.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt/live -certmode=manual
+    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=racknerd.laisky.com -a :12444 -stun -cert-file=/etc/letsencrypt/live/racknerd.laisky.com/fullchain.crt -key-file=/etc/letsencrypt/live/racknerd.laisky.com.key -certmode=manual
 
   trojan-go:
     image: ppcelery/trojan-go:latest
@@ -306,28 +306,28 @@ services:
   #     --log-level=debug
   #     -t telegram
 
-  nginx:
-    image: nginx:1.25
-    restart: unless-stopped
-    network_mode: host
-    # ports:
-    #   # - 100.113.170.10:443:443
-    #   - 443:443
-    #   # - 80:80
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-    volumes:
-      - /var/www:/var/www
-      - /var/log:/var/log
-      - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
-      - /opt/configs/nginx/conf.d/racknerd:/etc/nginx/conf.d:ro
-      - /opt/configs/nginx:/opt/configs/nginx:ro
-      - /opt/configs/swag/racknerd/etc/letsencrypt:/etc/letsencrypt:ro
+  # nginx:
+  #   image: nginx:1.25
+  #   restart: unless-stopped
+  #   network_mode: host
+  #   # ports:
+  #   #   # - 100.113.170.10:443:443
+  #   #   - 443:443
+  #   #   # - 80:80
+  #   dns:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "30m"
+  #   volumes:
+  #     - /var/www:/var/www
+  #     - /var/log:/var/log
+  #     - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
+  #     - /opt/configs/nginx/conf.d/racknerd:/etc/nginx/conf.d:ro
+  #     - /opt/configs/nginx:/opt/configs/nginx:ro
+  #     - /opt/configs/swag/racknerd/etc/letsencrypt:/etc/letsencrypt:ro
 
   pccs:
     image: ppcelery/pccs:v2.2
