@@ -13,12 +13,11 @@ services:
       - 1.1.1.1
       - 8.8.8.8
     volumes:
-      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/b1.laisky.com.crt:ro
-      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/b1.laisky.com.key:ro
+      - /opt/configs/swag/b1/etc/letsencrypt:/etc/letsencrypt:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=b1.laisky.com -a :12444 -stun -certdir=/etc/live -certmode=manual
+    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=b1.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt/live -certmode=manual
 
   trojan-go:
     image: ppcelery/trojan-go:latest
@@ -34,8 +33,7 @@ services:
       options:
         max-size: "50m"
     volumes:
-      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/b1.laisky.com.crt:ro
-      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/b1.laisky.com.key:ro
+      - /opt/configs/swag/b1/etc/letsencrypt:/etc/letsencrypt:ro
       - /opt/configs/trojan-go/b1:/etc/torjan-go/config:ro
     command: /etc/torjan-go/config/server.json
 
@@ -440,8 +438,7 @@ services:
     #   - 28998:8998/udp
     volumes:
       - /opt/configs/hysteria/b1/server.yaml:/etc/hysteria/server.yaml:ro
-      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/fullchain.pem:/etc/live/b1.laisky.com.crt:ro
-      - /opt/configs/swag/b1/etc/letsencrypt/live/b1.laisky.com/privkey.pem:/etc/live/b1.laisky.com.key:ro
+      - /opt/configs/swag/b1/etc/letsencrypt:/etc/letsencrypt:ro
     command: ["server", "-c", "/etc/hysteria/server.yaml"]
 
   # pki:

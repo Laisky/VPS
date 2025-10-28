@@ -13,12 +13,11 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     volumes:
-      - /opt/configs/swag/vultr/etc/letsencrypt/live/vultr.laisky.com/fullchain.pem:/etc/live/vultr.laisky.com.crt:ro
-      - /opt/configs/swag/vultr/etc/letsencrypt/live/vultr.laisky.com/privkey.pem:/etc/live/vultr.laisky.com.key:ro
+      - /opt/configs/swag/vultr/etc/letsencrypt:/etc/letsencrypt:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=vultr.laisky.com -a :12444 -stun -certdir=/etc/live -certmode=manual
+    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=vultr.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt/live -certmode=manual
 
   glider:
     image: ppcelery/glider:latest
@@ -110,7 +109,6 @@ services:
     ports:
       - 23443:23443
     volumes:
-      - /opt/configs/swag/vultr/etc/letsencrypt/live/vultr.laisky.com/fullchain.pem:/etc/live/vultr.laisky.com.crt:ro
-      - /opt/configs/swag/vultr/etc/letsencrypt/live/vultr.laisky.com/privkey.pem:/etc/live/vultr.laisky.com.key:ro
+      - /opt/configs/swag/vultr/etc/letsencrypt:/etc/letsencrypt:ro
       - /opt/configs/trojan-go/vultr:/etc/torjan-go/config:ro
     command: /etc/torjan-go/config/server.json

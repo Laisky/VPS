@@ -105,12 +105,11 @@ services:
       options:
         max-size: "10m"
     volumes:
-      - /opt/configs/swag/bj/etc/letsencrypt/live/bj.laisky.com/fullchain.pem:/etc/live/bj.laisky.com.crt:ro
-      - /opt/configs/swag/bj/etc/letsencrypt/live/bj.laisky.com/privkey.pem:/etc/live/bj.laisky.com.key:ro
+      - /opt/configs/swag/bj/etc/letsencrypt:/etc/letsencrypt:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=bj.laisky.com -a :12444 -stun -certdir=/etc/live -certmode=manual
+    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=bj.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt/live -certmode=manual
     # command: -certdir=/opt/configs/derper/bj -certmode=manual
 
   monitor:

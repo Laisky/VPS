@@ -13,12 +13,11 @@ services:
       - 1.1.1.1
       - 8.8.8.8
     volumes:
-      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/racknerd.laisky.com.crt:ro
-      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/racknerd.laisky.com.key:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt:/etc/letsencrypt:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=racknerd.laisky.com -a :12444 -stun -certdir=/etc/live -certmode=manual
+    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=racknerd.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt/live -certmode=manual
 
   trojan-go:
     image: ppcelery/trojan-go:latest
@@ -34,8 +33,7 @@ services:
       options:
         max-size: "10m"
     volumes:
-      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/racknerd.laisky.com.crt:ro
-      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/racknerd.laisky.com.key:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt:/etc/letsencrypt:ro
       - /opt/configs/trojan-go/racknerd:/etc/torjan-go/config:ro
     command: /etc/torjan-go/config/server.json
 
@@ -329,8 +327,7 @@ services:
       - /var/lib/nginx/cache/s3:/var/lib/nginx/cache/s3
       - /opt/configs/nginx/conf.d/racknerd:/etc/nginx/conf.d:ro
       - /opt/configs/nginx:/opt/configs/nginx:ro
-      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/live/racknerd.laisky.com.crt:ro
-      - /opt/configs/swag/racknerd/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/live/racknerd.laisky.com.key:ro
+      - /opt/configs/swag/racknerd/etc/letsencrypt:/etc/letsencrypt:ro
 
   pccs:
     image: ppcelery/pccs:v2.2
