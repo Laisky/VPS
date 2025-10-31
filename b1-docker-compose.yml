@@ -512,7 +512,7 @@ services:
         max-size: "50m"
 
   postgre:
-    image: ppcelery/postgres:latest
+    image: ppcelery/postgres:18
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -521,7 +521,9 @@ services:
     env_file:
       - /opt/configs/env/b1/postgre.env
     volumes:
-      - /var/lib/postgresql/data:/var/lib/postgresql/data
+      # For PostgreSQL 18 the Docker image expects the parent directory
+      # Mount the host directory at /var/lib/postgresql so PG18 manages subdirs
+      - /var/lib/postgresql:/var/lib/postgresql
     ports:
       - 100.122.41.16:5432:5432
 
