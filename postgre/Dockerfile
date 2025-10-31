@@ -1,14 +1,14 @@
-# docker build . -f postgre/Dockerfile  -t ppcelery/postgres:18
-FROM postgres:18-bookworm
+# docker build . -f postgre/Dockerfile  -t ppcelery/postgres:latest
+FROM postgres:17-bookworm
 
-ARG PG_MAJOR=18
+ARG PG_MAJOR=17
 
 # =====================================
 # Install build dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     build-essential wget \
-    postgresql-server-dev-18 \
+    postgresql-server-dev-17 \
     git \
     ca-certificates
 
@@ -25,8 +25,8 @@ RUN git clone --branch v0.8.1 https://github.com/pgvector/pgvector.git \
 # ctext is a case-insensitive text search extension.
 # PostGIS adds support for geographic objects to the PostgreSQL database.
 RUN apt-get install -y --no-install-recommends \
-    postgresql-contrib-18 \
-    postgresql-18-postgis-3 \
+    postgresql-contrib-17 \
+    postgresql-17-postgis-3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -48,7 +48,7 @@ RUN wget https://github.com/tensorchord/VectorChord-bm25/releases/download/${VCH
 
 # =====================================
 # Cleanup
-RUN apt-get remove -y build-essential postgresql-server-dev-18 git \
+RUN apt-get remove -y build-essential postgresql-server-dev-17 git \
     && apt-get autoremove -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
