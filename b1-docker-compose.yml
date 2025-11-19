@@ -526,7 +526,7 @@ services:
       - 100.122.41.16:5432:5432
 
   redis:
-      image: redis:7.4.2
+      image: redis:8
       restart: unless-stopped
       logging:
         driver: "json-file"
