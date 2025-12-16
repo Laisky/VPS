@@ -504,3 +504,40 @@ services:
   #     HTTP_PROXY: http://100.97.189.32:17777
   #     HTTPS_PROXY: http://100.97.189.32:17777
   #     NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.142.0
+    volumes:
+      - /opt/configs/otel/home/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "100.97.108.34:4317:4317"
+      - "100.97.108.34:4318:4318"
+    command: ["--config=/etc/otel-collector-config.yaml"]
+
+  victoria-metrics:
+    image: victoriametrics/victoria-metrics:v1.132.0
+    volumes:
+      - /var/lib/otel/victoria-metrics-data:/victoria-metrics-data
+    ports:
+      - "100.97.108.34:8428:8428"
+    command:
+      [
+        "--storageDataPath=/victoria-metrics-data",
+        "--opentelemetry.usePrometheusNaming=true",
+      ]
+
+  victoria-logs:
+    image: victoriametrics/victoria-logs:v1.41.0
+    volumes:
+      - /var/lib/otel/victoria-logs-data:/victoria-logs-data
+    ports:
+      - "100.97.108.34:9428:9428"
+    command: ["-storageDataPath=victoria-logs-data"]
+
+  victoria-traces:
+    image: victoriametrics/victoria-traces:v0.5.1
+    volumes:
+      - /var/lib/otel/victoria-traces-data:/victoria-traces-data
+    ports:
+      - "100.97.108.34:10428:10428"
+    command: ["-storageDataPath=victoria-traces-data"]
