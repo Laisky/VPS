@@ -47,6 +47,11 @@ main() {
 
   log "PostgreSQL is ready. Determining usable role for admin operations..."
 
+  log "Refreshing collation version for template1 (if needed)..."
+  psql -U "$PGUSER" -d postgres -c \
+    "ALTER DATABASE template1 REFRESH COLLATION VERSION;" \
+    || log "template1 collation refresh skipped or failed"
+
   # If chosen PGUSER doesn't work, try the other common env var (safe fallback)
   if ! check_user_connects; then
     if [ -n "${POSTGRES_USER:-}" ] && [ "$PGUSER" != "$POSTGRES_USER" ]; then

@@ -1,7 +1,7 @@
 # docker build . -f postgre/Dockerfile  -t ppcelery/postgres:latest
 #
 # Should not upgrade the minor version of Postgres, because of https://x.com/gwenshap/status/1990942970682749183
-FROM postgres:17.2-bookworm
+FROM postgres:17.6-bookworm
 
 ARG PG_MAJOR=17
 
@@ -60,14 +60,12 @@ RUN apt-get remove -y build-essential postgresql-server-dev-17 git \
 # Add pgvector to shared_preload_libraries
 RUN echo "shared_preload_libraries='vchord,vchord_bm25,vector,pg_tokenizer'" >> /usr/share/postgresql/postgresql.conf.sample
 
-
-
 # Copy collation fix script for post-startup
-COPY ./postgre/fix-collation-on-start.sh /usr/local/bin/fix-collation-on-start.sh
-RUN chmod +x /usr/local/bin/fix-collation-on-start.sh
+# COPY ./postgre/fix-collation-on-start.sh /docker-entrypoint-initdb.d/10-fix-collation.sh
+# RUN chmod +x /docker-entrypoint-initdb.d/10-fix-collation.sh
 
 # Set default command to run Postgres in the foreground and the collation fix in the background
-CMD ["bash", "-c", "/usr/local/bin/fix-collation-on-start.sh & exec docker-entrypoint.sh postgres"]
+# CMD ["bash", "-c", "/usr/local/bin/fix-collation-on-start.sh & exec docker-entrypoint.sh postgres"]
 
 # Expose the default PostgreSQL port
 EXPOSE 5432

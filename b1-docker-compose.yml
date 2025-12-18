@@ -513,7 +513,7 @@ services:
 
   postgre:
     # image: ppcelery/postgres:latest
-    image: ppcelery/postgres:17.2-bookworm
+    image: ppcelery/postgres:17.6-bookworm
     restart: unless-stopped
     logging:
       driver: "json-file"
