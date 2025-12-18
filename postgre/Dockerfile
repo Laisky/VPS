@@ -1,7 +1,7 @@
 # docker build . -f postgre/Dockerfile  -t ppcelery/postgres:latest
 #
 # Should not upgrade the minor version of Postgres, because of https://x.com/gwenshap/status/1990942970682749183
-FROM postgres:17.6-bookworm
+FROM postgres:17.2-bookworm
 
 ARG PG_MAJOR=17
 

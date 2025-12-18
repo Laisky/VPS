@@ -512,7 +512,8 @@ services:
         max-size: "50m"
 
   postgre:
-    image: ppcelery/postgres:latest
+    # image: ppcelery/postgres:latest
+    image: ppcelery/postgres:17.2-bookworm
     restart: unless-stopped
     logging:
       driver: "json-file"
