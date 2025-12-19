@@ -252,6 +252,10 @@ services:
       OPENROUTER_PROVIDER_SORT: throughput
       LOG_PUSH_API: "https://gq.laisky.com/query/"
       LOG_PUSH_TYPE: "oneapi"
+      # tracing
+      OTEL_ENABLED: "true"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://100.97.108.34:4318"
+      OTEL_SERVICE_NAME: "one-api"
     volumes:
       - /var/lib/oneapi:/data
     ports:
