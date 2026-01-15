@@ -62,6 +62,43 @@ docker ps -q | while read -r cid; do
 done | sed 's#^/##' | column -t
 
 sep
+
+### 4️⃣.5 Network Interface Classification (NEW)
+bold "📌 MongoDB Connection Ingress Interfaces"
+
+ss -tnp | grep ":${MONGO_PORT}" | awk '
+{
+  iface=$1
+  remote=$5
+  print iface, remote
+}
+' | sort | uniq -c | sort -nr | awk '
+BEGIN {
+  printf "%-6s %-12s %-22s %-20s\n",
+         "COUNT", "IFACE", "REMOTE", "CLASSIFICATION"
+}
+{
+  iface=$2
+  remote=$3
+
+  if (iface ~ /^veth|^br-|^docker/) {
+    cls="DOCKER"
+  } else if (iface ~ /^tailscale/) {
+    cls="EXTERNAL (TAILSCALE)"
+  } else if (iface ~ /^eth|^ens|^enp/) {
+    cls="EXTERNAL (PUBLIC)"
+  } else if (iface == "lo") {
+    cls="LOCAL HOST"
+  } else {
+    cls="UNKNOWN"
+  }
+
+  printf "%-6s %-12s %-22s %-20s\n",
+         $1, iface, remote, cls
+}
+'
+
+sep
 bold "🔍 Connection Storm Source Attribution"
 
 # Collect all TCP connections touching MongoDB port
