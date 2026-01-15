@@ -63,89 +63,39 @@ done | sed 's#^/##' | column -t
 
 sep
 
-### 4️⃣.5 Network Interface Classification (NEW)
-bold "📌 MongoDB Connection Ingress Interfaces"
+### 4️⃣.5 Connection origin classification (kernel route based)
+bold "📌 MongoDB Connection Origin Classification"
 
-ss -tnp | grep ":${MONGO_PORT}" | awk '
-{
-  iface=$1
-  remote=$5
-  print iface, remote
-}
-' | sort | uniq -c | sort -nr | awk '
-BEGIN {
-  printf "%-6s %-12s %-22s %-20s\n",
-         "COUNT", "IFACE", "REMOTE", "CLASSIFICATION"
-}
-{
-  iface=$2
-  remote=$3
+ss -tn | grep ":${MONGO_PORT}" \
+  | awk '{print $5}' \
+  | cut -d: -f1 \
+  | sort \
+  | uniq -c \
+  | sort -nr \
+  | while read -r count ip; do
 
-  if (iface ~ /^veth|^br-|^docker/) {
-    cls="DOCKER"
-  } else if (iface ~ /^tailscale/) {
-    cls="EXTERNAL (TAILSCALE)"
-  } else if (iface ~ /^eth|^ens|^enp/) {
-    cls="EXTERNAL (PUBLIC)"
-  } else if (iface == "lo") {
-    cls="LOCAL HOST"
-  } else {
-    cls="UNKNOWN"
-  }
+    iface=$(ip route get "$ip" 2>/dev/null | awk '{for (i=1;i<=NF;i++) if ($i=="dev") print $(i+1)}')
 
-  printf "%-6s %-12s %-22s %-20s\n",
-         $1, iface, remote, cls
-}
-'
-
-sep
-bold "🔍 Connection Storm Source Attribution"
-
-# Collect all TCP connections touching MongoDB port
-ss -tnp | grep ":${MONGO_PORT}" | awk '
-{
-  local=$4
-  remote=$5
-  pid=""
-  proc=""
-  if (match($0, /pid=([0-9]+)/, m)) pid=m[1]
-  if (match($0, /users:\(\("([^"]+)"/, n)) proc=n[1]
-  print remote, pid, proc
-}
-' | while read -r remote pid proc; do
-  ip="${remote%:*}"
-  port="${remote##*:}"
-
-  # Determine if local or external
-  if [[ "$ip" =~ ^(10\.|172\.1[6-9]\.|172\.2[0-9]\.|172\.3[0-1]\.|192\.168\.) ]]; then
-    origin="LOCAL"
-  else
-    origin="EXTERNAL"
-  fi
-
-  container="N/A"
-
-  if [[ "$origin" == "LOCAL" && -n "$pid" && "$pid" != "-" ]]; then
-    # Try to map PID to Docker container
-    if [[ -f "/proc/$pid/cgroup" ]]; then
-      cid=$(grep -oE '[0-9a-f]{64}' /proc/$pid/cgroup | head -1 || true)
-      if [[ -n "$cid" ]]; then
-        container=$(docker inspect --format '{{.Name}}' "$cid" 2>/dev/null | sed 's#^/##')
-      fi
+    if [[ "$iface" =~ ^br-|^veth|^docker ]]; then
+      origin="DOCKER"
+    elif [[ "$iface" =~ ^tailscale ]]; then
+      origin="EXTERNAL (TAILSCALE)"
+    elif [[ "$iface" =~ ^eth|^ens|^enp ]]; then
+      origin="EXTERNAL (PUBLIC)"
+    elif [[ "$iface" == "lo" ]]; then
+      origin="LOCAL HOST"
+    else
+      origin="UNKNOWN"
     fi
-  fi
 
-  printf "%-10s %-18s %-8s %-8s %-20s\n" \
-    "$origin" "$ip:$port" "${pid:-N/A}" "${proc:-N/A}" "$container"
-done | sort | uniq -c | sort -nr | head -20 | awk '
+    printf "%-6s %-18s %-12s %-20s\n" \
+      "$count" "$ip" "${iface:-N/A}" "$origin"
+  done | awk '
 BEGIN {
-  printf "%-6s %-10s %-22s %-8s %-8s %-20s\n",
-         "COUNT", "ORIGIN", "REMOTE", "PID", "PROC", "CONTAINER"
+  printf "%-6s %-18s %-12s %-20s\n",
+         "COUNT", "REMOTE_IP", "IFACE", "CLASSIFICATION"
 }
-{
-  printf "%-6s %-10s %-22s %-8s %-8s %-20s\n",
-         $1, $2, $3, $4, $5, $6
-}
+{ print }
 '
 
 sep
@@ -175,7 +125,7 @@ sep
 bold "📎 Recommended Actions Summary"
 echo "- If 'pthread_create failed' appears: restart the MongoDB container"
 echo "- Ensure MongoDB is not exposed to the host via published ports"
-echo "- Audit containers with the highest connection counts for Go client misuse"
+echo "- Audit clients with the highest connection counts for retry / pooling issues"
 echo "- All Go clients must reuse a single mongo.Client and limit MaxPoolSize"
 
 echo
