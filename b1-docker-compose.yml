@@ -138,10 +138,10 @@ services:
   mongodb6:
     image: mongo:6
     restart: unless-stopped
-    ulimits:
-      nproc: 65535
-      nofile: 65535
-    pids_limit: 65535
+    # ulimits:
+    #   nproc: 65535
+    #   nofile: 65535
+    # pids_limit: 65535
     logging:
       driver: "json-file"
       options:
