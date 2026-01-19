@@ -161,7 +161,7 @@ services:
         max-size: "10m"
     environment:
       CHROMEDP_SEMA_LIMIT: 6
-      CRAWLER_HTTP_PROXY: http://100.97.189.32:17777
+      # CRAWLER_HTTP_PROXY: http://100.97.189.32:17777
     volumes:
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
     command: -t heartbeat,ssl-monitor,rss,keyword,gptchat -c /etc/go-ramjet/settings.yml --debug
