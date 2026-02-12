@@ -423,7 +423,7 @@ services:
       - 8.8.8.8
     ports:
       - 100.122.41.16:24456:24456
-    command: -t heartbeat,gptchat,arweave,jav,telegram_notes,postgres -c /etc/go-ramjet/settings.yml --debug
+    command: -t heartbeat,gptchat,arweave,jav,telegram_notes,postgres,cv -c /etc/go-ramjet/settings.yml --debug
 
   wiki:
     image: ppcelery/wiki:latest
