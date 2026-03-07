@@ -230,6 +230,7 @@ services:
   #   #   - NO_PROXY=localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
   #   command: python -m ramjet -t gptchat --debug
 
+  # op run --env-file=./one-api/b1.env -- docker-compose -f b1-docker-compose.yml up -d --remove-orphans --force-recreate oneapi
   oneapi:
     #image: ppcelery/one-api:82b2f2c
     image: ppcelery/one-api:latest
@@ -241,9 +242,16 @@ services:
       driver: "json-file"
       options:
         max-size: "100m"
-    env_file:
-      - /opt/configs/env/b1/oneapi.env
+    # env_file:
+    #   - /opt/configs/env/b1/oneapi.env
     environment:
+      # secrets
+      # -------------------------------------
+      SESSION_SECRET: ${SESSION_SECRET}
+      SQL_DSN: ${SQL_DSN}
+      LOG_PUSH_TOKEN: ${LOG_PUSH_TOKEN}
+      # non sensitive environment variables
+      # -------------------------------------
       THEME: "modern"
       IDLE_TIMEOUT: 30
       DEBUG: "true"
