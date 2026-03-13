@@ -507,6 +507,11 @@ services:
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.142.0
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     volumes:
       - /opt/configs/otel/home/otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
@@ -516,6 +521,11 @@ services:
 
   victoria-metrics:
     image: victoriametrics/victoria-metrics:v1.132.0
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     volumes:
       - /var/lib/otel/victoria-metrics-data:/victoria-metrics-data
     ports:
@@ -528,6 +538,11 @@ services:
 
   victoria-logs:
     image: victoriametrics/victoria-logs:v1.41.0
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     volumes:
       - /var/lib/otel/victoria-logs-data:/victoria-logs-data
     ports:
@@ -536,6 +551,11 @@ services:
 
   victoria-traces:
     image: victoriametrics/victoria-traces:v0.5.1
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
     volumes:
       - /var/lib/otel/victoria-traces-data:/victoria-traces-data
     ports:
