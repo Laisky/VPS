@@ -8,7 +8,7 @@ services:
   #     options:
   #       max-size: "10m"
   #   ports:
-  #     - "100.97.108.34:27017:27017"
+  #     - "100.69.166.78:27017:27017"
   #   # dns:
   #   #   - 100.122.41.16
   #   volumes:
@@ -27,7 +27,7 @@ services:
   #     options:
   #       max-size: "10m"
   #   ports:
-  #     - "100.97.108.34:21491:1491"
+  #     - "100.69.166.78:21491:1491"
   #   # dns:
   #   #   - 100.122.41.16
   #   volumes:
@@ -42,7 +42,7 @@ services:
   #     options:
   #       max-size: "10m"
   #   ports:
-  #     - "100.97.108.34:27018:27017"
+  #     - "100.69.166.78:27018:27017"
   #   # dns:
   #   #   - 100.122.41.16
   #   volumes:
@@ -61,9 +61,9 @@ services:
   #     options:
   #       max-size: "30m"
   #   ports:
-  #     - "100.97.108.34:8123:8123"
-  #     - "100.97.108.34:9000:9000"
-  #     - "100.97.108.34:9004:9004"
+  #     - "100.69.166.78:8123:8123"
+  #     - "100.69.166.78:9000:9000"
+  #     - "100.69.166.78:9004:9004"
   #   dns:
   #     - 8.8.8.8
   #     - 1.1.1.1
@@ -80,7 +80,7 @@ services:
   #     options:
   #       max-size: "10m"
   #   ports:
-  #     - "100.97.108.34:6379:6379"
+  #     - "100.69.166.78:6379:6379"
   #   # dns:
   #   #   - 100.122.41.16
   #   volumes:
@@ -100,7 +100,7 @@ services:
   #     HTTPS_PROXY: http://100.97.189.32:17777
   #     NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net,basebit.me
   #   ports:
-  #     - "100.97.108.34:21108:8080"
+  #     - "100.69.166.78:21108:8080"
   #   volumes:
   #     - /var/lib/liteseed:/data
   #   command: ["start"]
@@ -133,7 +133,7 @@ services:
   #   dns:
   #     - 100.113.28.117
   #   ports:
-  #     - 100.97.108.34:17800:8080
+  #     - 100.69.166.78:17800:8080
   #   volumes:
   #     - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
   #   logging:
@@ -143,8 +143,8 @@ services:
   #   environment:
   #     GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
   #     NO_PROXY: localhost,127.0.0.1,100.64.0.0/10,192.168.0.0/16,10.0.0.0/8,127.0.0.0/8,snake-carp.ts.net
-  #     HTTP_PROXY: http://100.97.108.34:17777
-  #     HTTPS_PROXY: http://100.97.108.34:17777
+  #     HTTP_PROXY: http://100.69.166.78:17777
+  #     HTTPS_PROXY: http://100.69.166.78:17777
   #   command: api --listen=0.0.0.0:8080
   #     --config=/etc/laisky-blog-graphql/settings.yml
   #     --log-level=debug
@@ -172,7 +172,7 @@ services:
     deploy:
       replicas: 1
     ports:
-      - 100.97.108.34:22280:37851
+      - 100.69.166.78:22280:37851
     # dns:
     #   - 100.122.41.16
     logging:
@@ -200,7 +200,7 @@ services:
   #   # dns:
   #   #   - 100.122.41.16
   #   ports:
-  #     - 100.97.108.34:9200:9200
+  #     - 100.69.166.78:9200:9200
   #   environment:
   #     - discovery.type=single-node
   #     - xpack.security.enabled=false
@@ -223,7 +223,7 @@ services:
   #   image: nginx:1.21.3-alpine
   #   restart: always
   #   ports:
-  #     - 100.97.108.34:22280:80
+  #     - 100.69.166.78:22280:80
   #   dns:
   #     - 100.122.41.16
   #   logging:
@@ -241,7 +241,7 @@ services:
   #     - 8.8.8.8
   #     - 1.1.1.1
   #   ports:
-  #     - 100.97.108.34:443:443
+  #     - 100.69.166.78:443:443
   #   logging:
   #     driver: "json-file"
   #     options:
@@ -274,8 +274,8 @@ services:
       MINIO_COMPRESSION_EXTENSIONS: ".txt,.log,.csv"
       MINIO_COMPRESSION_MIME_TYPES: "text/*,application/json"
     ports:
-      - 100.97.108.34:19000:9000
-      - 100.97.108.34:19001:9001
+      - 100.69.166.78:19000:9000
+      - 100.69.166.78:19001:9001
     logging:
       driver: "json-file"
       options:
@@ -300,7 +300,7 @@ services:
       options:
         max-size: "10m"
     ports:
-      - 100.97.108.34:17778:8080
+      - 100.69.166.78:17778:8080
     volumes:
       - /opt/configs/glider/home/glider.conf:/app/glider.conf:ro
 
@@ -315,8 +315,8 @@ services:
         max-size: "10m"
     network_mode: host
     # ports:
-    #   - 100.97.108.34:17777:8080
-    #   - 100.97.108.34:17778:8080
+    #   - 100.69.166.78:17777:8080
+    #   - 100.69.166.78:17778:8080
     volumes:
       - /opt/configs/glider/home/glider-gfw.conf:/app/glider.conf:ro
 
@@ -334,7 +334,7 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
-      - 100.97.108.34:9100:9100
+      - 100.69.166.78:9100:9100
 
   # prometheus:
   #   image: prom/prometheus:latest
@@ -350,7 +350,7 @@ services:
   #     - '--web.console.templates=/etc/prometheus/consoles'
   #     - '--web.enable-lifecycle'
   #   ports:
-  #     - 100.97.108.34:9090:9090
+  #     - 100.69.166.78:9090:9090
 
   hysteria:
     # image: teddysun/hysteria
@@ -363,7 +363,7 @@ services:
     # dns:
     #   - 100.122.41.16
     ports:
-      - 100.97.108.34:28998:8998
+      - 100.69.166.78:28998:8998
     volumes:
       - /opt/configs/hysteria/b1:/etc/hysteria:ro
     command: ["client", "-c", "/etc/hysteria/client.yaml"]
@@ -376,7 +376,7 @@ services:
       options:
         max-size: "10m"
     ports:
-      - '100.97.108.34:22082:8080'
+      - '100.69.166.78:22082:8080'
     volumes:
       - /var/lib/stirling-pdf/trainingData:/usr/share/tessdata #Required for extra OCR languages
       - /opt/configs/stirling-pdf:/configs
@@ -401,7 +401,7 @@ services:
   #   env_file:
   #     - /opt/configs/tinyproxy/auth.env
   #   ports:
-  #     - 100.97.108.34:23491:8888
+  #     - 100.69.166.78:23491:8888
 
   metube:
     image: ghcr.io/alexta69/metube
@@ -411,7 +411,7 @@ services:
       options:
         max-size: "10m"
     ports:
-      - "100.97.108.34:22081:8081"
+      - "100.69.166.78:22081:8081"
     volumes:
       - /var/lib/ytdownload:/downloads
     environment:
@@ -430,10 +430,10 @@ services:
       options:
         max-size: "10m"
     ports:
-      - "100.97.108.34:14000:4000"
-      - "100.97.108.34:14001:4001"
-      - "100.97.108.34:14002:4002"
-      - "100.97.108.34:14003:4003"
+      - "100.69.166.78:14000:4000"
+      - "100.69.166.78:14001:4001"
+      - "100.69.166.78:14002:4002"
+      - "100.69.166.78:14003:4003"
     volumes:
       - ./var/lib/greptimedb:/tmp/greptimedb
     command: ["standalone", "start",
@@ -451,7 +451,8 @@ services:
       options:
         max-size: "10m"
     ports:
-      - "100.97.108.34:13000:3000"
+      - "100.69.166.78:13000:3000"
+    # sudo chown -R 472:472 /var/lib/grafana
     volumes:
       - /var/lib/grafana:/var/lib/grafana
       - /var/log/grafana:/var/log/grafana
@@ -466,7 +467,7 @@ services:
     ports:
       # HTTP POST /deep-research {"prompt": "PUT YOUT QUERY HERE"}
       # with HEADER "Authorization: Bearer YOUR_API_KEY"
-      - "100.97.108.34:22083:8080"
+      - "100.69.166.78:22083:8080"
     env_file:
       # set BING_SEARCH_API_KEY in env file
       - /opt/configs/env/home/storm.env
@@ -495,7 +496,7 @@ services:
   #     options:
   #       max-size: "10m"
   #   ports:
-  #     - "100.97.108.34:22084:4000"
+  #     - "100.69.166.78:22084:4000"
   #   volumes:
   #     - /var/lib/ario:/app/data
   #   environment:
@@ -515,8 +516,8 @@ services:
     volumes:
       - /opt/configs/otel/home/otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
-      - "100.97.108.34:4317:4317"
-      - "100.97.108.34:4318:4318"
+      - "100.69.166.78:4317:4317"
+      - "100.69.166.78:4318:4318"
     command: ["--config=/etc/otel-collector-config.yaml"]
 
   victoria-metrics:
@@ -529,7 +530,7 @@ services:
     volumes:
       - /var/lib/otel/victoria-metrics-data:/victoria-metrics-data
     ports:
-      - "100.97.108.34:8428:8428"
+      - "100.69.166.78:8428:8428"
     command:
       [
         "--storageDataPath=/victoria-metrics-data",
@@ -546,7 +547,7 @@ services:
     volumes:
       - /var/lib/otel/victoria-logs-data:/victoria-logs-data
     ports:
-      - "100.97.108.34:9428:9428"
+      - "100.69.166.78:9428:9428"
     command: ["-storageDataPath=victoria-logs-data"]
 
   victoria-traces:
@@ -559,5 +560,5 @@ services:
     volumes:
       - /var/lib/otel/victoria-traces-data:/victoria-traces-data
     ports:
-      - "100.97.108.34:10428:10428"
+      - "100.69.166.78:10428:10428"
     command: ["-storageDataPath=victoria-traces-data"]
