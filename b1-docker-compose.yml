@@ -269,6 +269,9 @@ services:
       OPENROUTER_PROVIDER_SORT: throughput
       LOG_PUSH_API: "https://gq.laisky.com/query/"
       LOG_PUSH_TYPE: "oneapi"
+      # passkey
+      WEBAUTHN_RP_ID: "oneapi.laisky.com"
+      WEBAUTHN_RP_ORIGINS: "https://oneapi.laisky.com"
       # tracing
       OTEL_ENABLED: "true"
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://100.69.166.78:4318"
