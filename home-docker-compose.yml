@@ -256,7 +256,8 @@ services:
 
   minio:
     # image: quay.io/minio/minio:latest
-    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    # image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    image: pgsty/minio:latest
     restart: unless-stopped
     env_file:
       - /opt/configs/env/home/minio.env
@@ -443,20 +444,6 @@ services:
       "--postgres-addr", "0.0.0.0:4003"
     ]
 
-  grafana:
-    image: grafana/grafana:11.4.0
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    ports:
-      - "100.69.166.78:13000:3000"
-    # sudo chown -R 472:472 /var/lib/grafana
-    volumes:
-      - /var/lib/grafana:/var/lib/grafana
-      - /var/log/grafana:/var/log/grafana
-
   llmstorm:
     image: ppcelery/llm-storm:latest
     restart: unless-stopped
@@ -562,3 +549,17 @@ services:
     ports:
       - "100.69.166.78:10428:10428"
     command: ["-storageDataPath=victoria-traces-data"]
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+    ports:
+      - "100.69.166.78:13000:3000"
+    # sudo chown -R 472:472 /var/lib/grafana
+    volumes:
+      - /var/lib/grafana:/var/lib/grafana
+      - /var/log/grafana:/var/log/grafana
