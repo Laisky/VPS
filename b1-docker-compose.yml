@@ -278,10 +278,14 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://100.69.166.78:4318"
       OTEL_SERVICE_NAME: "one-api"
       OTEL_ENVIRONMENT: "production"
+      # Pprof
+      ENABLE_PPROF: "true"
+      PPROF_LISTEN: "0.0.0.0:6060"
     volumes:
       - /var/lib/oneapi:/data
     ports:
       - 100.122.41.16:33000:3000
+      - 100.122.41.16:36060:6060
 
   # chatgpt:
   #   image: yidadaa/chatgpt-next-web:latest
@@ -565,8 +569,8 @@ services:
           max-size: "50m"
           max-file: "3"
       volumes:
-        # Use absolute paths so deployment does not depend on the docker compose cwd.
-        - /var/lib/redis:/data
+        # Keep the existing Redis data path; migrate it deliberately before changing this mount.
+        - /home/laisky/repo/laisky/VPS/var/lib/redis:/data
         - /opt/configs/redis/b1/redis.conf:/usr/local/etc/redis/redis.conf:ro
       ports:
         - "100.122.41.16:6379:6379"
