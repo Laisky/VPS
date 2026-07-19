@@ -264,7 +264,6 @@ services:
       GLOBAL_API_RATE_LIMIT: 1000
       GLOBAL_WEB_RATE_LIMIT: 1000
       LOW_BALANCE_RELAY_RATE_LIMIT: 100
-      # REDIS_CONN_STRING: redis://100.122.41.16:6379/1
       FRONTEND_BASE_URL: https://oneapi.laisky.com
       LLM_CONSERVATION_AUDIT: https://chat.laisky.com/audit/conservation
       OPENROUTER_PROVIDER_SORT: throughput
@@ -278,6 +277,8 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://100.69.166.78:4318"
       OTEL_SERVICE_NAME: "one-api"
       OTEL_ENVIRONMENT: "production"
+      # Redis
+      REDIS_CONN_STRING: redis://100.122.41.16:6379/2
       # Pprof
       ENABLE_PPROF: "true"
       PPROF_LISTEN: "0.0.0.0:6060"
