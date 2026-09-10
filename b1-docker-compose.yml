@@ -255,7 +255,7 @@ services:
       THEME: "modern"
       IDLE_TIMEOUT: 30
       DEBUG: "true"
-      DEBUG_SQL: "true"
+      DEBUG_SQL: "false"
       ENFORCE_INCLUDE_USAGE: "true"
       FORCE_EMAIL_TLS_VERIFY: "true"
       ENABLE_COOKIE_SECURE: "true"
