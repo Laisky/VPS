@@ -1,4 +1,4 @@
-# docker build . -f postgre/Dockerfile -t ppcelery/postgres:latest
+# docker build . -f postgre/Dockerfile -t ppcelery/postgres:17.11-bookworm
 # PostgreSQL minor releases are cumulative security and correctness updates. Keep the major at 17
 # for on-disk compatibility, and assert the intended minor so package installs cannot drift it.
 FROM postgres:17.11-bookworm
