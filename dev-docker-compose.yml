@@ -1,13 +1,14 @@
 version: '3'
 services:
   postgre:
-    # image: ppcelery/postgres:latest
-    image: ppcelery/postgres:17.6-bookworm
+    image: ppcelery/postgres:17.11-bookworm
     restart: unless-stopped
+    stop_grace_period: 90s
     logging:
       driver: "json-file"
       options:
         max-size: "50m"
+        max-file: "3"
     env_file:
       - /opt/configs/env/dev/postgre.env
     volumes:

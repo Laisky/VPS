@@ -1,7 +1,7 @@
-# docker build . -f postgre/Dockerfile  -t ppcelery/postgres:latest
-#
-# Should not upgrade the minor version of Postgres, because of https://x.com/gwenshap/status/1990942970682749183
-FROM postgres:17.6-bookworm
+# docker build . -f postgre/Dockerfile -t ppcelery/postgres:latest
+# PostgreSQL minor releases are cumulative security and correctness updates. Keep the major at 17
+# for on-disk compatibility, and assert the intended minor so package installs cannot drift it.
+FROM postgres:17.11-bookworm
 
 ARG PG_MAJOR=17
 
@@ -10,7 +10,7 @@ ARG PG_MAJOR=17
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     build-essential wget \
-    postgresql-server-dev-17 \
+    postgresql-server-dev-${PG_MAJOR}=${PG_VERSION} \
     git \
     ca-certificates
 
@@ -23,12 +23,10 @@ RUN git clone --branch v0.8.1 https://github.com/pgvector/pgvector.git \
     && make install
 
 # -------------------------------------
-# Install extension: ctext, PostGIS
-# ctext is a case-insensitive text search extension.
-# PostGIS adds support for geographic objects to the PostgreSQL database.
+# Install PostGIS. PostgreSQL 17's contrib modules are provided by the pinned server package.
 RUN apt-get install -y --no-install-recommends \
-    postgresql-contrib-17 \
-    postgresql-17-postgis-3 \
+    postgresql-${PG_MAJOR}-postgis-3 \
+    && postgres --version | grep -Eq 'PostgreSQL\) 17\.11([.]| |$)' \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -50,22 +48,27 @@ RUN wget https://github.com/tensorchord/VectorChord-bm25/releases/download/${VCH
 
 # =====================================
 # Cleanup
-RUN apt-get remove -y build-essential postgresql-server-dev-17 git \
+RUN apt-get remove -y build-essential postgresql-server-dev-${PG_MAJOR} git \
     && apt-get autoremove -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /pgvector
+    && rm -rf /pgvector /tmp/*.deb
 
+# Apply observability settings through server arguments so existing PGDATA volumes receive them.
+# New databases get the SQL view automatically; existing databases use the same idempotent helper
+# explicitly after the upgraded server is healthy.
+COPY postgre/observability-entrypoint.sh /usr/local/bin/observability-entrypoint
+COPY postgre/enable-pg-stat-statements.sh /usr/local/bin/enable-pg-stat-statements
+RUN chmod 0755 /usr/local/bin/observability-entrypoint /usr/local/bin/enable-pg-stat-statements \
+    && ln -s /usr/local/bin/enable-pg-stat-statements \
+        /docker-entrypoint-initdb.d/20-enable-pg-stat-statements.sh
 
-# Add pgvector to shared_preload_libraries
-RUN echo "shared_preload_libraries='vchord,vchord_bm25,vector,pg_tokenizer'" >> /usr/share/postgresql/postgresql.conf.sample
+ENTRYPOINT ["/usr/local/bin/observability-entrypoint"]
+CMD ["postgres"]
 
-# Copy collation fix script for post-startup
-# COPY ./postgre/fix-collation-on-start.sh /docker-entrypoint-initdb.d/10-fix-collation.sh
-# RUN chmod +x /docker-entrypoint-initdb.d/10-fix-collation.sh
-
-# Set default command to run Postgres in the foreground and the collation fix in the background
-# CMD ["bash", "-c", "/usr/local/bin/fix-collation-on-start.sh & exec docker-entrypoint.sh postgres"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=5 \
+    CMD pg_isready --username "${POSTGRES_USER:-postgres}" \
+        --dbname "${POSTGRES_DB:-${POSTGRES_USER:-postgres}}" || exit 1
 
 # Expose the default PostgreSQL port
 EXPOSE 5432
