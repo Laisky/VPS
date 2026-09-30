@@ -103,12 +103,14 @@ def query_logs(marker, interval='10m'):
 
 
 def stored(marker, trace_id):
-    """Require linked logs, actual Jaeger spans and a stored numeric metric."""
+    """Require linked logs, actual Jaeger spans and the exact numeric metric."""
     logs = query_logs(marker)
     traces = json.loads(http('http://127.0.0.1:20428/select/jaeger/api/traces/' + trace_id))
     metrics = json.loads(http('http://127.0.0.1:18428/api/v1/query?' + urlencode({'query': 'edge_canary{canary_id="' + marker + '"}'})))
     return bool(logs and any(row.get('trace_id') == trace_id for row in logs)
-                and traces.get('data') and traces['data'][0].get('spans') and metrics.get('data', {}).get('result'))
+                and traces.get('data') and traces['data'][0].get('spans')
+                and any(float(row['value'][1]) == float(marker.rsplit('-', 1)[1])
+                        for row in metrics.get('data', {}).get('result', [])))
 
 
 def reclaimed():
@@ -150,13 +152,18 @@ def main():
         compose('kill', '-s', 'SIGKILL', 'gateway')
         compose('up', '-d', 'gateway', 'victoria-logs', 'victoria-traces', 'victoria-metrics')
         until(lambda: stored(*queued), 'Gateway fsynced queue survives SIGKILL without edge resend')
-        old_marker, old_trace = emit(4, old=True)
         before_old = reclaimed()
+        old_marker, old_trace = emit(4, old=True)
         until(lambda: reclaimed() >= before_old + 3, 'Out-of-retention envelopes processed')
         assert not query_logs(old_marker, '30d'), 'old log was queryable despite retention'
-        old_result = json.loads(http('http://127.0.0.1:20428/select/jaeger/api/traces/' + old_trace))
+        try:
+            old_result = json.loads(http('http://127.0.0.1:20428/select/jaeger/api/traces/' + old_trace))
+        except HTTPError as error:
+            if error.code != 404:
+                raise
+            old_result = {}  # Jaeger trace-by-ID returns 404 for an absent trace.
         assert not old_result.get('data'), 'old trace was queryable despite retention'
-        RESULTS.append({'check': 'Nine-day-old logs and traces rejected by seven-day stores', 'passed': True})
+        RESULTS.append({'check': 'Nine-day-old logs and traces absent from seven-day stores', 'passed': True})
         for uid in ('obs-metrics', 'obs-logs', 'obs-traces'):
             until(lambda uid=uid: json.loads(http('http://127.0.0.1:23000/api/datasources/uid/' + uid + '/health', basic=True)).get('status') == 'OK', 'Grafana datasource ' + uid)
         dashboard = json.loads(http('http://127.0.0.1:23000/api/dashboards/uid/obs-pipeline', basic=True))
