@@ -1,6 +1,0 @@
-.env
-secrets/
-generated/
-state/
-evidence/
-__pycache__/
