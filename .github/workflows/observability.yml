@@ -43,7 +43,9 @@ jobs:
         run: |
           python3 prepare.py --dev --home-url=https://gateway:4318
           docker compose --profile edge --profile home config --quiet
-          docker compose --env-file .env -f ../b1-docker-compose.yml -f one-api.override.yml config --quiet
+          # Structural merge validation only: unrelated production env_file paths
+          # do not exist on CI. Production still uses full config validation.
+          docker compose --env-file .env -f ../b1-docker-compose.yml -f one-api.override.yml config --no-env-resolution --quiet
           docker compose --profile home run --rm --no-deps gateway validate --config=/etc/otelcol/config.yaml
       - name: Exercise all signals, correlation and durable ownership transfer
         working-directory: observability
