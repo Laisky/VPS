@@ -1,0 +1,6 @@
+# Deployment entrypoint only; all runtime configuration is owned by Laisky/configs.
+name: observability
+include:
+  - path: /opt/configs/observability/compose.yml
+    project_directory: /opt/configs/observability
+    env_file: /opt/configs/observability/.env

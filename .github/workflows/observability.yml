@@ -1,0 +1,27 @@
+name: Observability repository boundary
+on:
+  push:
+    branches: [master, feat/observability-edge-home-20260930]
+    paths: ['observability/**', '.github/scripts/check_observability_boundary.py', '.github/workflows/observability.yml']
+  pull_request:
+    paths: ['observability/**', '.github/scripts/check_observability_boundary.py', '.github/workflows/observability.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: observability-boundary-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+jobs:
+  boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Reject runtime configuration in VPS
+        run: |
+          python3 -m pip install --disable-pip-version-check 'PyYAML==6.0.3'
+          python3 .github/scripts/check_observability_boundary.py
+      # Full container/merge acceptance runs in the private configs repository.
+      # Do not checkout private configs or upload their contents in public CI.
