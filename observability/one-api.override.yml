@@ -2,6 +2,11 @@
 # This does not change billing SQL, quota writes, pprof or existing usage logs.
 services:
   oneapi:
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+        max-file: '3'
     environment:
       OTEL_ENABLED: 'true'
       OTEL_EXPORTER_OTLP_ENDPOINT: '100.122.41.16:14319'

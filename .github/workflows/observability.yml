@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: Laisky/go-fluentd
-          ref: 45caff25fc698551b2b41f0d9896a1c96e53d707
+          ref: dc6fba3e304c0dd5526c8af05d824fa54f7a7b88
           path: _go-fluentd
           persist-credentials: false
       - name: Validate renderer and record sources
@@ -36,9 +36,14 @@ jobs:
         run: docker build -f _go-fluentd/.docker/Dockerfile -t go-fluentd:observability-test _go-fluentd
       - name: Prepare isolated credentials and validate config
         working-directory: observability
+        env:
+          SESSION_SECRET: synthetic-config-validation-only
+          SQL_DSN: synthetic-config-validation-only
+          LOG_PUSH_TOKEN: synthetic-config-validation-only
         run: |
           python3 prepare.py --dev --home-url=https://gateway:4318
           docker compose --profile edge --profile home config --quiet
+          docker compose --env-file .env -f ../b1-docker-compose.yml -f one-api.override.yml config --quiet
           docker compose --profile home run --rm --no-deps gateway validate --config=/etc/otelcol/config.yaml
       - name: Exercise all signals, correlation and durable ownership transfer
         working-directory: observability
