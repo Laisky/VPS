@@ -30,7 +30,7 @@ jobs:
           set -o pipefail
           mkdir -p evidence
           python3 -m pip install --disable-pip-version-check 'PyYAML==6.0.3'
-          python3 -m unittest -v test_prepare test_override 2>&1 | tee evidence/unit-tests.log
+          python3 -m unittest discover -v -p 'test_*.py' 2>&1 | tee evidence/unit-tests.log
           python3 check_override.py
           git rev-parse HEAD > evidence/vps-source.txt
           git -C ../_go-fluentd rev-parse HEAD > evidence/go-fluentd-source.txt

@@ -8,6 +8,7 @@ import base64
 import gzip
 import hashlib
 import json
+import os
 from pathlib import Path
 import ssl
 import subprocess
@@ -17,8 +18,13 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 import uuid
 
+from e2e_checks import counter_value, require_development
+
 ROOT = Path(__file__).resolve().parent
 ENV = dict(line.split('=', 1) for line in (ROOT / '.env').read_text().splitlines() if line and not line.startswith('#'))
+require_development(ENV)
+ENV.update(os.environ)  # Compose gives shell variables precedence over .env.
+require_development(ENV)
 TLS = ssl.create_default_context(cafile=str(ROOT / 'secrets/ca.crt'))
 RESULTS = []
 RUN = uuid.uuid4().hex[:12]
@@ -63,7 +69,7 @@ def until(check, label, seconds=100):
 
 def compose(*args):
     """Run an explicit local test stack action; never use production compose files."""
-    subprocess.run(['docker', 'compose', '--profile', 'edge', '--profile', 'home', *args], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+    subprocess.run(['docker', 'compose', '--project-directory', str(ROOT), '--project-name', 'observability', '--env-file', str(ROOT / '.env'), '-f', str(ROOT / 'compose.yml'), '--profile', 'edge', '--profile', 'home', *args], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
 
 
 def emit(sequence, old=False):
@@ -118,6 +124,14 @@ def reclaimed():
     return json.loads(http('http://127.0.0.1:18088/monitor'))['otlpStorage']['acceptedReceiptsReclaimed']
 
 
+def retention_drops():
+    """Read backend ingestion drops, not the edge/gateway's earlier acceptance."""
+    return {
+        'logs': counter_value(http('http://127.0.0.1:19428/metrics').decode(), 'vl_rows_dropped_total'),
+        'traces': counter_value(http('http://127.0.0.1:20428/metrics').decode(), 'vt_rows_dropped_total'),
+    }
+
+
 def main():
     """Run positive, outage/restart, ownership-transfer and access controls."""
     evidence = ROOT / 'evidence'
@@ -152,9 +166,11 @@ def main():
         compose('kill', '-s', 'SIGKILL', 'gateway')
         compose('up', '-d', 'gateway', 'victoria-logs', 'victoria-traces', 'victoria-metrics')
         until(lambda: stored(*queued), 'Gateway fsynced queue survives SIGKILL without edge resend')
+        before_drops = retention_drops()
         before_old = reclaimed()
         old_marker, old_trace = emit(4, old=True)
         until(lambda: reclaimed() >= before_old + 3, 'Out-of-retention envelopes processed')
+        until(lambda: all(value >= before_drops[signal] + 1 for signal, value in retention_drops().items()), 'Both backends report dropping expired records')
         assert not query_logs(old_marker, '30d'), 'old log was queryable despite retention'
         try:
             old_result = json.loads(http('http://127.0.0.1:20428/select/jaeger/api/traces/' + old_trace))

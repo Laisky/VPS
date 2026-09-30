@@ -85,7 +85,7 @@ def development(image):
                 "-out", str(private / (name + ".crt")))
     # Only public CA and server identities are needed at runtime.
     (private / "ca.key").unlink()
-    values = {"GO_FLUENTD_IMAGE": image, "OBS_UID": str(os.getuid()), "OBS_GID": str(os.getgid()),
+    values = {"OBSERVABILITY_DEV_ONLY": "true", "GO_FLUENTD_IMAGE": image, "OBS_UID": str(os.getuid()), "OBS_GID": str(os.getgid()),
               "EDGE_TOKEN": secrets.token_hex(32), "HOME_TOKEN": secrets.token_hex(32),
               "GRAFANA_ADMIN_PASSWORD": secrets.token_hex(32), "EDGE_BIND": "127.0.0.1", "HOME_BIND": "127.0.0.1"}
     (ROOT / ".env").write_text("\n".join(f"{key}={value}" for key, value in values.items()) + "\n")
