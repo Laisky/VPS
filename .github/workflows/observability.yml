@@ -1,0 +1,65 @@
+name: Observability end-to-end
+on:
+  push:
+    branches: [feat/observability-edge-home-20260930]
+  pull_request:
+    paths: ['observability/**', '.github/workflows/observability.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: observability-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Laisky/go-fluentd
+          ref: 45caff25fc698551b2b41f0d9896a1c96e53d707
+          path: _go-fluentd
+          persist-credentials: false
+      - name: Validate renderer and record sources
+        working-directory: observability
+        run: |
+          python3 -m unittest -v test_prepare.py
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/vps-source.txt
+          git -C ../_go-fluentd rev-parse HEAD > evidence/go-fluentd-source.txt
+          git archive HEAD | gzip > evidence/source.tar.gz
+      - name: Build the exact reviewed edge source
+        run: docker build -f _go-fluentd/.docker/Dockerfile -t go-fluentd:observability-test _go-fluentd
+      - name: Prepare isolated credentials and validate config
+        working-directory: observability
+        run: |
+          python3 prepare.py --dev --home-url=https://gateway:4318
+          docker compose --profile edge --profile home config --quiet
+          docker compose --profile home run --rm --no-deps gateway validate --config=/etc/otelcol/config.yaml
+      - name: Exercise all signals, correlation and durable ownership transfer
+        working-directory: observability
+        run: |
+          docker compose --profile edge --profile home up -d
+          python3 e2e.py
+      - name: Retain synthetic logs and image identities
+        if: always()
+        working-directory: observability
+        run: |
+          mkdir -p evidence
+          if test -f .env; then
+            docker compose --profile edge --profile home ps -a > evidence/containers.txt
+            docker compose --profile edge --profile home logs --no-color --tail=200 > evidence/containers.log 2>&1
+            docker compose --profile edge --profile home images > evidence/images.txt
+            docker compose --profile edge --profile home down --timeout=30
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: observability-e2e
+          path: observability/evidence
+          retention-days: 7
+          if-no-files-found: error

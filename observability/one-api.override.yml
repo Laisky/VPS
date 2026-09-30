@@ -1,0 +1,28 @@
+# From the VPS repository root, merge explicitly with b1-docker-compose.yml.
+# This does not change billing SQL, quota writes, pprof or existing usage logs.
+services:
+  oneapi:
+    environment:
+      OTEL_ENABLED: 'true'
+      OTEL_EXPORTER_OTLP_ENDPOINT: '100.122.41.16:14319'
+      OTEL_EXPORTER_OTLP_INSECURE: 'false'
+      OTEL_EXPORTER_OTLP_CERTIFICATE: /run/observability/ca.crt
+      OTEL_EXPORTER_OTLP_HEADERS: 'Authorization=Bearer%20${EDGE_TOKEN:?Set EDGE_TOKEN}'
+      OTEL_SERVICE_NAME: one-api
+      OTEL_ENVIRONMENT: production
+      OTEL_RESOURCE_ATTRIBUTES: host.name=b1
+      APP_LOG_SINK: stdout,otlp
+      LOG_OTLP_MIN_LEVEL: info
+      LOG_OTLP_QUEUE_SIZE: '2000'
+      LOG_OTLP_QUEUE_MAX_MB: '16'
+      LOG_OTLP_BATCH_SIZE: '256'
+      LOG_OTLP_EXPORT_TIMEOUT_MS: '5000'
+      OTEL_BSP_EXPORT_TIMEOUT: '5000'
+      OTEL_BSP_SCHEDULE_DELAY: '1000'
+      OTEL_METRIC_EXPORT_INTERVAL: '60000'
+      # Keep SQL diagnostic traces during comparison; batching delays visibility
+      # until request completion. Never treat this as a billing sink change.
+      TRACE_WRITE_MODE: batched
+      TRACE_SINK: db,otlp
+    volumes:
+      - ./observability/secrets/ca.crt:/run/observability/ca.crt:ro
