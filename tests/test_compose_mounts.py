@@ -83,7 +83,11 @@ class ComposeMountTests(unittest.TestCase):
         mount = json.loads(result.stdout)["services"]["probe"]["volumes"][0]
         self.assertEqual(mount["source"], str(self.source))
         self.assertTrue(mount["read_only"])
-        self.assertIs(mount["bind"]["create_host_path"], False)
+        # Compose versions serialize bind defaults differently. When exported,
+        # false must survive; the engine controls verify omitted-field semantics.
+        bind = mount.get("bind", {})
+        if "create_host_path" in bind:
+            self.assertIs(bind["create_host_path"], False)
         self.assertFalse(self.source.exists())
 
     @unittest.skipUnless(os.environ.get("COMPOSE_ENGINE_TEST") == "1", "engine opt-in required")
@@ -95,6 +99,21 @@ class ComposeMountTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("bind", result.stderr.lower())
         self.assertFalse(self.source.exists(), result.stderr)
+
+    @unittest.skipUnless(os.environ.get("COMPOSE_ENGINE_TEST") == "1", "engine opt-in required")
+    def test_auto_create_control_accepts_missing_source(self):
+        """The opposite option must accept creation; directory creation can wait until start."""
+        self.require_local_image()
+        config = json.loads(self.file.read_text(encoding="utf-8"))
+        config["services"]["probe"]["volumes"][0]["bind"]["create_host_path"] = True
+        self.file.write_text(json.dumps(config), encoding="utf-8")
+        self.addCleanup(self.remove_test_container)
+        result = self.compose("create", "--pull", "never", "probe")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        container = self.compose("ps", "--all", "--quiet", "probe")
+        self.assertEqual(container.returncode, 0, container.stderr)
+        self.assertEqual(len(container.stdout.split()), 1)
+        # Do not start this control just to force a deferred directory creation.
 
     @unittest.skipUnless(os.environ.get("COMPOSE_ENGINE_TEST") == "1", "engine opt-in required")
     def test_existing_file_binds_read_only_without_running(self):
