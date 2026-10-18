@@ -334,10 +334,29 @@ services:
     dns:
       - 1.1.1.1
       - 8.8.8.8
+    extra_hosts:
+      - "b1.snake-carp.ts.net:100.122.41.16"
     volumes:
+      - type: bind
+        source: /opt/configs/observability/secrets/app-otlp-token
+        target: /run/observability/edge-token
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: /opt/configs/observability/secrets/ca.crt
+        target: /run/observability/ca.crt
+        read_only: true
+        bind:
+          create_host_path: false
       - /opt/configs/laisky-blog-graphql:/etc/laisky-blog-graphql:ro
       - /opt/configs/arweave:/opt/configs/arweave:ro
     environment:
+      APP_LOG_OTLP_ENDPOINT: https://b1.snake-carp.ts.net:14319
+      APP_LOG_OTLP_TOKEN_FILE: /run/observability/edge-token
+      APP_LOG_OTLP_CA_FILE: /run/observability/ca.crt
+      APP_LOG_OTLP_HOST: b1
+      APP_LOG_OTLP_ENV: production
       GOOGLE_APPLICATION_CREDENTIALS: "/etc/laisky-blog-graphql/gcp-general-sa.json"
     logging:
       driver: "json-file"
@@ -431,9 +450,28 @@ services:
       options:
         max-size: "50m"
     environment:
+      - APP_LOG_OTLP_ENDPOINT=https://b1.snake-carp.ts.net:14319
+      - APP_LOG_OTLP_TOKEN_FILE=/run/observability/edge-token
+      - APP_LOG_OTLP_CA_FILE=/run/observability/ca.crt
+      - APP_LOG_OTLP_HOST=b1
+      - APP_LOG_OTLP_ENV=production
       # - DISABLE_LLM_CONSERVATION_AUDIT=true
       - CHROMEDP_SEMA_LIMIT=2
+    extra_hosts:
+      - "b1.snake-carp.ts.net:100.122.41.16"
     volumes:
+      - type: bind
+        source: /opt/configs/observability/secrets/app-otlp-token
+        target: /run/observability/edge-token
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: /opt/configs/observability/secrets/ca.crt
+        target: /run/observability/ca.crt
+        read_only: true
+        bind:
+          create_host_path: false
       - /opt/configs/go-ramjet/settings.yml:/etc/go-ramjet/settings.yml:ro
     dns:
       - 1.1.1.1
