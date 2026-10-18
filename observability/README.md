@@ -75,11 +75,11 @@ Both service bridges must be released and qualified before enabling these entrie
 
 Each service uses `APP_LOG_OTLP_ENDPOINT=https://b1.snake-carp.ts.net:14319`, `APP_LOG_OTLP_TOKEN_FILE=/run/observability/edge-token`, `APP_LOG_OTLP_CA_FILE=/run/observability/ca.crt`, host `b1` and environment `production`. Service names are fixed by the applications: `go-ramjet` and `graphql`. The hostname mapping preserves TLS name verification while resolving the existing collector Tailnet address.
 
-The token and CA are individual read-only bind mounts. `create_host_path: false` fails closed if a required host file is missing. The existing CA is public trust material; the bearer token must remain private. Do not paste token values in chat, command arguments, CI output or Git. Never inspect the previously denied OneAPI OTEL header credential to populate this file.
+The token and CA are individual read-only bind mounts. `create_host_path: false` fails closed if a required host file is missing. The existing CA is public trust material; the bearer token must remain private. Do not paste token values in chat, command arguments, CI output or Git. Provision this file through the approved secure operator procedure; do not extract credentials from another application container.
 
 ### Attended rollout requirements
 
-1. Obtain parent approval for each source merge/Draft removal. Use the existing publication flow, verify tested source revisions and immutable image receipts, and coordinate the short service window with the OneAPI/runtime owner.
+1. Obtain owner approval for each source merge and Draft removal. Use the existing publication flow, verify tested source revisions and immutable image receipts, and coordinate the short service window with the OneAPI/runtime owner.
 2. Obtain specific action-time approval to materialize the existing edge bearer token opaquely into `/opt/configs/observability/secrets/app-otlp-token`, add the individual token/CA mounts and hostname mapping, and recreate only the two intended services. No credential is supplied by this repository. The currently observed host path is absent; `docker compose up` before preparation must fail rather than create a directory.
 3. Keep the secrets parent private. The token file must be readable by the existing service identity (GraphQL UID1000 and Ramjet root in the observed runtime), with no world access. Validate file type, ownership and mode without exposing its value. Confirm the exact CA and TLS hostname match the collector. Preserve TLS/authentication throughout.
 4. Reconcile the two service properties into the current live compose source without overwriting unrelated dirty work, then validate the resolved model privately. Recreate one service at a time using the established application release procedure. Do not restart Docker, Tailscale, go-fluentd, OneAPI or the home stack.
@@ -93,4 +93,4 @@ Application SDK queues are bounded and memory-only. Normal process shutdown flus
 
 If optional OTLP configuration prevents a healthy service start, remove only these new service environment/mount/hostname entries through the attended deployment process and return to the established stdout-only behavior. Preserve private credential files, accepted collector state and all historical data. Do not roll back or delete shared collector queues. Actual image rollback follows each application's established approved release procedure; this change creates no local rollback tag or image.
 
-Public `logs.laisky.com` nginx/authentication is a separate security approval. Existing DNS is accepted as user-confirmed; this integration makes no public ingress, DNS, firewall or Tailscale change.
+Public `logs.laisky.com` nginx/authentication is a separate security approval. This integration makes no public ingress, DNS, firewall or Tailscale change.
