@@ -329,6 +329,7 @@ services:
     #   - 80:80
 
   graphql:
+    stop_grace_period: 30s
     image: ppcelery/laisky-blog-graphql:latest
     restart: unless-stopped
     dns:
@@ -441,6 +442,7 @@ services:
       - 8.8.8.8
 
   go-ramjet:
+    stop_grace_period: 30s
     # image: ppcelery/go-ramjet:89601e7
     image: ppcelery/go-ramjet:latest
     restart: "always"
