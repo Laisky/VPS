@@ -1,0 +1,32 @@
+name: Compose compatibility
+
+on:
+  pull_request:
+    paths:
+      - README.md
+      - tests/test_compose_mounts.py
+      - .github/workflows/compose-compatibility.yml
+  push:
+    branches: [master]
+    paths:
+      - README.md
+      - tests/test_compose_mounts.py
+      - .github/workflows/compose-compatibility.yml
+
+permissions:
+  contents: read
+
+jobs:
+  bind-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify modern Compose and load isolated acceptance image
+        run: |
+          docker compose version
+          docker pull busybox:1.37.0
+      - name: Verify parser and real-engine bind safety
+        env:
+          COMPOSE_ENGINE_TEST: '1'
+          COMPOSE_TEST_IMAGE: busybox:1.37.0
+        run: python3 -m unittest discover -s tests -v
