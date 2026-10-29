@@ -1,4 +1,9 @@
 version: '3'
+# Retained private stack: explicit profile only; see docs/home-observability.md.
+include:
+  - path: /opt/configs/observability/home.compose.yml
+    project_directory: /opt/configs/observability
+    env_file: /opt/configs/observability/.env
 services:
   # mongodb:
   #   image: mongo:3.6
