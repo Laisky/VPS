@@ -26,3 +26,15 @@ databases or infer that zero recent legacy logs permits deletion.
 After approval, manage the retained group through this file with project `vps`
 and profile `observability-home`, selecting only the five intended service keys.
 Use private `config --quiet` validation; never print expanded secret values.
+
+## Unified target and current status
+
+The owner authorized a coherent logs/metrics/alerts migration on 2026-10-29.
+The paired private HOME_ARCHITECTURE.md selects one active gateway/store set,
+one Grafana, centralized optional application-error alerts and independent
+infrastructure/outage checks. The present five-service profile is a staging
+foundation; preserving two active complete groups is not the final goal.
+Metrics, traces and both Grafana datasets must survive qualification before
+legacy roles become offline rollback profiles. No live migration has run yet.
+MeTube now spells its existing implicit latest image selector explicitly; PDF
+already uses latest. No infrastructure image tag or pin changes.

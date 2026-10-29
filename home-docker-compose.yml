@@ -394,7 +394,7 @@ services:
   #     - 100.69.166.78:23491:8888
 
   metube:
-    image: ghcr.io/alexta69/metube
+    image: ghcr.io/alexta69/metube:latest
     restart: unless-stopped
     logging:
       driver: "json-file"
