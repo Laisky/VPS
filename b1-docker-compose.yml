@@ -6,19 +6,37 @@ services:
     environment:
       ADDR: b1.laisky.com
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
-        max-size: "50m"
+        max-size: 50m
     dns:
-      - 1.1.1.1
-      - 8.8.8.8
+    - 1.1.1.1
+    - 8.8.8.8
     volumes:
-      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/letsencrypt/b1.laisky.com.crt:ro
-      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/letsencrypt/b1.laisky.com.key:ro
+    - type: bind
+      source: /opt/configs/derper/b1/derper.conf
+      target: /home/laisky/derper.conf
+      read_only: true
+      bind:
+        create_host_path: false
+    - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com:/etc/letsencrypt/live/laisky.com:ro
+    - /opt/configs/swag/b1/etc/letsencrypt/archive/laisky.com:/etc/letsencrypt/archive/laisky.com:ro
     ports:
-      - 3478:3478/udp
-      - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=b1.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt -certmode=manual
+    - 3478:3478/udp
+    - 12444:12444
+    entrypoint:
+    - /bin/sh
+    - -ec
+    - 'mkdir -p /run/derper-certs
+
+      ln -sfn /etc/letsencrypt/live/laisky.com/fullchain.pem /run/derper-certs/b1.laisky.com.crt
+
+      ln -sfn /etc/letsencrypt/live/laisky.com/privkey.pem /run/derper-certs/b1.laisky.com.key
+
+      exec /app/derper -c=/home/laisky/derper.conf --hostname=b1.laisky.com -a :12444
+      -stun -certdir=/run/derper-certs -certmode=manual
+
+      '
 
   trojan-go:
     image: ppcelery/trojan-go:latest
