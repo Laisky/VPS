@@ -5,9 +5,9 @@ reload patch in patches/cert.go. Build from the repository root with
 `docker build -f derper/Dockerfile .`. The image build runs the DERPer Go
 unit tests; see tests/README.md for isolated integration fixtures.
 
-Manual mode now rejects an invalid, expired, or hostname-mismatched certificate
-at startup; previously some invalid pairs could load. Check existing certificate
-identity and validity before upgrading.
+Manual mode retains upstream startup acceptance for expired or not-yet-valid
+certificates. New handshakes reject a cached certificate outside its validity
+period; unlike upstream, the server will not present an expired fallback.
 
 New TLS handshakes periodically check for renewed manual certificates. Invalid
 or incomplete replacements retain the last valid certificate; once that

@@ -36,7 +36,7 @@ The sole writable bind is the disposable alias directory, so alias files survive
 a same-container restart and idempotence is actually exercised.
 These tests require directory-mounted certificate material for the candidate.
 They intentionally do not suggest that in-process reload can repair a pinned
-single-file mount. Startup rejection and expired-last-good-certificate behavior
+single-file mount. Invalid identity/key startup rejection and expired-last-good-certificate behavior
 are covered by the Go unit tests in `patches/cert_reload_test.go`.
 
 
@@ -46,3 +46,10 @@ per logged failure, no extra healthy logs, and unchanged valid fallback during
 concurrent handshakes. Runtime fixtures assert the actual Docker log contains
 exactly one rejection warning and one recovery during rapid invalid updates.
 These signals report reload attempts, not certificate public-chain trust.
+
+For a source baseline, copy the pinned upstream module to a disposable directory,
+copy patches/cert_cache_baseline_test.go into cmd/derper, then run from that
+module root: /path/to/derper/tests/check_upstream_baseline.sh. A zero exit
+means the exact expected renewal failure was observed. Run
+go test -p 1 ./cmd/derper -run TestManualCertStartupValidityCompatibility
+against both upstream and patched copies to check startup compatibility.

@@ -158,12 +158,31 @@ func TestManualCertReloadInvalidUpdateKeepsLastValid(t *testing.T) {
 
 func TestManualCertReloadInvalidStartupFails(t *testing.T) {
 	for name, bad := range invalidReloadPairs(t) {
+		if name == "expired" || name == "future" {
+			continue // Upstream accepts these at startup; handshake safety is tested separately.
+		}
 		t.Run(name, func(t *testing.T) {
 			dir := t.TempDir()
 			writeReloadPair(t, dir, bad)
 			if _, err := NewManualCertManager(dir, reloadTestHostname); err == nil {
 				t.Fatal("invalid startup certificate was accepted")
 			}
+		})
+	}
+}
+
+func TestManualCertReloadStartupOutsideValidityRecovers(t *testing.T) {
+	for _, name := range []string{"expired", "future"} {
+		t.Run(name, func(t *testing.T) {
+			dir := t.TempDir()
+			writeReloadPair(t, dir, invalidReloadPairs(t)[name])
+			m := reloadTestManager(t, dir)
+			if _, err := reloadSerial(m); err == nil {
+				t.Fatal("handshake accepted a certificate outside its validity period")
+			}
+			writeReloadPair(t, dir, validReloadPair(t, 4))
+			forceManualReload(m)
+			wantReloadSerial(t, m, 4)
 		})
 	}
 }

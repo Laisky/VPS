@@ -9,6 +9,7 @@ RUN --mount=type=cache,id=vps-derper-mod-go127,target=/go/pkg/mod go mod downloa
 WORKDIR /src
 COPY derper/patches/cert.go cmd/derper/cert.go
 COPY derper/patches/cert_reload_test.go cmd/derper/cert_reload_test.go
+COPY derper/patches/cert_cache_baseline_test.go cmd/derper/cert_cache_baseline_test.go
 RUN --mount=type=cache,id=vps-derper-mod-go127,target=/go/pkg/mod \
     --mount=type=cache,id=vps-derper-build-go127,target=/root/.cache/go-build \
     go test -p 1 ./cmd/derper \

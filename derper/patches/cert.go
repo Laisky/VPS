@@ -128,9 +128,9 @@ type manualCertManager struct {
 	noHostname          bool                 // whether hostname is an IP address
 }
 
-// validateManualCertificate checks the identity and validity of a key-matched
-// pair loaded by crypto/tls. It does not replace clients' chain/trust validation.
-func validateManualCertificate(cert *tls.Certificate, hostname string, now time.Time) error {
+// validateManualCertificateIdentity checks the identity of a key-matched pair
+// loaded by crypto/tls. It does not replace clients' chain/trust validation.
+func validateManualCertificateIdentity(cert *tls.Certificate, hostname string) error {
 	leaf, err := x509.ParseCertificate(cert.Certificate[0])
 	if err != nil {
 		return errors.New("cannot parse manual certificate")
@@ -138,14 +138,22 @@ func validateManualCertificate(cert *tls.Certificate, hostname string, now time.
 	if err := leaf.VerifyHostname(hostname); err != nil {
 		return errors.New("manual certificate does not match configured hostname")
 	}
-	if now.Before(leaf.NotBefore) || !now.Before(leaf.NotAfter) {
-		return errors.New("manual certificate is not currently valid")
-	}
 	cert.Leaf = leaf
 	return nil
 }
 
-// NewManualCertManager loads a valid certificate on startup and refreshes it on handshakes.
+// validateManualCertificate additionally checks validity for replacement candidates.
+func validateManualCertificate(cert *tls.Certificate, hostname string, now time.Time) error {
+	if err := validateManualCertificateIdentity(cert, hostname); err != nil {
+		return err
+	}
+	if now.Before(cert.Leaf.NotBefore) || !now.Before(cert.Leaf.NotAfter) {
+		return errors.New("manual certificate is not currently valid")
+	}
+	return nil
+}
+
+// NewManualCertManager loads an identity-matched certificate and refreshes it on handshakes.
 func NewManualCertManager(certdir, hostname string) (certProvider, error) {
 	keyname := unsafeHostnameCharacters.ReplaceAllString(hostname, "")
 	crtPath := filepath.Join(certdir, keyname+".crt")
@@ -165,7 +173,7 @@ func NewManualCertManager(certdir, hostname string) (certProvider, error) {
 		cert = *certp
 	}
 	now := time.Now()
-	if err := validateManualCertificate(&cert, hostname, now); err != nil {
+	if err := validateManualCertificateIdentity(&cert, hostname); err != nil {
 		return nil, err
 	}
 	x509Cert := cert.Leaf
