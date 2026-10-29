@@ -1,0 +1,29 @@
+name: Application image policy
+
+on:
+  pull_request:
+    paths:
+      - b1-docker-compose.yml
+      - home-docker-compose.yml
+      - racknerd-docker-compose.yml
+      - tests/test_compose_image_policy.py
+      - .github/workflows/compose-image-policy.yml
+  push:
+    branches: [master]
+    paths:
+      - b1-docker-compose.yml
+      - home-docker-compose.yml
+      - racknerd-docker-compose.yml
+      - tests/test_compose_image_policy.py
+      - .github/workflows/compose-image-policy.yml
+
+permissions:
+  contents: read
+
+jobs:
+  application-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check application image tags without resolving environment files
+        run: python3 -m unittest discover -s tests -p test_compose_image_policy.py -v

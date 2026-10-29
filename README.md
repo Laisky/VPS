@@ -58,6 +58,19 @@ is authorized. Do not replace those controls with the generic example.
 Database and infrastructure version pins are intentional and are not candidates
 for a blanket `latest` upgrade.
 
+The application-image policy check covers the selected Laisky application
+services and the PDF and MeTube applications in b1, racknerd and home Compose.
+It rejects fixed application versions or digests and unrelated image repositories.
+Docker treats an untagged image as `latest`; prefer an explicit `:latest` for
+clarity. This check does not change a running container or authorize a rollout.
+Keep immutable image identities separately for evidence and rollback.
+
+The list is deliberately not based on registry ownership: databases, PCCS and
+version-sensitive network infrastructure need their own compatibility policy.
+The b1 broadcast-channel upstream publishes `:main` but no verified `:latest`;
+do not substitute a different image without establishing compatibility. Derper's
+live certificate-reload qualification is independent of this application check.
+
 ## Dev machine: ARTEX
 
 `dev-docker-compose.yml` directly defines the dev services, including ARTEX and
