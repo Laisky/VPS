@@ -1,40 +1,31 @@
-# Home observability source integration
+# Canonical home observability
 
-`home-docker-compose.yml` is the canonical home lifecycle entry. Its path-only
-include loads `/opt/configs/observability/home.compose.yml`; all retained runtime
-parameters and credential references remain in private `Laisky/configs`.
-Install the reviewed companion module before using the updated home model.
+The owner authorized one coherent logs/metrics/alerts system on 2026-10-29,
+permitting historical LOG loss only. The canonical Compose file includes the
+private home module; runtime configuration and credential references stay private.
 
-The retained group uses five distinct `observability-*` service keys behind the
-explicit `observability-home` profile. Ordinary home `up` does not activate them.
-The existing fourteen home services, legacy observability definitions, images
-and datasets remain unchanged. Application `latest` policy does not change
-pinned infrastructure versions in this handoff.
+Default native resolution selects 15 services: nine existing applications,
+the existing compatibility/PostgreSQL collector and one canonical gateway,
+three stores and Grafana. Four legacy backend/UI definitions require the explicit
+observability-legacy-rollback profile and remain available with original data.
 
-The include does not adopt running containers from another Compose project.
-The current retained group must remain untouched until the separately approved
-same-data ownership handoff. That handoff requires verified backups, no concurrent
-old/new state writers and preserving rollback. No runtime action is authorized
-by merging these source declarations.
+The compatibility collector keeps existing 4317/4318 clients and PostgreSQL
+collection. Existing 8428/9428/10428 slots transfer to the same canonical stores;
+18428/19428/20428 remain. No second active store, network attachment, exposure
+expansion or credential change is needed. MeTube explicitly uses latest and
+PDF already does; version-sensitive infrastructure remains pinned.
 
-Follow private `observability/HOME_MANAGEMENT.md` for the exact retained paths,
-image/port/retention contract, dev acceptance commands and proposed runtime steps.
-In particular, preserve effective 100-year retention rather than substituting
-the generic qualification stack's seven-day default. Never merge the two Grafana
-databases or infer that zero recent legacy logs permits deletion.
+Native controls separately resolve default versus rollback roles and preserve
+unrelated definitions, dependencies and security/state/port boundaries. Source
+selection does not stop or adopt current containers; live migration is unfinished.
 
-After approval, manage the retained group through this file with project `vps`
-and profile `observability-home`, selecting only the five intended service keys.
-Use private `config --quiet` validation; never print expanded secret values.
+Private HOME_ARCHITECTURE.md and HOME_MANAGEMENT.md specify the finite packet,
+non-log conservation, coherent backups, metrics native import, trace collision
+checks, Grafana UID preservation and same-state rollback. Protected Grafana
+metadata and the specifically rejected home-to-dev raw telemetry transfer are
+narrow prerequisites; synthetic controls continue independently. No broad repeat
+approval for consolidation is requested.
 
-## Unified target and current status
-
-The owner authorized a coherent logs/metrics/alerts migration on 2026-10-29.
-The paired private HOME_ARCHITECTURE.md selects one active gateway/store set,
-one Grafana, centralized optional application-error alerts and independent
-infrastructure/outage checks. The present five-service profile is a staging
-foundation; preserving two active complete groups is not the final goal.
-Metrics, traces and both Grafana datasets must survive qualification before
-legacy roles become offline rollback profiles. No live migration has run yet.
-MeTube now spells its existing implicit latest image selector explicitly; PDF
-already uses latest. No infrastructure image tag or pin changes.
+Collector PR50 remains inactive with its owner. Infrastructure/outage alerting
+must be independent of ingestion; no live Telegram credential/send activation
+is included. CI/source success is not production or alert-delivery acceptance.

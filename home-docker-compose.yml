@@ -466,6 +466,7 @@ services:
     command: ["--config=/etc/otel-collector-config.yaml"]
 
   victoria-metrics:
+    profiles: [observability-legacy-rollback]
     image: victoriametrics/victoria-metrics:v1.132.0
     restart: unless-stopped
     logging:
@@ -483,6 +484,7 @@ services:
       ]
 
   victoria-logs:
+    profiles: [observability-legacy-rollback]
     image: victoriametrics/victoria-logs:v1.41.0
     restart: unless-stopped
     logging:
@@ -496,6 +498,7 @@ services:
     command: ["-storageDataPath=victoria-logs-data"]
 
   victoria-traces:
+    profiles: [observability-legacy-rollback]
     image: victoriametrics/victoria-traces:v0.5.1
     restart: unless-stopped
     logging:
@@ -509,6 +512,7 @@ services:
     command: ["-storageDataPath=victoria-traces-data"]
 
   grafana:
+    profiles: [observability-legacy-rollback]
     image: grafana/grafana:11.4.0
     restart: unless-stopped
     logging:
