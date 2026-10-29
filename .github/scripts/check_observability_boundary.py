@@ -13,6 +13,21 @@ ENTRY = {'name': 'observability', 'include': [{
     'env_file': '/opt/configs/observability/.env',
 }]}
 ALLOWED = {'compose.yml', 'README.md'}
+HOME_INCLUDE = [{
+    'path': '/opt/configs/observability/home.compose.yml',
+    'project_directory': '/opt/configs/observability',
+    'env_file': '/opt/configs/observability/.env',
+}]
+
+
+def validate_home(root):
+    # Retained settings remain private; legacy home services remain distinct.
+    home = yaml.safe_load((root / 'home-docker-compose.yml').read_text())
+    if home.get('include') != HOME_INCLUDE:
+        raise ValueError('home requires the exact private observability include')
+    if any(name.startswith('observability-') for name in home.get('services', {})):
+        raise ValueError('retained runtime service settings belong in private configs')
+
 
 
 def validate(root):
@@ -33,6 +48,20 @@ class BoundaryTests(unittest.TestCase):
         (self.root / 'observability').mkdir()
         (self.root / 'observability/README.md').write_text('Deployment entrypoint\n')
         (self.root / 'observability/compose.yml').write_text(yaml.safe_dump(ENTRY))
+
+    def test_home_private_include_is_required_and_path_only(self):
+        path = self.root / 'home-docker-compose.yml'
+        model = {'include': HOME_INCLUDE, 'services': {'legacy': {'image': 'synthetic:latest'}}}
+        path.write_text(yaml.safe_dump(model))
+        validate_home(self.root)
+        for changed in [
+            {'services': model['services']},
+            {'include': [{'path': './fallback.yml'}], 'services': model['services']},
+            {'include': HOME_INCLUDE, 'services': {'observability-gateway': {'image': 'forbidden'}}},
+        ]:
+            with self.subTest(changed=changed), self.assertRaises(ValueError):
+                path.write_text(yaml.safe_dump(changed))
+                validate_home(self.root)
 
     def test_path_only_entrypoint(self):
         validate(self.root)
@@ -67,4 +96,5 @@ if __name__ == '__main__':
     if not result.wasSuccessful():
         raise SystemExit(1)
     validate(ROOT)
+    validate_home(ROOT)
     print('Observability repository boundary: PASS')
