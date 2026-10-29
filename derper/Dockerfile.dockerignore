@@ -1,0 +1,7 @@
+**
+!derper/
+!derper/patches/
+!derper/patches/cert.go
+!derper/patches/cert_reload_test.go
+!derper/patches/LICENSE
+!derper/patches/cert_cache_baseline_test.go

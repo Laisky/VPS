@@ -1,0 +1,10 @@
+Upstream: tailscale.com v1.102.5
+Go: go1.27.1 linux/amd64
+Public cert.go SHA256: c79477afa9abb5477220ff30ccee4562517df31b3c562aba516d946f91b4cd33
+Command: GOMAXPROCS=2 GOTOOLCHAIN=local go test -p 2 ./cmd/derper -run "^TestManualCertReloadBaseline$" -count=1
+Expected failing assertion, generated disposable certificates only:
+--- FAIL: TestManualCertReloadBaseline (1.11s)
+    cert_reload_baseline_test.go:42: after valid on-disk renewal got certificate serial 1; want 2
+FAIL
+FAIL	tailscale.com/cmd/derper	1.147s
+FAIL
