@@ -1,4 +1,10 @@
 version: '3'
+# One active private stack; legacy rollback requires an explicit profile.
+# See docs/home-observability.md.
+include:
+  - path: /opt/configs/observability/home.compose.yml
+    project_directory: /opt/configs/observability
+    env_file: /opt/configs/observability/.env
 services:
   # mongodb:
   #   image: mongo:3.6
@@ -389,7 +395,7 @@ services:
   #     - 100.69.166.78:23491:8888
 
   metube:
-    image: ghcr.io/alexta69/metube
+    image: ghcr.io/alexta69/metube:latest
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -461,6 +467,7 @@ services:
     command: ["--config=/etc/otel-collector-config.yaml"]
 
   victoria-metrics:
+    profiles: [observability-legacy-rollback]
     image: victoriametrics/victoria-metrics:v1.132.0
     restart: unless-stopped
     logging:
@@ -478,6 +485,7 @@ services:
       ]
 
   victoria-logs:
+    profiles: [observability-legacy-rollback]
     image: victoriametrics/victoria-logs:v1.41.0
     restart: unless-stopped
     logging:
@@ -491,6 +499,7 @@ services:
     command: ["-storageDataPath=victoria-logs-data"]
 
   victoria-traces:
+    profiles: [observability-legacy-rollback]
     image: victoriametrics/victoria-traces:v0.5.1
     restart: unless-stopped
     logging:
@@ -504,6 +513,7 @@ services:
     command: ["-storageDataPath=victoria-traces-data"]
 
   grafana:
+    profiles: [observability-legacy-rollback]
     image: grafana/grafana:11.4.0
     restart: unless-stopped
     logging:
