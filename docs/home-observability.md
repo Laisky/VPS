@@ -17,14 +17,18 @@ PDF already does; version-sensitive infrastructure remains pinned.
 
 Native controls separately resolve default versus rollback roles and preserve
 unrelated definitions, dependencies and security/state/port boundaries. Source
-selection does not stop or adopt current containers; live migration is unfinished.
+selection does not itself stop or adopt containers. The separately approved home
+migration and subsequent seven-day retention change have completed acceptance;
+source publication does not require repeating those runtime operations.
 
 Private HOME_ARCHITECTURE.md and HOME_MANAGEMENT.md specify the finite packet,
 non-log conservation, coherent backups, metrics native import, trace collision
-checks, Grafana UID preservation and same-state rollback. Protected Grafana
-metadata and the specifically rejected home-to-dev raw telemetry transfer are
-narrow prerequisites; synthetic controls continue independently. No broad repeat
-approval for consolidation is requested.
+checks, Grafana UID preservation and same-state rollback. Accepted conservation
+checks stayed on home; the rejected raw telemetry transfer was never retried.
+The owner separately approved seven days for active logs, metrics and traces,
+including permanent expiry of older data. Offline backups and Grafana state
+remain preserved; reversing retention cannot recover expired active history.
+No blanket up, image upgrade or backup deletion is part of source publication.
 
 Collector PR50 remains inactive with its owner. Infrastructure/outage alerting
 must be independent of ingestion; no live Telegram credential/send activation

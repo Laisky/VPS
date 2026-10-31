@@ -1,5 +1,6 @@
 version: '3'
-# Retained private stack: explicit profile only; see docs/home-observability.md.
+# One active private stack; legacy rollback requires an explicit profile.
+# See docs/home-observability.md.
 include:
   - path: /opt/configs/observability/home.compose.yml
     project_directory: /opt/configs/observability
