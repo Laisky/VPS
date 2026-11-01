@@ -1,6 +1,6 @@
-# Deployment entrypoint only; all runtime configuration is owned by Laisky/configs.
+# Canonical entrypoint; definitions are owned by VPS, sensitive inputs by configs.
 name: observability
 include:
-  - path: /opt/configs/observability/compose.yml
+  - path: ./services.compose.yml
     project_directory: /opt/configs/observability
     env_file: /opt/configs/observability/.env

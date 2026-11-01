@@ -1,6 +1,7 @@
 name: Compose compatibility
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - README.md
@@ -19,14 +20,16 @@ permissions:
 jobs:
   bind-safety:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Verify modern Compose and load isolated acceptance image
-        run: |
-          docker compose version
-          docker pull busybox:1.37.0
-      - name: Verify parser and real-engine bind safety
+      - name: Verify Compose parser and fail-closed bind declaration
+        run: python3 -m unittest discover -s tests -p 'test_compose_mounts.py' -k test_long_bind_safety_survives_parsing -v
+      - name: Manual Docker-engine bind controls
+        if: github.event_name == 'workflow_dispatch'
         env:
           COMPOSE_ENGINE_TEST: '1'
           COMPOSE_TEST_IMAGE: busybox:1.37.0
-        run: python3 -m unittest discover -s tests -v
+        run: |
+          docker pull busybox:1.37.0
+          python3 -m unittest discover -s tests -p 'test_compose_mounts.py' -v

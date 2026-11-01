@@ -1,0 +1,20 @@
+# Explicitly approved home-only exposure. Requires Compose >=2.24.4.
+# Replace ports instead of merging inherited wildcard/alternate-IP bindings.
+# Compatibility overlay: bind only the verified home Tailscale IPv4.
+services:
+  gateway:
+    ports: !override
+      - '100.69.166.78:14318:4318'
+      - '100.69.166.78:18888:8888'
+  victoria-metrics:
+    ports: !override
+      - '100.69.166.78:18428:8428'
+  victoria-logs:
+    ports: !override
+      - '100.69.166.78:19428:9428'
+  victoria-traces:
+    ports: !override
+      - '100.69.166.78:20428:10428'
+  grafana:
+    ports: !override
+      - '100.69.166.78:23000:3000'
