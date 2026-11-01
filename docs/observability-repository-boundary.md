@@ -60,3 +60,12 @@ Keep previous source revisions, live files, pinned images, accepted state and
 coherent backups. Restore source selection and original arguments only; never
 restore old WAL over fresh data. Preserve seven-day retention: changing flags
 cannot recover expired history. No down/prune/remove-orphans or backup deletion.
+
+## Small-repository CI
+
+Automatic checks are the eight inexpensive repository-boundary controls and the
+Compose parser bind-declaration check when its relevant files change. Automatic
+runs do not pull an acceptance image or create test containers. The existing
+Compose compatibility workflow runs engine controls only through manual dispatch.
+Full paired-model, nginx request and telemetry integration campaigns remain local
+or explicitly manual in configs; no matrix is added.
