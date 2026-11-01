@@ -1,11 +1,11 @@
-# Observability Compose sources
+# Non-home release and isolated qualification compatibility inputs
 
-VPS owns the shared entrypoint, service modules and overlays here. Sensitive
-configuration, secret files and env inputs stay under `/opt/configs`.
-The shared entrypoint preserves private interpolation/project-directory semantics;
-the canonical home entrypoint preserves project `vps` and seven-day retention.
+Production home uses only `../home-docker-compose.yml`, with every service defined
+directly. This directory is not included or overlaid by home.
 
-[Ordered rollout and rollback](../docs/observability-repository-boundary.md)
-requires staging VPS before configs removals. Do not remove old live files or
-restart services automatically. No image, credential, security, DNS or alert
-change is implied by the source move.
+The existing edge/application release and disposable qualification inputs remain
+here to preserve their separate callers and reviewed manifests. Private native
+program configuration, env files and secrets remain in configs. No resolved
+credentials or runtime data belong in this public repository.
+
+See [source ownership and rollout](../docs/observability-repository-boundary.md).

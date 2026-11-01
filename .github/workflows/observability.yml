@@ -2,9 +2,9 @@ name: Observability repository boundary
 on:
   push:
     branches: [master, feat/observability-edge-home-20260930]
-    paths: ['observability/**', '.github/scripts/check_observability_boundary.py', '.github/workflows/observability.yml']
+    paths: ['home-docker-compose.yml', 'observability/**', '.github/scripts/check_observability_boundary.py', '.github/workflows/observability.yml']
   pull_request:
-    paths: ['observability/**', '.github/scripts/check_observability_boundary.py', '.github/workflows/observability.yml']
+    paths: ['home-docker-compose.yml', 'observability/**', '.github/scripts/check_observability_boundary.py', '.github/workflows/observability.yml']
   workflow_dispatch:
 permissions:
   contents: read

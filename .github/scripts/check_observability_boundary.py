@@ -14,7 +14,6 @@ PRIVATE = "/opt/configs/observability"
 COMPOSE_FILES = {
     "compose.yml",
     "services.compose.yml",
-    "home.compose.yml",
     "attended.override.yml",
     "capacity.override.yml",
     "e2e.override.yml",
@@ -34,13 +33,6 @@ ENTRY = {
         }
     ],
 }
-HOME_INCLUDE = [
-    {
-        "path": "./observability/home.compose.yml",
-        "project_directory": PRIVATE,
-        "env_file": PRIVATE + "/.env",
-    }
-]
 
 
 class ComposeLoader(yaml.SafeLoader):
@@ -100,14 +92,27 @@ def private_payloads(value):
 
 def validate_home(root):
     home = yaml.safe_load((root / "home-docker-compose.yml").read_text())
+    require(not home.get("include"), "home must not use includes")
+    services = home.get("services", {})
+    expected = {
+        "observability-" + role
+        for role in (
+            "gateway",
+            "victoria-metrics",
+            "victoria-logs",
+            "victoria-traces",
+            "grafana",
+        )
+    }
     require(
-        home.get("include") == HOME_INCLUDE,
-        "home must include its VPS module with private env input",
+        {key for key in services if key.startswith("observability-")} == expected,
+        "home must define each canonical role directly",
     )
     require(
-        not any(name.startswith("observability-") for name in home.get("services", {})),
-        "canonical home services must have one definition",
+        not any("extends" in service for service in services.values()),
+        "home must not use extends",
     )
+    private_payloads({key: services[key] for key in expected})
 
 
 def validate(root):
@@ -140,21 +145,6 @@ def validate(root):
         },
         "shared service definitions changed",
     )
-    home = yaml.safe_load((directory / "home.compose.yml").read_text())
-    require(
-        set(home["services"])
-        == {
-            "observability-" + name
-            for name in (
-                "gateway",
-                "victoria-metrics",
-                "victoria-logs",
-                "victoria-traces",
-                "grafana",
-            )
-        },
-        "canonical home definitions changed",
-    )
 
 
 class BoundaryTests(unittest.TestCase):
@@ -163,8 +153,8 @@ class BoundaryTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         shutil.copytree(ROOT / "observability", self.root / "observability")
-        (self.root / "home-docker-compose.yml").write_text(
-            yaml.safe_dump({"include": HOME_INCLUDE, "services": {}})
+        shutil.copyfile(
+            ROOT / "home-docker-compose.yml", self.root / "home-docker-compose.yml"
         )
 
     def test_reviewed_source_and_private_references_pass(self):
@@ -179,14 +169,12 @@ class BoundaryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "entrypoint"):
             validate(self.root)
 
-    def test_wrong_home_include_is_rejected(self):
+    def test_home_include_is_rejected(self):
         p = self.root / "home-docker-compose.yml"
-        p.write_text(
-            p.read_text().replace(
-                "./observability/home.compose.yml", PRIVATE + "/home.compose.yml"
-            )
-        )
-        with self.assertRaisesRegex(ValueError, "VPS module"):
+        model = yaml.safe_load(p.read_text())
+        model["include"] = ["unexpected.yml"]
+        p.write_text(yaml.safe_dump(model))
+        with self.assertRaisesRegex(ValueError, "includes"):
             validate_home(self.root)
 
     def test_private_env_reference_cannot_move(self):
@@ -196,24 +184,22 @@ class BoundaryTests(unittest.TestCase):
             validate(self.root)
 
     def test_literal_credential_is_rejected_without_value_disclosure(self):
-        p = self.root / "observability/home.compose.yml"
+        p = self.root / "home-docker-compose.yml"
         model = yaml.safe_load(p.read_text())
         model["services"]["observability-gateway"]["environment"][
             "HOME_TOKEN"
         ] = "synthetic-forbidden-value"
         p.write_text(yaml.safe_dump(model))
         with self.assertRaisesRegex(ValueError, "variable references") as error:
-            validate(self.root)
+            validate_home(self.root)
         self.assertNotIn("synthetic-forbidden-value", str(error.exception))
 
-    def test_duplicate_inline_home_role_is_rejected(self):
+    def test_missing_inline_home_role_is_rejected(self):
         p = self.root / "home-docker-compose.yml"
-        p.write_text(
-            yaml.safe_dump(
-                {"include": HOME_INCLUDE, "services": {"observability-gateway": {}}}
-            )
-        )
-        with self.assertRaisesRegex(ValueError, "one definition"):
+        model = yaml.safe_load(p.read_text())
+        del model["services"]["observability-gateway"]
+        p.write_text(yaml.safe_dump(model))
+        with self.assertRaisesRegex(ValueError, "directly"):
             validate_home(self.root)
 
     def test_runtime_payloads_and_unknown_files_are_rejected(self):
