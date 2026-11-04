@@ -290,7 +290,7 @@ services:
       # -------------------------------------
       THEME: "modern"
       IDLE_TIMEOUT: 30
-      DEBUG: "true"
+      DEBUG: "false"
       DEBUG_SQL: "false"
       ENFORCE_INCLUDE_USAGE: "true"
       FORCE_EMAIL_TLS_VERIFY: "true"
