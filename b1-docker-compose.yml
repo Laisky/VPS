@@ -1,26 +1,48 @@
 version: '3'
 services:
   derper:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/derper:latest
     restart: unless-stopped
     environment:
       ADDR: b1.laisky.com
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
-        max-size: "50m"
+        max-size: 50m
     dns:
-      - 1.1.1.1
-      - 8.8.8.8
+    - 1.1.1.1
+    - 8.8.8.8
     volumes:
-      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/fullchain.pem:/etc/letsencrypt/b1.laisky.com.crt:ro
-      - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/etc/letsencrypt/b1.laisky.com.key:ro
+    - type: bind
+      source: /opt/configs/derper/b1/derper.conf
+      target: /home/laisky/derper.conf
+      read_only: true
+      bind:
+        create_host_path: false
+    - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com:/etc/letsencrypt/live/laisky.com:ro
+    - /opt/configs/swag/b1/etc/letsencrypt/archive/laisky.com:/etc/letsencrypt/archive/laisky.com:ro
     ports:
-      - 3478:3478/udp
-      - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=b1.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt -certmode=manual
+    - 3478:3478/udp
+    - 12444:12444
+    entrypoint:
+    - /bin/sh
+    - -ec
+    - 'mkdir -p /run/derper-certs
+
+      ln -sfn /etc/letsencrypt/live/laisky.com/fullchain.pem /run/derper-certs/b1.laisky.com.crt
+
+      ln -sfn /etc/letsencrypt/live/laisky.com/privkey.pem /run/derper-certs/b1.laisky.com.key
+
+      exec /app/derper -c=/home/laisky/derper.conf --hostname=b1.laisky.com -a :12444
+      -stun -certdir=/run/derper-certs -certmode=manual
+
+      '
 
   trojan-go:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/trojan-go:latest
     restart: unless-stopped
     dns:
@@ -39,6 +61,8 @@ services:
     command: /etc/torjan-go/config/server.json
 
   glider:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
@@ -56,6 +80,8 @@ services:
       - /opt/configs/glider/b1/glider.conf:/app/glider.conf:ro
 
   glider-sg:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
@@ -72,6 +98,8 @@ services:
       - /opt/configs/glider/b1/glider-sg.conf:/app/glider.conf:ro
 
   glider-isp:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/glider:latest
     restart: unless-stopped
     logging:
@@ -136,6 +164,8 @@ services:
   #     - 100.122.41.16:9100:9100
 
   mongodb6:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: mongo:6
     restart: unless-stopped
     # hard limits to prevent OOM kills
@@ -168,6 +198,8 @@ services:
 
 
   dns:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: axeleroy/dnsproxy:latest
     logging:
       driver: "json-file"
@@ -180,6 +212,8 @@ services:
 
   # https://github.com/satishweb/docker-doh
   doh:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: satishweb/doh-server:v2.3.2-ubuntu
     restart: unless-stopped
     # network_mode: host
@@ -232,6 +266,8 @@ services:
 
   # op run --env-file=./one-api/b1.env -- docker-compose -f b1-docker-compose.yml up -d --remove-orphans --force-recreate oneapi
   oneapi:
+    sysctls:
+      net.mptcp.enabled: "0"
     #image: ppcelery/one-api:82b2f2c
     image: ppcelery/one-api:latest
     restart: unless-stopped
@@ -304,6 +340,8 @@ services:
   #     - 100.122.41.16:33001:3000
 
   swag:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: lscr.io/linuxserver/swag:latest
     container_name: swag
     restart: unless-stopped
@@ -329,6 +367,8 @@ services:
     #   - 80:80
 
   graphql:
+    sysctls:
+      net.mptcp.enabled: "0"
     stop_grace_period: 30s
     image: ppcelery/laisky-blog-graphql:latest
     restart: unless-stopped
@@ -395,6 +435,8 @@ services:
       - /opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:/opt/configs/swag/b1/etc/letsencrypt/live/laisky.com/privkey.pem:ro
 
   pccs:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/pccs:v2.2
     # build:
     #   context: ./pccs
@@ -429,6 +471,8 @@ services:
   #   command: /usr/local/bin/run_gargantua
 
   blog-v2:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/laisky-blog-v2:latest
     restart: unless-stopped
     logging:
@@ -442,6 +486,8 @@ services:
       - 8.8.8.8
 
   go-ramjet:
+    sysctls:
+      net.mptcp.enabled: "0"
     stop_grace_period: 30s
     # image: ppcelery/go-ramjet:89601e7
     image: ppcelery/go-ramjet:latest
@@ -483,6 +529,8 @@ services:
     command: -t heartbeat,gptchat,arweave,jav,telegram_notes,postgres,cv,pieverse_alert -c /etc/go-ramjet/settings.yml --debug
 
   wiki:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/wiki:latest
     restart: "always"
     logging:
@@ -553,6 +601,8 @@ services:
   #     - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
 
   proxy_bbt:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/tinyproxy:latest
     restart: unless-stopped
     dns:
@@ -571,6 +621,8 @@ services:
       - 23491:8888
 
   channel_boardcast:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ghcr.io/miantiao-me/broadcastchannel:main
     restart: unless-stopped
     env_file:
@@ -583,6 +635,8 @@ services:
         max-size: "50m"
 
   postgre:
+    sysctls:
+      net.mptcp.enabled: "0"
     image: ppcelery/postgres:17.11-bookworm
     restart: unless-stopped
     stop_grace_period: 90s
@@ -599,6 +653,8 @@ services:
       - 100.122.41.16:5432:5432
 
   redis:
+      sysctls:
+        net.mptcp.enabled: "0"
       # Pin the exact Redis version to avoid surprise upgrades from the floating redis:8 tag.
       image: redis:8.6.1
       restart: unless-stopped
