@@ -1,0 +1,3 @@
+services:
+  oneapi:
+    image: ${ONEAPI_IMAGE:?Set the verified immutable one-api image reference}

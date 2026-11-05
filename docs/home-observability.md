@@ -1,8 +1,8 @@
 # Canonical home observability
 
 The owner authorized one coherent logs/metrics/alerts system on 2026-10-29,
-permitting historical LOG loss only. The canonical Compose file includes the
-private home module; runtime configuration and credential references stay private.
+permitting historical LOG loss only. All home services are defined directly in home-docker-compose.yml, without
+includes or overlays. Runtime configuration and credential references stay private.
 
 Default native resolution selects 15 services: nine existing applications,
 the existing compatibility/PostgreSQL collector and one canonical gateway,

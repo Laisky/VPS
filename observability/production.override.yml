@@ -1,0 +1,15 @@
+# Add LAST after attended resource caps and approved local inputs.
+# All observation services use native Docker recovery; no custom boot/firewall helper.
+services:
+  edge:
+    restart: unless-stopped
+  gateway:
+    restart: unless-stopped
+  victoria-metrics:
+    restart: unless-stopped
+  victoria-logs:
+    restart: unless-stopped
+  victoria-traces:
+    restart: unless-stopped
+  grafana:
+    restart: unless-stopped

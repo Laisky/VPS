@@ -1,0 +1,2 @@
+# Compatibility entrypoint for disposable fixtures; publications use EDGE_BIND/HOME_BIND.
+services: {}
