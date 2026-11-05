@@ -1,0 +1,33 @@
+# Initial attended low-rate qualification and canary. Keep watchdog supervision.
+# Reboot does not automatically expose receivers before source ACL restoration.
+services:
+  edge:
+    restart: 'no'
+    mem_limit: 128m
+    memswap_limit: 128m
+    cpus: 0.25
+    pids_limit: 64
+    environment:
+      GOMEMLIMIT: 80MiB
+      GOGC: '75'
+      GOMAXPROCS: '1'
+  gateway:
+    restart: 'no'
+    memswap_limit: 768m
+  victoria-metrics:
+    restart: 'no'
+    mem_limit: 256m
+    memswap_limit: 256m
+  victoria-logs:
+    restart: 'no'
+    mem_limit: 256m
+    memswap_limit: 256m
+  victoria-traces:
+    restart: 'no'
+    mem_limit: 256m
+    memswap_limit: 256m
+  grafana:
+    restart: 'no'
+    mem_limit: 192m
+    memswap_limit: 192m
+    cpus: 0.25

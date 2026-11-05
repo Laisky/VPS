@@ -1,0 +1,16 @@
+# Resolved on the approved hosts for initial deployment, linux/amd64 only.
+# Edge is the reviewed static source tree9d026d72, source0e568a13; its exact
+# local image was loaded and CLI-qualified on both hosts, not fetched by tag.
+services:
+  edge:
+    image: sha256:b17b86881054c45e483a5ba0de95bf57114a612ca7207ba9a6f38cc96d4b8137
+  gateway:
+    image: otel/opentelemetry-collector-contrib@sha256:fd328de2552466ad78385e1b1289c3f2402b1c45f265b252aab1955b42845ac1
+  victoria-metrics:
+    image: victoriametrics/victoria-metrics@sha256:5eff7af5341e401471002f58d106d399e614a62f3d240f2dbc21901e49eed5dd
+  victoria-logs:
+    image: victoriametrics/victoria-logs@sha256:47b820890d64c4575a2a0a46415dcd8a4fd59a0f1fcd6a377693d7aea639442e
+  victoria-traces:
+    image: victoriametrics/victoria-traces@sha256:80919fcc85cc6dd87f598d20ccf42d0ab1120de8f25d4dcf08c5ea2515a496ba
+  grafana:
+    image: grafana/grafana@sha256:3ea272e5cab64a4a62240c682e2c62433b25614d956d44c299a10cb6994f6f2e

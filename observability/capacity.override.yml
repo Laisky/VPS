@@ -1,0 +1,23 @@
+# Initial attended rollout: leave headroom for both hosts' existing services.
+# Apply after compose.yml for synthetic qualification and the initial rollout.
+# These limits bound consumption; they do not certify throughput or durability.
+services:
+  edge:
+    mem_limit: 192m
+    cpus: 0.25
+    environment:
+      GOMEMLIMIT: 128MiB
+  gateway:
+    cpus: 0.5
+  victoria-metrics:
+    mem_limit: 256m
+    cpus: 0.5
+  victoria-logs:
+    mem_limit: 256m
+    cpus: 0.5
+  victoria-traces:
+    mem_limit: 256m
+    cpus: 0.5
+  grafana:
+    mem_limit: 192m
+    cpus: 0.25
