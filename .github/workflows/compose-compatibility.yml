@@ -6,12 +6,16 @@ on:
     paths:
       - README.md
       - tests/test_compose_mounts.py
+      - tests/test_b1_otlp_contract.py
+      - b1-docker-compose.yml
       - .github/workflows/compose-compatibility.yml
   push:
     branches: [master]
     paths:
       - README.md
       - tests/test_compose_mounts.py
+      - tests/test_b1_otlp_contract.py
+      - b1-docker-compose.yml
       - .github/workflows/compose-compatibility.yml
 
 permissions:
@@ -23,6 +27,14 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install parser dependency
+        run: python3 -m pip install --disable-pip-version-check PyYAML==6.0.3
+      - name: Verify b1 OTLP contract with synthetic environment
+        env:
+          B1_BASE_REF: ${{ github.event.pull_request.base.sha }}
+        run: python3 -m unittest discover -s tests -p test_b1_otlp_contract.py -v
       - name: Verify Compose parser and fail-closed bind declaration
         run: python3 -m unittest discover -s tests -p 'test_compose_mounts.py' -k test_long_bind_safety_survives_parsing -v
       - name: Manual Docker-engine bind controls
