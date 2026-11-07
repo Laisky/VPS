@@ -12,14 +12,25 @@ services:
     dns:
       - 8.8.8.8
       - 1.1.1.1
+    # Mount the certbot lineage directories, never single certificate files:
+    # a file bind pins the inode, so a running container keeps serving the old
+    # certificate after renewal. The image reloads renewed manual certificates.
     volumes:
-      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/fullchain.pem:/etc/letsencrypt/hk.laisky.com.crt:ro
-      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com/privkey.pem:/etc/letsencrypt/hk.laisky.com.key:ro
-
+      - /opt/configs/swag/hk/etc/letsencrypt/live/hk.laisky.com:/etc/letsencrypt/live/hk.laisky.com:ro
+      - /opt/configs/swag/hk/etc/letsencrypt/archive/hk.laisky.com:/etc/letsencrypt/archive/hk.laisky.com:ro
     ports:
       - 3478:3478/udp
       - 12444:12444
-    entrypoint: /app/derper -c=$HOME/derper.conf --hostname=hk.laisky.com -a :12444 -stun -certdir=/etc/letsencrypt -certmode=manual
+    # Manual mode reads <certdir>/<hostname>.crt and .key; alias them to the
+    # lineage's live symlinks so every renewal is visible.
+    entrypoint:
+      - /bin/sh
+      - -ec
+      - |
+        mkdir -p /run/derper-certs
+        ln -sfn /etc/letsencrypt/live/hk.laisky.com/fullchain.pem /run/derper-certs/hk.laisky.com.crt
+        ln -sfn /etc/letsencrypt/live/hk.laisky.com/privkey.pem /run/derper-certs/hk.laisky.com.key
+        exec /app/derper -c=$HOME/derper.conf --hostname=hk.laisky.com -a :12444 -stun -certdir=/run/derper-certs -certmode=manual
 
   xray:
     image: teddysun/xray:latest
