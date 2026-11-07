@@ -72,3 +72,22 @@ Apply only an individually reviewed source at a time, verify fresh harmless
 records and independent failure visibility, and stop on mismatch. Roll back only
 the affected source route while preserving accepted state and a compatible replay
 binary. Offline tests, source merges and green CI are not production acceptance.
+
+## Collector adapter and codec constraints
+
+The native OTLP pipeline is separate from legacy Fluent, syslog, Kafka and HTTP
+inputs. Selecting a Docker Fluent logging driver alone does not route records
+into the native OTLP pipeline. The legacy Fluent sender's flush is not a durable
+receiver acknowledgement. The current collector has no native file/journald
+tailer or OTLP/gRPC receiver; any adapter requires an explicit delivery and
+privacy contract, failure handling, source identity and isolated end-to-end tests.
+
+Qualify the exact collector image and `otlp-record-base64-v1` codec with the
+home gateway and VictoriaLogs: include typed and nested attributes, multiline
+records and large records near the approximately 2 MiB Victoria row limit.
+Destination configuration currently requires all three signal URLs and fans each
+signal to every destination; a compatible gateway is necessary. Do not enable an
+indefinite archive-retention mode or claim a sink-commit acknowledgement without
+a separately designed retirement policy and evidence. The collector's opt-in
+real Victoria sink outage/recovery test must run on the candidate image and
+configuration; the existence of the test or a skipped run is not acceptance.
