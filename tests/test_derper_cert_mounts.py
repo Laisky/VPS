@@ -20,13 +20,17 @@ def derper_compose_files():
 
 
 def rendered_derper(path):
-    """rendered_derper returns the derper service as normalized by the Compose CLI for path."""
+    """rendered_derper returns the derper service as normalized by the Compose CLI for path.
+
+    Service env files live only on the deployment hosts under /opt/configs, so they are
+    not resolved; mounts do not depend on them.
+    """
     env = dict(os.environ, COMPOSE_DISABLE_ENV_FILE="1")
     env.pop("COMPOSE_FILE", None)
     env.pop("COMPOSE_PROFILES", None)
     result = subprocess.run(
         ["docker", "compose", "--project-directory", str(REPO), "--file", str(path),
-         "config", "--format", "json", "derper"],
+         "config", "--no-env-resolution", "--format", "json", "derper"],
         env=env, cwd=REPO, capture_output=True, text=True, timeout=60,
     )
     if result.returncode != 0:
