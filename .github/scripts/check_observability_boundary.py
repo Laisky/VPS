@@ -11,6 +11,13 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 PRIVATE = "/opt/configs/observability"
+# Home runs with a plain `docker compose -f home-docker-compose.yml`; each
+# service that needs credentials reads its own private env file instead.
+# The non-home entrypoint shares those files so each credential has one copy.
+HOME_ENV_FILES = {
+    "observability-gateway": ["/opt/configs/env/home/observability-gateway.env"],
+    "observability-grafana": ["/opt/configs/env/home/observability-grafana.env"],
+}
 COMPOSE_FILES = {
     "compose.yml",
     "services.compose.yml",
@@ -29,10 +36,12 @@ ENTRY = {
         {
             "path": "./services.compose.yml",
             "project_directory": PRIVATE,
-            "env_file": PRIVATE + "/.env",
+            "env_file": [PRIVATE + "/.env"]
+            + [path for paths in HOME_ENV_FILES.values() for path in paths],
         }
     ],
 }
+CREDENTIAL_WORDS = ("TOKEN", "PASSWORD", "SECRET")
 
 
 class ComposeLoader(yaml.SafeLoader):
@@ -64,7 +73,7 @@ def private_payloads(value):
         if isinstance(env, dict):
             reference = r"\$\{[A-Z_][A-Z0-9_]*(?::\?[^}]+)?\}"
             for key, item in env.items():
-                if any(word in key.upper() for word in ("TOKEN", "PASSWORD", "SECRET")):
+                if any(word in key.upper() for word in CREDENTIAL_WORDS):
                     require(
                         isinstance(item, str) and re.fullmatch(reference, item),
                         "credential fields must contain only required variable references",
@@ -90,6 +99,19 @@ def private_payloads(value):
         )
 
 
+def interpolations(value):
+    """Return Compose variable references; `$$` is an escaped literal dollar."""
+    if isinstance(value, dict):
+        return [ref for item in value.values() for ref in interpolations(item)]
+    if isinstance(value, list):
+        return [ref for item in value for ref in interpolations(item)]
+    if isinstance(value, str):
+        return re.findall(
+            r"\$(?:\{[^}]*\}|[A-Za-z_][A-Za-z0-9_]*)", value.replace("$$", "")
+        )
+    return []
+
+
 def validate_home(root):
     home = yaml.safe_load((root / "home-docker-compose.yml").read_text())
     require(not home.get("include"), "home must not use includes")
@@ -113,6 +135,17 @@ def validate_home(root):
         "home must not use extends",
     )
     private_payloads({key: services[key] for key in expected})
+    require(not interpolations(home), "home must not require command-line variables")
+    for key in expected:
+        env = services[key].get("environment", {})
+        require(
+            not any(word in name.upper() for name in env for word in CREDENTIAL_WORDS),
+            "home credentials belong in per-service env files",
+        )
+        require(
+            services[key].get("env_file", []) == HOME_ENV_FILES.get(key, []),
+            "home credential env file reference changed",
+        )
 
 
 def validate(root):
@@ -193,6 +226,27 @@ class BoundaryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "variable references") as error:
             validate_home(self.root)
         self.assertNotIn("synthetic-forbidden-value", str(error.exception))
+
+    def test_home_command_line_variable_is_rejected(self):
+        p = self.root / "home-docker-compose.yml"
+        model = yaml.safe_load(p.read_text())
+        model["services"]["observability-gateway"]["environment"][
+            "HOME_TOKEN"
+        ] = "${HOME_TOKEN:?Set HOME_TOKEN}"
+        p.write_text(yaml.safe_dump(model))
+        with self.assertRaisesRegex(ValueError, "command-line variables"):
+            validate_home(self.root)
+
+    def test_home_credential_env_file_cannot_move(self):
+        for env_file in ([PRIVATE + "/.env"], []):
+            p = self.root / "home-docker-compose.yml"
+            model = yaml.safe_load((ROOT / "home-docker-compose.yml").read_text())
+            model["services"]["observability-grafana"]["env_file"] = env_file
+            p.write_text(yaml.safe_dump(model))
+            with self.subTest(env_file=env_file), self.assertRaisesRegex(
+                ValueError, "env file reference"
+            ):
+                validate_home(self.root)
 
     def test_missing_inline_home_role_is_rejected(self):
         p = self.root / "home-docker-compose.yml"
