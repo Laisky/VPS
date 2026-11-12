@@ -1,0 +1,102 @@
+{
+  "b1-docker-compose.yml": {
+    "blog-v2": "needs_classification",
+    "channel_boardcast": "needs_classification",
+    "derper": "needs_classification",
+    "dns": "needs_classification",
+    "doh": "needs_classification",
+    "glider": "needs_classification",
+    "glider-isp": "needs_classification",
+    "glider-sg": "needs_classification",
+    "glider-warp": "needs_classification",
+    "go-ramjet": "proposed_ramjet",
+    "graphql": "configured_graphql",
+    "haproxy": "needs_classification",
+    "hysteria": "needs_classification",
+    "mongodb6": "needs_classification",
+    "nginx": "needs_classification",
+    "oneapi": "oneapi_route_review",
+    "pccs": "needs_classification",
+    "postgre": "needs_classification",
+    "proxy_bbt": "needs_classification",
+    "redis": "needs_classification",
+    "swag": "needs_classification",
+    "trojan-go": "needs_classification",
+    "wiki": "needs_classification"
+  },
+  "dev-docker-compose.yml": {
+    "artex": "needs_classification",
+    "postgre": "needs_classification",
+    "postgres": "needs_classification"
+  },
+  "fs-docker-compose.yml": {
+    "minio": "needs_classification",
+    "nginx": "needs_classification"
+  },
+  "hk-docker-compose.yml": {
+    "derper": "needs_classification",
+    "glider": "needs_classification",
+    "glider-isp": "needs_classification",
+    "glider-sg": "needs_classification",
+    "hysteria": "needs_classification",
+    "nginx": "needs_classification",
+    "swag": "needs_classification",
+    "trojan-go": "needs_classification",
+    "trojan-go-b1": "needs_classification",
+    "xray": "needs_classification"
+  },
+  "home-docker-compose.yml": {
+    "glider": "needs_classification",
+    "glider-gfw": "needs_classification",
+    "go-ramjet": "needs_classification",
+    "grafana": "needs_classification",
+    "greptime": "needs_classification",
+    "metube": "needs_classification",
+    "minio": "needs_classification",
+    "monitor": "needs_classification",
+    "observability-gateway": "needs_classification",
+    "observability-grafana": "needs_classification",
+    "observability-victoria-logs": "needs_classification",
+    "observability-victoria-metrics": "needs_classification",
+    "observability-victoria-traces": "needs_classification",
+    "otel-collector": "needs_classification",
+    "pdf": "needs_classification",
+    "ramjet": "needs_classification",
+    "victoria-logs": "needs_classification",
+    "victoria-metrics": "needs_classification",
+    "victoria-traces": "needs_classification"
+  },
+  "racknerd-docker-compose.yml": {
+    "blog-v2": "needs_classification",
+    "channel_boardcast": "needs_classification",
+    "derper": "needs_classification",
+    "dns": "needs_classification",
+    "doh": "needs_classification",
+    "glider": "needs_classification",
+    "glider-isp": "needs_classification",
+    "glider-sg": "needs_classification",
+    "glider-warp": "needs_classification",
+    "go-ramjet": "needs_classification",
+    "hysteria": "needs_classification",
+    "mongodb6": "needs_classification",
+    "oneapi": "needs_classification",
+    "pccs": "needs_classification",
+    "postgre": "needs_classification",
+    "proxy_bbt": "needs_classification",
+    "redis": "needs_classification",
+    "swag": "needs_classification",
+    "trojan-go": "needs_classification",
+    "wiki": "needs_classification"
+  },
+  "sh-docker-compose.yml": {
+    "glider": "needs_classification"
+  },
+  "vultr-docker-compose.yml": {
+    "derper": "needs_classification",
+    "glider": "needs_classification",
+    "haproxy": "needs_classification",
+    "hysteria": "needs_classification",
+    "swag": "needs_classification",
+    "trojan-go": "needs_classification"
+  }
+}

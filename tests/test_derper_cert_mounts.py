@@ -10,6 +10,7 @@ import subprocess
 import unittest
 import tempfile
 import uuid
+import yaml
 
 REPO = Path(__file__).resolve().parent.parent
 CERT_FILE_SUFFIXES = (".pem", ".crt", ".key")
@@ -24,22 +25,39 @@ def derper_compose_files():
 
 
 def rendered_derper(path):
-    """rendered_derper returns the derper service as normalized by the Compose CLI for path.
-
-    Service env files live only on the deployment hosts under /opt/configs, so they are
-    not resolved; mounts do not depend on them.
-    """
-    env = dict(os.environ, COMPOSE_DISABLE_ENV_FILE="1")
-    env.pop("COMPOSE_FILE", None)
-    env.pop("COMPOSE_PROFILES", None)
-    result = subprocess.run(
-        ["docker", "compose", "--project-directory", str(REPO), "--file", str(path),
-         "config", "--no-env-resolution", "--format", "json", "derper"],
-        env=env, cwd=REPO, capture_output=True, text=True, timeout=60,
-    )
-    if result.returncode != 0:
-        raise AssertionError(f"{path.name}: docker compose config failed: {result.stderr}")
-    return json.loads(result.stdout)["services"]["derper"]
+    """Render the service using synthetic env files, never host credentials."""
+    spec = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if spec.get("include") or any(s.get("extends") for s in spec["services"].values()):
+        raise AssertionError(f"{path.name}: unreviewed include or extends")
+    with tempfile.TemporaryDirectory(prefix="derper-compose-parse-") as tmp:
+        root = Path(tmp)
+        env_file = root / "synthetic.env"
+        env_file.write_text("# synthetic fixture\n", encoding="utf-8")
+        for service in spec["services"].values():
+            if "env_file" in service:
+                service["env_file"] = [str(env_file)]
+        manifest = root / "compose.json"
+        manifest.write_text(json.dumps(spec), encoding="utf-8")
+        env = {"PATH": os.environ["PATH"], "HOME": tmp, "COMPOSE_DISABLE_ENV_FILE": "1",
+               "SESSION_SECRET": "synthetic", "SQL_DSN": "synthetic", "LOG_PUSH_TOKEN": "synthetic"}
+        result = subprocess.run(
+            ["docker", "compose", "--project-directory", str(REPO), "--file", str(manifest),
+             "config", "--no-env-resolution", "--format", "json", "derper"],
+            env=env, cwd=REPO, capture_output=True, text=True, timeout=60,
+        )
+        if result.returncode != 0:
+            raise AssertionError(f"{path.name}: synthetic docker compose config failed: {result.stderr}")
+        service = json.loads(result.stdout)["services"]["derper"]
+        # Compose versions may omit the false default from their rendered model.
+        # Restore only an explicitly declared false; a short bind or true stays unsafe.
+        raw_binds = {m.get("target"): m for m in spec["services"]["derper"].get("volumes", [])
+                     if isinstance(m, dict) and m.get("type") == "bind"}
+        for mount in service.get("volumes", []):
+            original = raw_binds.get(mount.get("target"), {})
+            if (original.get("bind", {}).get("create_host_path") is False
+                    and "create_host_path" not in mount.get("bind", {})):
+                mount.setdefault("bind", {})["create_host_path"] = False
+        return service
 
 
 AFFECTED_HOSTS = ("hk", "racknerd")
