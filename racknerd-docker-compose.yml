@@ -16,8 +16,18 @@ services:
     # a file bind pins the inode, so a running container keeps serving the old
     # certificate after renewal. The image reloads renewed manual certificates.
     volumes:
-      - /opt/configs/swag/racknerd/etc/letsencrypt/live/racknerd.laisky.com:/etc/letsencrypt/live/racknerd.laisky.com:ro
-      - /opt/configs/swag/racknerd/etc/letsencrypt/archive/racknerd.laisky.com:/etc/letsencrypt/archive/racknerd.laisky.com:ro
+      - type: bind
+        source: /opt/configs/swag/racknerd/etc/letsencrypt/live/racknerd.laisky.com
+        target: /etc/letsencrypt/live/racknerd.laisky.com
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: /opt/configs/swag/racknerd/etc/letsencrypt/archive/racknerd.laisky.com
+        target: /etc/letsencrypt/archive/racknerd.laisky.com
+        read_only: true
+        bind:
+          create_host_path: false
     ports:
       - 3478:3478/udp
       - 12444:12444
