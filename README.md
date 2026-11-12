@@ -58,6 +58,19 @@ is authorized. Do not replace those controls with the generic example.
 Database and infrastructure version pins are intentional and are not candidates
 for a blanket `latest` upgrade.
 
+## Home machine
+
+`home-docker-compose.yml` needs no `--env-file`, `op run` or exported
+variables. Services that need credentials read their own private env files
+under `/opt/configs/env/home/`; see
+[observability source ownership](docs/observability-repository-boundary.md).
+
+```sh
+cd /home/laisky/repo/laisky/VPS
+docker compose -f home-docker-compose.yml up -d
+docker compose -f home-docker-compose.yml ps
+```
+
 ## Dev machine: ARTEX
 
 `dev-docker-compose.yml` directly defines the dev services, including ARTEX and

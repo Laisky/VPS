@@ -5,23 +5,25 @@ on:
   pull_request:
     paths:
       - README.md
+      - '*-docker-compose.yml'
       - tests/test_compose_mounts.py
       - tests/test_b1_otlp_contract.py
-      - '*-docker-compose.yml'
       - tests/test_log_source_inventory.py
       - tests/log_source_inventory.json
       - docs/logging-source-inventory.md
+      - tests/test_derper_cert_mounts.py
       - .github/workflows/compose-compatibility.yml
   push:
     branches: [master]
     paths:
       - README.md
+      - '*-docker-compose.yml'
       - tests/test_compose_mounts.py
       - tests/test_b1_otlp_contract.py
-      - '*-docker-compose.yml'
       - tests/test_log_source_inventory.py
       - tests/log_source_inventory.json
       - docs/logging-source-inventory.md
+      - tests/test_derper_cert_mounts.py
       - .github/workflows/compose-compatibility.yml
 
 permissions:
@@ -45,6 +47,8 @@ jobs:
         run: python3 -m unittest discover -s tests -p test_log_source_inventory.py -v
       - name: Verify Compose parser and fail-closed bind declaration
         run: python3 -m unittest discover -s tests -p 'test_compose_mounts.py' -k test_long_bind_safety_survives_parsing -v
+      - name: Verify DERPer certificate lineage mounts
+        run: python3 -m unittest discover -s tests -p 'test_derper_cert_mounts.py' -v
       - name: Manual Docker-engine bind controls
         if: github.event_name == 'workflow_dispatch'
         env:

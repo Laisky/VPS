@@ -5,8 +5,8 @@ located go-fluentd → authenticated persistent home gateway → VictoriaLogs. T
 is a target, not an assertion about the deployed fleet. The machine-readable
 inventory in `tests/log_source_inventory.json` lists every service declared in
 root per-host Compose files, including rollback-profile services and development
-manifests. A source listed there is not automatically active or approved for
-collection. It does not cover host journals, standalone containers, external
+manifests. RackNerd is historical, not an assumed live deployment target.
+A source listed there is not automatically active or approved for collection. It does not cover host journals, standalone containers, external
 systems, files, or services deployed outside these manifests; reconcile those
 against each host's actual inventory before declaring coverage.
 

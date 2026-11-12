@@ -1,6 +1,10 @@
 # Canonical entrypoint; definitions are owned by VPS, sensitive inputs by configs.
+# Each credential has one copy in configs; home's per-service files are shared here.
 name: observability
 include:
   - path: ./services.compose.yml
     project_directory: /opt/configs/observability
-    env_file: /opt/configs/observability/.env
+    env_file:
+      - /opt/configs/observability/.env
+      - /opt/configs/env/home/observability-gateway.env
+      - /opt/configs/env/home/observability-grafana.env
