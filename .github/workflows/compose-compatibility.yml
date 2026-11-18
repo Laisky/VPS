@@ -8,6 +8,7 @@ on:
       - '*-docker-compose.yml'
       - tests/test_compose_mounts.py
       - tests/test_derper_cert_mounts.py
+      - tests/test_nginx_images.py
       - .github/workflows/compose-compatibility.yml
   push:
     branches: [master]
@@ -16,6 +17,7 @@ on:
       - '*-docker-compose.yml'
       - tests/test_compose_mounts.py
       - tests/test_derper_cert_mounts.py
+      - tests/test_nginx_images.py
       - .github/workflows/compose-compatibility.yml
 
 permissions:
@@ -31,6 +33,13 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_compose_mounts.py' -k test_long_bind_safety_survives_parsing -v
       - name: Verify DERPer certificate lineage mounts
         run: python3 -m unittest discover -s tests -p 'test_derper_cert_mounts.py' -v
+      - name: Verify patched nginx image declarations
+        run: python3 -m unittest discover -s tests -p 'test_nginx_images.py' -v
+      - name: Smoke-test official patched nginx image without network or host mounts
+        run: |
+          docker pull nginx:1.30.7
+          docker run --rm --network none nginx:1.30.7 nginx -v
+          docker run --rm --network none nginx:1.30.7 nginx -t
       - name: Manual Docker-engine bind controls
         if: github.event_name == 'workflow_dispatch'
         env:
