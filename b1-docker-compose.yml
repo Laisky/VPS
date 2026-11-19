@@ -411,7 +411,7 @@ services:
       -t telegram
 
   nginx:
-    image: nginx:1.25
+    image: nginx:1.30.7
     restart: unless-stopped
     network_mode: host
     # ports:

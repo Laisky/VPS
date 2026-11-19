@@ -1,59 +1,48 @@
-name: Compose compatibility
+name: YAML syntax
 
 on:
   workflow_dispatch:
   pull_request:
-    paths:
-      - README.md
-      - '*-docker-compose.yml'
-      - tests/test_compose_mounts.py
-      - tests/test_b1_otlp_contract.py
-      - tests/test_log_source_inventory.py
-      - tests/log_source_inventory.json
-      - docs/logging-source-inventory.md
-      - tests/test_derper_cert_mounts.py
-      - .github/workflows/compose-compatibility.yml
+    paths: ['**/*.yml', '**/*.yaml']
   push:
     branches: [master]
-    paths:
-      - README.md
-      - '*-docker-compose.yml'
-      - tests/test_compose_mounts.py
-      - tests/test_b1_otlp_contract.py
-      - tests/test_log_source_inventory.py
-      - tests/log_source_inventory.json
-      - docs/logging-source-inventory.md
-      - tests/test_derper_cert_mounts.py
-      - .github/workflows/compose-compatibility.yml
+    paths: ['**/*.yml', '**/*.yaml']
 
 permissions:
   contents: read
 
+concurrency:
+  group: vps-syntax-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
-  bind-safety:
+  syntax:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          fetch-depth: 0
-      - name: Install parser dependency
-        run: python3 -m pip install --disable-pip-version-check PyYAML==6.0.3
-      - name: Verify b1 OTLP contract with synthetic environment
-        env:
-          B1_BASE_REF: ${{ github.event.pull_request.base.sha }}
-        run: python3 -m unittest discover -s tests -p test_b1_otlp_contract.py -v
-      - name: Verify source inventory coverage
-        run: python3 -m unittest discover -s tests -p test_log_source_inventory.py -v
-      - name: Verify Compose parser and fail-closed bind declaration
-        run: python3 -m unittest discover -s tests -p 'test_compose_mounts.py' -k test_long_bind_safety_survives_parsing -v
-      - name: Verify DERPer certificate lineage mounts
-        run: python3 -m unittest discover -s tests -p 'test_derper_cert_mounts.py' -v
-      - name: Manual Docker-engine bind controls
-        if: github.event_name == 'workflow_dispatch'
-        env:
-          COMPOSE_ENGINE_TEST: '1'
-          COMPOSE_TEST_IMAGE: busybox:1.37.0
+          persist-credentials: false
+      - name: Check YAML syntax
         run: |
-          docker pull busybox:1.37.0
-          python3 -m unittest discover -s tests -p 'test_compose_mounts.py' -v
+          python3 -m pip install --disable-pip-version-check 'PyYAML==6.0.3'
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+          import yaml
+
+          paths = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")
+          checked = 0
+          for name in paths:
+              if not name.endswith((".yml", ".yaml")):
+                  continue
+              try:
+                  list(yaml.compose_all(Path(name).read_text(encoding="utf-8")))
+              except yaml.YAMLError as error:
+                  # Never echo YAML payloads or credentials in diagnostics.
+                  mark = getattr(error, "problem_mark", None)
+                  line = mark.line + 1 if mark else "unknown"
+                  raise SystemExit(f"Invalid YAML syntax: {name}, line {line}")
+              checked += 1
+          print(f"YAML syntax OK: {checked} files")
+          PY

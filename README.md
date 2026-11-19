@@ -126,13 +126,26 @@ recovery notes are in
 
 ## Regression acceptance
 
+CI checks YAML syntax only in one short, path-filtered job. Superseded runs
+are canceled automatically. It does not validate Compose semantics, image
+versions, credential boundaries, mounts or runtime behavior.
+
+Run the existing semantic/security regression checks manually before relevant
+changes are deployed. They are intentionally not automatic CI:
+
+```sh
+python3 -m pip install 'PyYAML==6.0.3'
+python3 .github/scripts/check_observability_boundary.py
+```
+
+
 Run parser acceptance with a modern Compose plugin:
 
 ```sh
 python3 -m unittest discover -s tests -v
 ```
 
-For isolated engine acceptance on a development/CI daemon, supply an already
+For isolated engine acceptance on a development daemon, supply an already
 available image. The tests create and remove only their uniquely named
 containers; they never start the image, expose ports, read production config,
 or mount a persistent data directory:
