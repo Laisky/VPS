@@ -1,0 +1,14 @@
+# Optional b1-only PostgreSQL-auth overlay. Require the managed .pgpass file.
+# Archive encryption is inline in protected runtime YAML; no encryption mount.
+# See the go-ramjet MCP backup runbook in Laisky/configs.
+services:
+  go-ramjet:
+    environment:
+      PGPASSFILE: /run/secrets/ramjet-postgres-mcp.pgpass
+    volumes:
+      - type: bind
+        source: /etc/ramjet-secrets/postgres-mcp.pgpass
+        target: /run/secrets/ramjet-postgres-mcp.pgpass
+        read_only: true
+        bind:
+          create_host_path: false
